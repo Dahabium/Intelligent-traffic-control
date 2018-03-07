@@ -47,7 +47,7 @@ public class Main extends Application {
 
         final long startNanoTime = System.nanoTime();
 
-
+        //do some harakat
         // create the graph
         Graph graph = new Graph(5);
         addEdge(graph, 0, 1);
