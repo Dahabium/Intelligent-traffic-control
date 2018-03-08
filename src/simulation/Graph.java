@@ -1,51 +1,17 @@
 package simulation;
-import java.util.LinkedList;
 
-public class Graph {
+import java.util.List;
 
-    int V;
-    LinkedList<Integer> adjListArray[];
+public class Graphv2 {
 
-    // constructor
-    public Graph(int V)
-    {
-        this.V = V;
+    public List<Node> nodes;
 
-        //size of array is amount of verts
-        adjListArray = new LinkedList[V];
-
-        // Create a new list for each vertex
-        // such that adjacent nodes can be stored
-        for(int i = 0; i < V ; i++){
-            adjListArray[i] = new LinkedList<>();
-        }
+    public Graphv2( List<Node> nodes){
+        this.nodes = nodes;
     }
 
-    // Adds an edge to an undirected graph
-    public static void addEdge(Graph graph, int src, int dest)
-    {
-        // Add an edge from src to dest.
-        graph.adjListArray[src].add(dest);
-
-        // Since graph is undirected, add an edge from dest
-        // to src also
-        graph.adjListArray[dest].add(src);
+    public void addEdge(Node start, Node end, double weight){
+        start.connections.add(new Edge(start,end,weight));
     }
-    // A utility function to print the adjacency list
-    // representation of graph
-
-    public static void printGraph(Graph graph)
-    {
-        for(int v = 0; v < graph.V; v++)
-        {
-            System.out.println("Adjacency list of vertex "+ v);
-            for(Integer pCrawl: graph.adjListArray[v]){
-                System.out.print(" -> "+pCrawl);
-            }
-            System.out.println("\n");
-        }
-    }
-
-
 
 }

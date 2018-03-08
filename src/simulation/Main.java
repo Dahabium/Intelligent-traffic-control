@@ -1,22 +1,16 @@
 package simulation;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static simulation.Graph.addEdge;
-import static simulation.Graph.printGraph;
 
 
 public class Main extends Application {
@@ -47,34 +41,24 @@ public class Main extends Application {
 
         final long startNanoTime = System.nanoTime();
 
-        //do some harakat
-        // create the graph
-        Graph graph = new Graph(5);
-        addEdge(graph, 0, 1);
-        addEdge(graph, 0, 4);
-        addEdge(graph, 1, 2);
-        addEdge(graph, 1, 3);
-        addEdge(graph, 1, 4);
-        addEdge(graph, 2, 3);
-        addEdge(graph, 3, 4);
-
-        // print the adjacency list representation of graph
-        printGraph(graph);
 
         //=====================
-        List<simulation.Node> nodeList = new ArrayList<>();
+        List<simulation.Node> nodeList = new ArrayList<>(4);
 
-        simulation.Node n1 = new simulation.Node("n1");
-        simulation.Node n2 = new simulation.Node("n2");
-        simulation.Node n3 = new simulation.Node("n3");
-        simulation.Node n4 = new simulation.Node("n4");
+//        for (int i = 0; i < nodeList.size(); i++) {
+//            nodeList.add(new simulation.Node("n" + i));
+//        }
+        simulation.Node n1 = new simulation.Node("n1",50,50);
+        simulation.Node n2 = new simulation.Node("n2",120, 50);
+        simulation.Node n3 = new simulation.Node("n3",50, 120 );
+        simulation.Node n4 = new simulation.Node("n4",120,120);
 
         nodeList.add(n1);
         nodeList.add(n2);
         nodeList.add(n3);
         nodeList.add(n4);
 
-        Graphv2 grp = new Graphv2(nodeList);
+        Graph grp = new Graph(nodeList);
 
         grp.addEdge(n1,n2,1);
         grp.addEdge(n1,n3,1);
@@ -86,7 +70,9 @@ public class Main extends Application {
         grp.addEdge(n3,n4,1);
         grp.addEdge(n4,n2,1);
         grp.addEdge(n4,n3,1);
+        grp.addEdge(n4,n1,1);
 
+        
         for (int i = 0; i < grp.nodes.get(0).connections.size(); i++) {
             System.out.println("node " + grp.nodes.get(0).name  + " is connected to " + grp.nodes.get(0).connections.get(i).end.name);
         }
@@ -96,12 +82,20 @@ public class Main extends Application {
         int trackX = 0;
         int trackY = 0;
 
+        //Show the intersections in GUI
         for (int i = 0; i < grp.nodes.size(); i++){
+            gc.fillOval(grp.nodes.get(i).Xpos, grp.nodes.get(i).Ypos,30,30);
+        }
 
-            gc.fillOval(trackX * 50, trackY * 50, 30,30);
-            trackX++;
-            trackY++;
+        //Show the roads between intersections
+        for (int i = 0; i < grp.nodes.size(); i++) {
+            //look at edges outcoming from each node
+            for (int j = 0; j < grp.nodes.get(i).connections.size(); j++) {
 
+                gc.strokeLine(grp.nodes.get(i).connections.get(j).start.Xpos +15, grp.nodes.get(i).connections.get(j).start.Ypos +15,
+                        grp.nodes.get(i).connections.get(j).end.Xpos+15, grp.nodes.get(i).connections.get(j).end.Ypos+15);
+
+            }
         }
 
 
@@ -119,21 +113,6 @@ public class Main extends Application {
 
 
 /*
-place in start to use graphstrem
-
-        SwingNode content = new SwingNode();
-
-        Graph graph = new SingleGraph("Tutorial 1");
-        graph.addNode("A");
-        graph.addNode("B");
-        graph.addNode("C");
-        graph.addEdge("AB", "A", "B");
-        graph.addEdge("BC", "B", "C");
-        graph.addEdge("CA", "C", "A");
-        graph.display();
-
-
-
 Simple animation in JavaFX
 
         new AnimationTimer()
