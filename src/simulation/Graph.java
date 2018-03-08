@@ -2,11 +2,11 @@ package simulation;
 
 import java.util.List;
 
-public class Graphv2 {
+public class Graph {
 
     public List<Node> nodes;
 
-    public Graphv2( List<Node> nodes){
+    public Graph(List<Node> nodes){
         this.nodes = nodes;
     }
 
