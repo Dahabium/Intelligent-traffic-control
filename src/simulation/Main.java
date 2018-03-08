@@ -83,18 +83,17 @@ public class Main extends Application {
 
         Graph grp = new Graph(nodeList);
 
-        grp.addEdge(n1,n2,1);
-        grp.addEdge(n1,n3,1);
-        grp.addEdge(n2,n1,1);
-        grp.addEdge(n2,n3,1);
-        grp.addEdge(n2,n4,1);
-        grp.addEdge(n3,n1,1);
-        grp.addEdge(n3,n2,1);
-        grp.addEdge(n3,n4,1);
-        grp.addEdge(n4,n2,1);
-        grp.addEdge(n4,n3,1);
-        grp.addEdge(n4,n1,1);
-
+        grp.addEdge(n1,n2,1,1,1);
+        grp.addEdge(n1,n3,1,2,1);
+        grp.addEdge(n2,n1,1,1,1);
+        grp.addEdge(n2,n3,1,1,1);
+        grp.addEdge(n2,n4,1,2,1);
+        grp.addEdge(n3,n1,1,1,1);
+        grp.addEdge(n3,n2,1,1,1);
+        grp.addEdge(n3,n4,1,1,1);
+        grp.addEdge(n4,n2,1,1,1);
+        grp.addEdge(n4,n3,1,1,1);
+//        grp.addEdge(n4,n1,1,1,1);
 
         for (int i = 0; i < grp.nodes.get(0).connections.size(); i++) {
             System.out.println("node " + grp.nodes.get(0).name  + " is connected to " + grp.nodes.get(0).connections.get(i).end.name);
@@ -113,12 +112,14 @@ public class Main extends Application {
         for (int i = 0; i < grp.nodes.size(); i++) {
             //look at edges outcoming from each node
             for (int j = 0; j < grp.nodes.get(i).connections.size(); j++) {
-
-                gc.strokeLine(grp.nodes.get(i).connections.get(j).start.Xpos +15, grp.nodes.get(i).connections.get(j).start.Ypos +15,
-                        grp.nodes.get(i).connections.get(j).end.Xpos+15, grp.nodes.get(i).connections.get(j).end.Ypos+15);
+                for (int k = 0; k < grp.nodes.get(i).connections.get(j).outcominglanes; k++) {
+                    gc.strokeLine(grp.nodes.get(i).connections.get(j).start.Xpos +15+k*2, grp.nodes.get(i).connections.get(j).start.Ypos +15+k*2,
+                            grp.nodes.get(i).connections.get(j).end.Xpos+15+k*2, grp.nodes.get(i).connections.get(j).end.Ypos+15+k*2);
+                }
 
             }
         }
+
 
 
         primaryStage.setScene(rootScene);
