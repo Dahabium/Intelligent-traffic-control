@@ -13,7 +13,7 @@ public class Road {
 	public Road(int distance, Intersection beginning, Intersection end) {
 		this.distance = distance;
 		this.beginning = beginning;
-		this.end = end;9
+		this.end = end;
 		this.lanes = 1;
 		this.speedLimit = 80;
 		this.blocked = false;

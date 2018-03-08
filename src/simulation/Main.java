@@ -2,12 +2,14 @@ package simulation;
 
 import javafx.application.Application;
 
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,7 +25,7 @@ import java.util.List;
 public class Main extends Application {
 
     static GraphicsContext gc = null;
-    Scene rootScene, scene2;
+    Scene rootScene, scene2, drawScene;
 
     public static void main(String[] args) {
 
@@ -43,20 +45,64 @@ public class Main extends Application {
 
         primaryStage.setScene(rootScene);
 
+
         Canvas canvas = new Canvas(500,500);
+        Canvas canvas2 = new Canvas(500,500);
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        GraphicsContext gc2 = canvas2.getGraphicsContext2D();
+
 
         Button button1= new Button("Go to scene 2");
         button1.setOnAction(e -> primaryStage.setScene(scene2));
 
-        Pane pane = new Pane();
+        Button drawGraphbtn =  new Button("Generate own graph");
+        drawGraphbtn.setOnAction(e-> primaryStage.setScene(drawScene));
 
-        pane.getChildren().add(button1);
+        Button button3 = new Button("Go to main menu");
+        button3.setOnAction(e -> primaryStage.setScene(rootScene));
 
-        root.getChildren().add(pane);
+
+        VBox box = new VBox(20);
+
+        VBox pane2 = new VBox();
+        pane2.getChildren().add(button3);
+
+        boolean drawNodes = true;
+
+        double x[] = new double[10];
+        double y[] = new double[10];
+
+        int count =0;
+
+
+        pane2.getChildren().add(canvas2);
+        drawScene = new Scene(pane2,300,250);
+
+        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println(mouseEvent.getEventType() + "\n"
+                        + "SceneX : " + mouseEvent.getSceneX() + " SceneY : " + mouseEvent.getSceneY() + "\n"
+                        + "ScreenX : " + mouseEvent.getScreenX() + " ScreenY : " + mouseEvent.getScreenY());
+                gc2.fillOval(mouseEvent.getX(),mouseEvent.getY(),30,30);
+
+                
+            }
+        };
+
+
+        drawScene.setOnMouseClicked(mouseHandler);
+
+        box.getChildren().addAll(button1,drawGraphbtn);
+
+        root.getChildren().add(box);
 
         Label label2= new Label("Go to graph");
         Button button2= new Button("Go to main menu");
         button2.setOnAction(e -> primaryStage.setScene(rootScene));
+
         VBox layout2= new VBox(20);
         layout2.getChildren().addAll(label2, button2);
         scene2 = new Scene(layout2,300,250);
@@ -64,7 +110,7 @@ public class Main extends Application {
         layout2.getChildren().add(canvas);
 
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+
 
         final long startNanoTime = System.nanoTime();
 
@@ -130,6 +176,10 @@ public class Main extends Application {
     public GraphicsContext getGC(){
         return gc;
     }
+
+
+
+
 
 }
 
