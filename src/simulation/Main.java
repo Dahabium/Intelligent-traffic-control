@@ -72,7 +72,7 @@ public class Main extends Application {
         grp.addEdge(n4,n3,1);
         grp.addEdge(n4,n1,1);
 
-        
+
         for (int i = 0; i < grp.nodes.get(0).connections.size(); i++) {
             System.out.println("node " + grp.nodes.get(0).name  + " is connected to " + grp.nodes.get(0).connections.get(i).end.name);
         }
