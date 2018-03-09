@@ -15,6 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -92,23 +94,32 @@ public class Main extends Application {
                 System.out.println(mouseEvent.getX() + "  " + mouseEvent.getY());
 
 
-                if (!mouseEvent.isAltDown())
-                    return;
+                if (!mouseEvent.isAltDown()) {
 
-                final Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(),30);
-                vertex.setFill(Color.YELLOW);
+                    final Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 30);
+                    vertex.setFill(Color.YELLOW);
 
-                subGroup.getChildren().add(vertex);
+                    subGroup.getChildren().add(vertex);
 //                drawScene.getChadd(vertex);
 
-                vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
-                    @Override public void handle(final MouseEvent arg0)
-                    {
-                        subGroup.getChildren().remove(vertex);
+                        @Override
+                        public void handle(final MouseEvent arg0) {
+                            subGroup.getChildren().remove(vertex);
+                        }
+
+                    });
+
+                    if(!mouseEvent.isControlDown()){
+
+                        final Rectangle rect = new Rectangle(40,40);
+
+                        System.out.println("vert " + vertex.getCenterX() + "  " +vertex.getCenterY());
+
                     }
+                }
 
-                });
             }
         });
 
