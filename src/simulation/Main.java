@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -40,6 +41,7 @@ public class Main extends Application {
         primaryStage.setWidth(500);
 
         Group root = new Group();
+        Group subGroup = new Group();
 
         rootScene = new Scene(root);
 
@@ -75,25 +77,42 @@ public class Main extends Application {
 
         int count =0;
 
-
         pane2.getChildren().add(canvas2);
-        drawScene = new Scene(pane2,300,250);
 
-        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+        drawScene = new Scene(subGroup,300,250);
+
+        subGroup.getChildren().add(pane2);
+
+        drawScene.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(mouseEvent.getEventType() + "\n"
-                        + "SceneX : " + mouseEvent.getSceneX() + " SceneY : " + mouseEvent.getSceneY() + "\n"
-                        + "ScreenX : " + mouseEvent.getScreenX() + " ScreenY : " + mouseEvent.getScreenY());
-                gc2.fillOval(mouseEvent.getX(),mouseEvent.getY(),30,30);
 
-                
+                System.out.println(mouseEvent.getX() + "  " + mouseEvent.getY());
+
+
+                if (!mouseEvent.isAltDown())
+                    return;
+
+                final Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(),30);
+                vertex.setFill(Color.YELLOW);
+
+                subGroup.getChildren().add(vertex);
+//                drawScene.getChadd(vertex);
+
+                vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                    @Override public void handle(final MouseEvent arg0)
+                    {
+                        subGroup.getChildren().remove(vertex);
+                    }
+
+                });
             }
-        };
+        });
 
 
-        drawScene.setOnMouseClicked(mouseHandler);
 
         box.getChildren().addAll(button1,drawGraphbtn);
 
