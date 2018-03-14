@@ -2,6 +2,7 @@ package simulation;
 
 import javafx.application.Application;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -28,7 +29,12 @@ import java.util.List;
 public class Main extends Application {
 
     static GraphicsContext gc = null;
+
     Scene rootScene, scene2, drawScene;
+
+    int change = 0;
+
+    static Stage window;
 
     public static void main(String[] args) {
 
@@ -38,7 +44,16 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        primaryStage.setTitle("New program");
+        window = primaryStage;
+        window.setScene(SceneController.getInstance().getStartMenuScene());
+        window.setTitle("Intelligent traffic simulation");
+
+        window.show();
+
+        //all code shall be moved to another classes
+
+
+
         primaryStage.setHeight(500);
         primaryStage.setWidth(500);
 
@@ -56,25 +71,42 @@ public class Main extends Application {
         Canvas canvas2 = new Canvas(500,500);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        GraphicsContext gc2 = canvas2.getGraphicsContext2D();
 
-
-        Button button1= new Button("Go to scene 2");
+        Button button1= new Button("Run simulation");
         button1.setOnAction(e -> primaryStage.setScene(scene2));
 
-        Button drawGraphbtn =  new Button("Generate own graph");
+        Button drawGraphbtn =  new Button("Create configuaration");
         drawGraphbtn.setOnAction(e-> primaryStage.setScene(drawScene));
 
-        Button button3 = new Button("Go to main menu");
+        Button button3 = new Button("Load configuration");
         button3.setOnAction(e -> primaryStage.setScene(rootScene));
+
+
+
+        Button drawNodes = new Button("Place intersections");
+        drawNodes.setOnAction(event -> {
+            System.out.println("change = " + change);
+            setDrawingMode(1);
+        });
+
+        Button drawEdges = new Button("Place Roads");
+        drawNodes.setOnAction(e -> {
+            System.out.println("change = " + change);
+            setDrawingMode(2);
+        });
+
 
 
         VBox box = new VBox(20);
 
         VBox pane2 = new VBox();
-        pane2.getChildren().add(button3);
+        //pane2 is pane for graph drawing
 
-        boolean drawNodes = true;
+        pane2.getChildren().add(button3);
+        pane2.getChildren().add(drawNodes);
+        pane2.getChildren().add(drawEdges);
+
+//        boolean drawNodes = true;
 
         double x[] = new double[10];
         double y[] = new double[10];
@@ -87,8 +119,8 @@ public class Main extends Application {
 
         subGroup.getChildren().add(pane2);
 
-        drawScene.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
+        drawScene.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -96,35 +128,48 @@ public class Main extends Application {
                 System.out.println(mouseEvent.getX() + "  " + mouseEvent.getY());
 
 
-                if (!mouseEvent.isAltDown()) {
-
+//                if (!mouseEvent.isAltDown()) {
+//
+//                    final Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 30);
+//                    vertex.setFill(Color.YELLOW);
+//
+//                    subGroup.getChildren().add(vertex);
+////                drawScene.getChadd(vertex);
+//
+//                    vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//
+//                        @Override
+//                        public void handle(final MouseEvent arg0) {
+//                            subGroup.getChildren().remove(vertex);
+//                        }
+//
+//                    });
+//
+//                    if(!mouseEvent.isControlDown()){
+//
+//                        final Rectangle rect = new Rectangle(40,40);
+//
+//                        System.out.println("vert " + vertex.getCenterX() + "  " +vertex.getCenterY());
+//
+//                    }
+//                }
+                
+                
+                if(change == 1){
                     final Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 30);
                     vertex.setFill(Color.YELLOW);
 
                     subGroup.getChildren().add(vertex);
-//                drawScene.getChadd(vertex);
-
-                    vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-                        @Override
-                        public void handle(final MouseEvent arg0) {
-                            subGroup.getChildren().remove(vertex);
-                        }
-
-                    });
-
-                    if(!mouseEvent.isControlDown()){
-
-                        final Rectangle rect = new Rectangle(40,40);
-
-                        System.out.println("vert " + vertex.getCenterX() + "  " +vertex.getCenterY());
-
-                    }
+                }
+                
+                if(change == 2){
+                    final Rectangle rect = new Rectangle(mouseEvent.getSceneX(), mouseEvent.getSceneY(),40,40);
+                    rect.setFill(Color.BLACK);
+                    subGroup.getChildren().add(rect);
                 }
 
             }
         });
-
 
 
         box.getChildren().addAll(button1,drawGraphbtn);
@@ -140,8 +185,6 @@ public class Main extends Application {
         scene2 = new Scene(layout2,300,250);
 
         layout2.getChildren().add(canvas);
-
-
 
 
         final long startNanoTime = System.nanoTime();
@@ -201,12 +244,16 @@ public class Main extends Application {
 
 
         primaryStage.setScene(rootScene);
-        primaryStage.show();
+
     }
 
 
     public GraphicsContext getGC(){
         return gc;
+    }
+
+    public void setDrawingMode(int value) {
+        this.change = value;
     }
 
 
