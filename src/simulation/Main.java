@@ -42,7 +42,9 @@ public class Main extends Application {
         primaryStage.setHeight(500);
         primaryStage.setWidth(500);
 
+        //main group of objects (main screen)
         Group root = new Group();
+        //group of objects for the drawing screen
         Group subGroup = new Group();
 
         rootScene = new Scene(root);
@@ -80,7 +82,7 @@ public class Main extends Application {
         int count =0;
 
         pane2.getChildren().add(canvas2);
-
+        //Scene for drawing a graph of roads
         drawScene = new Scene(subGroup,300,250);
 
         subGroup.getChildren().add(pane2);
