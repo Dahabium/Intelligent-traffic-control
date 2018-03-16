@@ -133,25 +133,35 @@ public class Main extends Application {
 
                         if(control == 2){
 
-                            Line line;
-                            
+                            //reset strokes
+                            for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
+                                if(drawSceneElements.getChildren().get(i) instanceof Circle){
+                                    ((Circle) drawSceneElements.getChildren().get(i)).setStrokeWidth(1.0);
+                                    ((Circle) drawSceneElements.getChildren().get(i)).setStroke(Color.BLACK);
+                                }
+                            }
+
+                            Arrow arrow;
+
                             if(!release){
 
                                 graphicsGraph.addLineStart(vertex);
+                                vertex.setStrokeWidth(3.0);
                                 vertex.setStroke(Color.RED);
 
                                 release = true;
                             }
                             else {
+                                vertex.setStrokeWidth(3.0);
                                 vertex.setStroke(Color.GREEN);
                                 graphicsGraph.addLineEnd(vertex);
                                 double stX = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getStartX();
                                 double stY = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getStartY();
                                 double ndX = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getEndX();
                                 double ndY = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getEndY();
-                                line = new Line(stX, stY,ndX,ndY);
+                                arrow = new Arrow(stX, stY,ndX,ndY);
 
-                                drawSceneElements.getChildren().add(line);
+                                drawSceneElements.getChildren().add(arrow);
                                 release = false;
                             }
                         }
