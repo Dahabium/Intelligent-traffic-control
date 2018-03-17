@@ -100,14 +100,5 @@ public class Graph {
         }
     }
 
-    //return true if there are nodes next to current coordinate
-    public boolean checkNodesAround(double x, double y){
-
-        boolean collisionDetected = false;
-
-        return collisionDetected;
-
-
-    }
 
 }
