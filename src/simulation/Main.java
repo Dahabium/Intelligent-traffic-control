@@ -236,6 +236,9 @@ public class Main extends Application {
         graph1.printAdjecency();
         graph1.showGraph(gc);
 
+        XMLCreator xmlCreator = new XMLCreator();
+        xmlCreator.createXML();
+
         primaryStage.setScene(startScene);
         primaryStage.show();
     }
