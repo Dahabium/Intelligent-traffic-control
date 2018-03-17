@@ -20,47 +20,26 @@ public class GraphicsGraph {
         lines = new ArrayList<>();
 
     }
-    public void addVertex(double x, double y){
-        Circle vertex = new Circle(x, y, 12);
-        vertex.setFill(Color.BLUE);
-        vertex.setStroke(Color.BLACK);
 
-        circles.add(vertex);
-    }
-    public void addLineStart(Circle start){
-        for (int i = 0; i < circles.size(); i++) {
-            if(start.getCenterX() == circles.get(i).getCenterX() && start.getCenterY() == circles.get(i).getCenterY()){
-                Line line = new Line();
-                line.setStartX(start.getCenterX());
-                line.setStartY(start.getCenterY());
 
-                lines.add(line);
+
+
+    //to fix
+    public boolean checkNodesAround(double x, double y){
+        System.out.println("diff " + x + "  " + y);
+        if(circles.size() > 0){
+            for (int i = 0; i < circles.size(); i++) {
+                if(x >= circles.get(i).getCenterX() + 30 || y <= circles.get(i).getCenterX() - 30 ||
+                        x >= circles.get(i).getCenterY() + 30 || y <= circles.get(i).getCenterY() - 30){
+                    return true;
+                }
             }
         }
-    }
-
-    public void addLineEnd(Circle end){
-        for (int i = 0; i < circles.size() ; i++) {
-            if(end.getCenterX() == circles.get(i).getCenterX() && end.getCenterY() == circles.get(i).getCenterY()) {
-                lines.get(lines.size()-1).setEndX(end.getCenterX());
-                lines.get(lines.size()-1).setEndY(end.getCenterY());
-            }
+        if(circles.size() == 0){
+            return true;
         }
+        else return false;
     }
 
-    public void removeVertex(Circle vert){
-        for (int i = 0; i < circles.size(); i++) {
-            if(vert.getCenterX() == circles.get(i).getCenterX() && vert.getCenterY() == circles.get(i).getCenterY()){
-                circles.remove(i);
-            }
-        }
-    }
-
-    public Circle getLastVertex(){
-        return circles.get(circles.size()-1);
-    }
-    public void getLength(){
-        System.out.println(circles.size());
-    }
 
 }

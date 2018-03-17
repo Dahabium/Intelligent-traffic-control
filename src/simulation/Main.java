@@ -10,11 +10,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -27,11 +24,10 @@ import java.util.List;
 public class Main extends Application {
 
     static GraphicsContext gc = null;
+    Path path;
+    Scene startScene, runScene, drawScene;
     private boolean release = false;
     private int control = 0;
-    Path path;
-
-    Scene startScene, runScene, drawScene;
 
     public static void main(String[] args) {
 
@@ -39,7 +35,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Intelligent Traffic Control");
         primaryStage.setHeight(500);
@@ -50,18 +46,18 @@ public class Main extends Application {
         Group drawSceneElements = new Group();
 
         startScene = new Scene(root);
-        drawScene = new Scene(drawSceneElements,300,250);
+        drawScene = new Scene(drawSceneElements, 300, 250);
 
         primaryStage.setScene(startScene);
 
-        Canvas canvas = new Canvas(500,500);
+        Canvas canvas = new Canvas(500, 500);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Button drawGraphbtn =  new Button("Create Configuration");
-        drawGraphbtn.setOnAction(e-> primaryStage.setScene(drawScene));
+        Button drawGraphbtn = new Button("Create Configuration");
+        drawGraphbtn.setOnAction(e -> primaryStage.setScene(drawScene));
 
-        Button loadGraphbtn= new Button("Load Configuration");
+        Button loadGraphbtn = new Button("Load Configuration");
         loadGraphbtn.setOnAction(e -> System.out.println("loading from file"));
 
         Button testbtn = new Button("Test Graph");
@@ -76,20 +72,24 @@ public class Main extends Application {
         Button joinbtn = new Button("Join Intersections");
         Button deletebtn = new Button("Delete");
         Button saveConfigbtn = new Button("Save this configuration");
+        Button prnt = new Button("Print check");
+
 
         GridPane CreateConfigMenuPlacer = new GridPane();
 
-        CreateConfigMenuPlacer.add(interSectbtn,0,0);
-        CreateConfigMenuPlacer.add(joinbtn,1,0);
-        CreateConfigMenuPlacer.add(deletebtn,2,0);
-        CreateConfigMenuPlacer.add(saveConfigbtn,0,1);
-        CreateConfigMenuPlacer.add(backToMenubtn,1,1);
+        CreateConfigMenuPlacer.add(interSectbtn, 0, 0);
+        CreateConfigMenuPlacer.add(joinbtn, 1, 0);
+        CreateConfigMenuPlacer.add(deletebtn, 2, 0);
+        CreateConfigMenuPlacer.add(saveConfigbtn, 0, 1);
+        CreateConfigMenuPlacer.add(backToMenubtn, 1, 1);
+        CreateConfigMenuPlacer.add(prnt, 2, 1);
         CreateConfigMenuPlacer.setVgap(10);
         CreateConfigMenuPlacer.setHgap(10);
 
         drawSceneElements.getChildren().add(CreateConfigMenuPlacer);
 
 
+        Graph graph = new Graph();
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
@@ -103,39 +103,47 @@ public class Main extends Application {
             control = 3;
             System.out.println(control);
         });
+        prnt.setOnMouseClicked(event -> {
+            graph.printAdjecency();
+        });
 
-        GraphicsGraph graphicsGraph = new GraphicsGraph();
 
-
-        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
+        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (control == 1) {
+
+                if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
                     Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 12);
                     vertex.setFill(Color.BLUE);
                     vertex.setStroke(Color.BLACK);
 
-                    graphicsGraph.addVertex(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+//                    System.out.println("tessttt" + mouseEvent.getSceneX() + "  " + mouseEvent.getSceneY());
 
-                    drawSceneElements.getChildren().add(vertex);
+                    if(!graph.checkNodesAround(mouseEvent.getSceneX(), mouseEvent.getSceneY())){
 
-                    //Add a listener to a vertex that will trigger if its being pressed to delete it
+                        graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+                        drawSceneElements.getChildren().add(vertex);
+                    }
+
+
+                    //Add a listener to a vertex that will trigger if its being pressed to delete it, move it, or make connections
                     vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, arg0 -> {
 
-                        if (control == 3){
+                        if (control == 3) {
 
                             drawSceneElements.getChildren().remove(vertex);
 
-                            graphicsGraph.removeVertex(vertex);
+                            graph.removeNode(graph.convertCircleToNode(vertex));
+
                         }
 
-                        if(control == 2){
+                        if (control == 2) {
 
                             //reset strokes
-                            for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
-                                if(drawSceneElements.getChildren().get(i) instanceof Circle){
+                            for (int i = 0; i < drawSceneElements.getChildren().size() - 1; i++) {
+                                if (drawSceneElements.getChildren().get(i) instanceof Circle) {
                                     ((Circle) drawSceneElements.getChildren().get(i)).setStrokeWidth(1.0);
                                     ((Circle) drawSceneElements.getChildren().get(i)).setStroke(Color.BLACK);
                                 }
@@ -143,26 +151,30 @@ public class Main extends Application {
 
                             Arrow arrow;
 
-                            if(!release){
+                            if (!release) {
 
-                                graphicsGraph.addLineStart(vertex);
+                                graph.addLineStart(vertex);
+
                                 vertex.setStrokeWidth(3.0);
                                 vertex.setStroke(Color.RED);
 
                                 release = true;
-                            }
-                            else {
+                            } else {
+
                                 vertex.setStrokeWidth(3.0);
                                 vertex.setStroke(Color.GREEN);
-                                graphicsGraph.addLineEnd(vertex);
-                                double stX = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getStartX();
-                                double stY = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getStartY();
-                                double ndX = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getEndX();
-                                double ndY = graphicsGraph.lines.get(graphicsGraph.lines.size()-1).getEndY();
-                                arrow = new Arrow(stX, stY,ndX,ndY);
+                                graph.addLineEnd(vertex);
 
-                                drawSceneElements.getChildren().add(arrow);
-                                release = false;
+                                double stX = graph.lines.get(graph.lines.size()-1).getStartX();
+                                double stY = graph.lines.get(graph.lines.size()-1).getStartY();
+                                double ndX = graph.lines.get(graph.lines.size()-1).getEndX();
+                                double ndY = graph.lines.get(graph.lines.size()-1).getEndY();
+
+                                if (stX != ndX && stY != ndY) {
+                                    arrow = new Arrow(stX, stY, ndX, ndY);
+                                    drawSceneElements.getChildren().add(arrow);
+                                    release = false;
+                                }
                             }
                         }
                     });
@@ -175,24 +187,23 @@ public class Main extends Application {
         drawScene.setOnMouseClicked(mouseHandler);
 
 
-
         StartMenuPlacer.setHgap(10);
         StartMenuPlacer.setVgap(10);
         StartMenuPlacer.setPadding(new Insets(10, 10, 10, 10));
 
-        StartMenuPlacer.add(drawGraphbtn,1,1);
-        StartMenuPlacer.add(loadGraphbtn,1,2);
-        StartMenuPlacer.add(testbtn,1,3);
+        StartMenuPlacer.add(drawGraphbtn, 1, 1);
+        StartMenuPlacer.add(loadGraphbtn, 1, 2);
+        StartMenuPlacer.add(testbtn, 1, 3);
 
         root.getChildren().add(StartMenuPlacer);
 
-        Label label2= new Label("Go to graph");
-        Button button2= new Button("Go to main menu");
+        Label label2 = new Label("Go to graph");
+        Button button2 = new Button("Go to main menu");
         button2.setOnAction(e -> primaryStage.setScene(startScene));
 
-        VBox layout2= new VBox(20);
+        VBox layout2 = new VBox(20);
         layout2.getChildren().addAll(label2, button2);
-        runScene = new Scene(layout2,300,250);
+        runScene = new Scene(layout2, 300, 250);
 
         layout2.getChildren().add(canvas);
 
@@ -200,57 +211,34 @@ public class Main extends Application {
         final long startNanoTime = System.nanoTime();
 
 
-        List<Node> nodeList = new ArrayList<>(4);
+        Node n1 = new Node("n1", 50, 50);
+        Node n2 = new Node("n2", 120, 50);
+        Node n3 = new Node("n3", 50, 120);
 
-        Node n1 = new Node("n1",50,50);
-        Node n2 = new Node("n2",120, 50);
-        Node n3 = new Node("n3",50, 120 );
-        Node n4 = new Node("n4",120,120);
+        Graph grp = new Graph();
 
-        nodeList.add(n1);
-        nodeList.add(n2);
-        nodeList.add(n3);
-        nodeList.add(n4);
+        grp.addNode(n1);
+        grp.addNode(n2);
+        grp.addNode(n3);
 
-        Graph grp = new Graph(nodeList);
+        grp.addEdge(n1, n2);
+        grp.addEdge(n1, n3);
+        grp.addEdge(n2, n1);
+        grp.addEdge(n2, n3);
+        grp.addEdge(n3, n1);
+        grp.addEdge(n3, n2);
 
-        grp.addEdge(n1,n2,1,1,1);
-        grp.addEdge(n1,n3,1,2,1);
-        grp.addEdge(n2,n1,1,1,1);
-        grp.addEdge(n2,n3,1,1,1);
-        grp.addEdge(n2,n4,1,2,1);
-        grp.addEdge(n3,n1,1,1,1);
-        grp.addEdge(n3,n2,1,1,1);
-        grp.addEdge(n3,n4,1,1,1);
-        grp.addEdge(n4,n2,1,1,1);
-        grp.addEdge(n4,n3,1,1,1);
-//        grp.addEdge(n4,n1,1,1,1);
+        Node n4 = new Node(120,120);
+        grp.addNode(n4);
 
-        for (int i = 0; i < grp.nodes.get(0).connections.size(); i++) {
-            System.out.println("node " + grp.nodes.get(0).name  + " is connected to " + grp.nodes.get(0).connections.get(i).end.name);
-        }
+        grp.addEdge(n2,n4);
+        grp.addEdge(n3,n4);
+        grp.addEdge(n4,n2);
+        grp.addEdge(n4,n3);
 
-        //Show the intersections in GUI
-        for (int i = 0; i < grp.nodes.size(); i++){
-            gc.fillOval(grp.nodes.get(i).Xpos, grp.nodes.get(i).Ypos,30,30);
-            gc.setFill(Color.WHITE);
-            gc.fillText(grp.nodes.get(i).name, grp.nodes.get(i).Xpos+7, grp.nodes.get(i).Ypos+15);
-            gc.setFill(Color.BLACK);
 
-        }
-
-        //Show the roads between intersections
-        for (int i = 0; i < grp.nodes.size(); i++) {
-            //look at edges outcoming from each node
-            for (int j = 0; j < grp.nodes.get(i).connections.size(); j++) {
-                for (int k = 0; k < grp.nodes.get(i).connections.get(j).outcominglanes; k++) {
-                    gc.strokeLine(grp.nodes.get(i).connections.get(j).start.Xpos +15+k*2, grp.nodes.get(i).connections.get(j).start.Ypos +15+k*2,
-                            grp.nodes.get(i).connections.get(j).end.Xpos+15+k*2, grp.nodes.get(i).connections.get(j).end.Ypos+15+k*2);
-                }
-
-            }
-        }
-
+        grp.printAdjecency();
+        grp.showGraph(gc);
 
 
         primaryStage.setScene(startScene);
@@ -258,10 +246,9 @@ public class Main extends Application {
     }
 
 
-    public GraphicsContext getGC(){
+    public GraphicsContext getGC() {
         return gc;
     }
-
 
 
 }
