@@ -18,7 +18,7 @@ public class XMLCreator {
 
     public XMLCreator(){}
 
-    public void createXML(){
+    public void createXML(Graph graph){
 
         try {
 
@@ -30,22 +30,32 @@ public class XMLCreator {
             Element rootElement = doc.createElement("Graph");
             doc.appendChild(rootElement);
 
-            // staff elements
-            Element staff = doc.createElement("Node");
-            rootElement.appendChild(staff);
+            for (int i = 0; i < graph.nodes.size()-1; i++) {
 
-            // set attribute to staff element
-            Attr attr = doc.createAttribute("id");
-            attr.setValue("1");
-            staff.setAttributeNode(attr);
+                // Vertex elements
+                Element node = doc.createElement("Node");
+                node.appendChild(doc.createTextNode("Node number " + Integer.toString(i)));
 
-            // shorten way
-            // staff.setAttribute("id", "1");
+                // set attribute to Vertex element
+//                node.setAttribute("node id", Integer.toString(i) );
 
-            // firstname elements
-            Element firstname = doc.createElement("edges");
-            firstname.appendChild(doc.createTextNode("something here...."));
-            staff.appendChild(firstname);
+
+
+                // edges elements
+                for (int j = 0; j < graph.nodes.get(i).connections.size()-1; j++) {
+
+                    Element edge = doc.createElement("edges");
+                    edge.appendChild(doc.createTextNode("Start " + graph.nodes.get(i).connections.get(j).start.name + " end " +
+                            graph.nodes.get(i).connections.get(j).end.name));
+
+                    node.appendChild(edge);
+
+                }
+
+                rootElement.appendChild(node);
+            }
+
+
 
 
 

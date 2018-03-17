@@ -237,7 +237,8 @@ public class Main extends Application {
         graph1.showGraph(gc);
 
         XMLCreator xmlCreator = new XMLCreator();
-        xmlCreator.createXML();
+
+        xmlCreator.createXML(graph1);
 
         primaryStage.setScene(startScene);
         primaryStage.show();
