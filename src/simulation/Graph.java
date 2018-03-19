@@ -80,7 +80,7 @@ public class Graph {
             String id = Integer.toString(i);
             String xmlX = Double.toString(nodes.get(i).Xpos);
             String xmlY = Double.toString(nodes.get(i).Ypos);
-            xmlNode.setTextContent(id + ", " + xmlX + ", " + xmlY);
+            xmlNode.setTextContent(id + " " + xmlX + " " + xmlY);
             xmlNodes.appendChild(xmlNode);
 
             Element xmlEdges = xmlDocument.createElement("Edges");
@@ -89,10 +89,11 @@ public class Graph {
             for(int j = 0; j<nodes.get(i).connections.size(); j++)
             {
                 if(nodes.get(i).connections.get(j).start == nodes.get(i)) {
+
                     System.out.println("edge " + j);
                     Element xmlEdge = xmlDocument.createElement("Edge");
                     xmlEdges.appendChild(xmlEdge);
-                    String eID = Integer.toString(i) + ", " + Integer.toString(j);
+
                     String from = id;
                     String to = " ";
                     for (int k = 0; k < nodes.size(); k++) {
@@ -100,7 +101,7 @@ public class Graph {
                             to = Integer.toString(k);
                         }
                     }
-                    xmlEdge.setTextContent(eID + ", " + from + ", " + to);
+                    xmlEdge.setTextContent(from + " " + to);
                 }
 
                 //Text edgeID = xmlDocument.createTextNode("Edge ID");
@@ -114,6 +115,7 @@ public class Graph {
         FileOutputStream outputStream = new FileOutputStream(xmlFile);
         XMLSerializer serializer = new XMLSerializer(outputStream, output);
         serializer.serialize(xmlDocument);
+
 
 
     }

@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -32,7 +33,7 @@ public class Main extends Application {
     private boolean release = false;
     private int control = 0;
     private Graph graph;
-
+    private String fileName = "Graph1";
     public static void main(String[] args) {
 
         launch(args);
@@ -63,8 +64,24 @@ public class Main extends Application {
         Button drawGraphbtn = new Button("Create Configuration");
         drawGraphbtn.setOnAction(e -> primaryStage.setScene(drawScene));
 
+        TextField loadGraphTXT = new TextField(fileName);
+        loadGraphTXT.setOnAction(e ->
+        {
+            //File Name of Graph1.xml = Graph1
+            //The current path is: /Users/Rik/Documents/GitHub/Intelligent-traffic-control/
+            fileName = loadGraphTXT.getCharacters().toString();
+        });
+
         Button loadGraphbtn = new Button("Load Configuration");
-        loadGraphbtn.setOnAction(e -> System.out.println("loading from file"));
+        loadGraphbtn.setOnAction(e ->
+        {
+            System.out.println("loading from file");
+            new GraphLoader(fileName);
+        });
+
+
+
+
 
         Button testbtn = new Button("Test Graph");
         testbtn.setOnAction(event -> primaryStage.setScene(runScene));
@@ -115,6 +132,7 @@ public class Main extends Application {
         saveConfigbtn.setOnMouseClicked(event -> {
             try{
                 System.out.println(" graph.export");
+
                 graph.export();
             }
             catch(ParserConfigurationException parse){
@@ -126,6 +144,8 @@ public class Main extends Application {
             catch(IOException io){
                 System.out.println("IOException");
             }
+
+
 
         });
 
@@ -235,6 +255,7 @@ public class Main extends Application {
 
         StartMenuPlacer.add(drawGraphbtn, 1, 1);
         StartMenuPlacer.add(loadGraphbtn, 1, 2);
+        StartMenuPlacer.add(loadGraphTXT, 2, 2);
         StartMenuPlacer.add(testbtn, 1, 3);
 
         root.getChildren().add(StartMenuPlacer);
