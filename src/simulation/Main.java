@@ -39,11 +39,7 @@ public class Main extends Application {
     //mode 3 - delete verts
     private int control = 0;
     private Graph graph;
-<<<<<<< HEAD
     private String fileName = "Graph1";
-=======
-
->>>>>>> Kostya
     public static void main(String[] args) {
 
         launch(args);
@@ -51,6 +47,13 @@ public class Main extends Application {
 
 
 
+    public void create()
+    {
+
+        graph.printAdjecency();
+        graph.showGraph(gc);
+
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -86,9 +89,16 @@ public class Main extends Application {
         loadGraphbtn.setOnAction(e ->
         {
             System.out.println("loading from file");
-            new GraphLoader(fileName);
-        });
+            GraphLoader graphLoader = new GraphLoader(fileName);
 
+
+            graph = graphLoader.getGraph();
+
+            //create();
+
+            //primaryStage.setScene(runScene);
+            //primaryStage.show();
+        });
 
 
 
@@ -111,9 +121,6 @@ public class Main extends Application {
         saveConfigbtn.setOnMouseClicked(event -> {
             if (!drawSceneElements.getChildren().isEmpty()){
                 //create new xml
-                XMLCreator xmlCreator = new XMLCreator();
-
-                xmlCreator.createXML(graph);
             }
         });
 
@@ -132,7 +139,7 @@ public class Main extends Application {
         drawSceneElements.getChildren().add(CreateConfigMenuPlacer);
 
 
-        graph = new Graph();
+        Graph graph = new Graph();
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
@@ -165,17 +172,11 @@ public class Main extends Application {
                 System.out.println("IOException");
             }
 
-<<<<<<< HEAD
-=======
-
-        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
->>>>>>> Kostya
 
 
         });
 
 
-<<<<<<< HEAD
         EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
             @Override
@@ -183,47 +184,18 @@ public class Main extends Application {
 
 
                     if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
-=======
-                    //Before showing a new vertex in gui, check if it doesent intersect with other nodes
-                    //Still buggy - works all the time except the first time lol.
-                    if(!checkShapeIntersection(vertex, drawSceneElements)){
-                        graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
-                        drawSceneElements.getChildren().add(vertex);
-                    }
-
-                    //Add a listener to a vertex that will trigger if its being pressed to delete it
-                    vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, arg0 -> {
->>>>>>> Kostya
 
                         Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 12);
                         vertex.setFill(Color.BLUE);
                         vertex.setStroke(Color.BLACK);
 
-<<<<<<< HEAD
 //                    System.out.println("tessttt" + mouseEvent.getSceneX() + "  " + mouseEvent.getSceneY());
 
-                        if (!graph.checkNodesAround(mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
-=======
-                            //remove edges
-                            if(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()).connections.size() > 0){
-
-                                for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
-
-                                    if(drawSceneElements.getChildren().get(i) instanceof Line){
-
-                                        drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
-                                    }
-                                }
-                            }
-
-                            graph.removeNode(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()));
-                            drawSceneElements.getChildren().remove(vertex);
-                            System.out.println(drawSceneElements.getChildren());
->>>>>>> Kostya
-
-                            graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
-                            drawSceneElements.getChildren().add(vertex);
-                        }
+//                        if (!graph.checkNodesAround(mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
+//
+//                            graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+//                            drawSceneElements.getChildren().add(vertex);
+//                        }
 
 
                         //Add a listener to a vertex that will trigger if its being pressed to delete it, move it, or make connections
@@ -231,7 +203,6 @@ public class Main extends Application {
 
                             if (control == 3) {
 
-<<<<<<< HEAD
                                 drawSceneElements.getChildren().remove(vertex);
 
                                 graph.removeNode(graph.convertCircleToNode(vertex));
@@ -292,38 +263,6 @@ public class Main extends Application {
                                         drawSceneElements.getChildren().add(arrow);
                                         release = false;
                                     }
-=======
-                            if (!release) {
-                                //Create new Line object and set the start of it
-                                graph.addLineStart(vertex);
-                                //highlighting
-                                vertex.setStrokeWidth(3.0);
-                                vertex.setStroke(Color.RED);
-
-                                release = true;
-                            } else {
-                                //get the last line object and set the end of this line
-                                //highlighting
-                                vertex.setStrokeWidth(3.0);
-                                vertex.setStroke(Color.GREEN);
-                                graph.addLineEnd(vertex);
-
-                                //Collision detection for lines. Not working!
-                                /*if(!checkShapeIntersection(graph.lines.get(graph.lines.size()-1),drawSceneElements)){
-                                    System.out.println("INTERSECT");
-                                }*/
-
-                                double stX = graph.lines.get(graph.lines.size()-1).getStartX();
-                                double stY = graph.lines.get(graph.lines.size()-1).getStartY();
-                                double ndX = graph.lines.get(graph.lines.size()-1).getEndX();
-                                double ndY = graph.lines.get(graph.lines.size()-1).getEndY();
-
-                                if (stX != ndX && stY != ndY) {
-                                    arrow = new Arrow(stX, stY, ndX, ndY);
-                                    //add arrow to gui
-                                    drawSceneElements.getChildren().add(arrow);
-                                    release = false;
->>>>>>> Kostya
                                 }
                             }
                         });
@@ -369,7 +308,9 @@ public class Main extends Application {
         graph1.printAdjecency();
         graph1.showGraph(gc);
 
+        XMLCreator xmlCreator = new XMLCreator();
 
+        xmlCreator.createXML(graph1);
 
         primaryStage.setScene(startScene);
         primaryStage.show();
