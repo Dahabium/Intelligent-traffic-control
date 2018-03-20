@@ -33,6 +33,7 @@ public class Graph {
     public void addNode(Node node){
         this.nodes.add(node);
     }
+
     public void removeNode(Node node){
         this.nodes.remove(node);
     }
@@ -184,14 +185,15 @@ public class Graph {
         }
     }
 
-    //return true if there are nodes next to current coordinate
-    public boolean checkNodesAround(double x, double y){
+    public Node getNodeAtCoord(double x, double y){
+        for (int i = 0; i < this.nodes.size()-1; i++) {
+            if(this.nodes.get(i).Xpos == x && this.nodes.get(i).Ypos == y){
+                return this.nodes.get(i);
+            }
+        }
 
-        boolean collisionDetected = false;
-
-        return collisionDetected;
-
-
+        return null;
     }
+
 
 }

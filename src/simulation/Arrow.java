@@ -7,6 +7,7 @@ import javafx.scene.shape.Path;
 
 //
 public class Arrow extends Path {
+
     private static final double defaultArrowHeadSize = 7.0;
 
     public Arrow(double startX, double startY, double endX, double endY, double arrowHeadSize){
@@ -40,4 +41,6 @@ public class Arrow extends Path {
     public Arrow(double startX, double startY, double endX, double endY){
         this(startX, startY, endX, endY, defaultArrowHeadSize);
     }
+
+
 }

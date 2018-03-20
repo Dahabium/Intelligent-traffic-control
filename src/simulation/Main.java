@@ -31,9 +31,19 @@ public class Main extends Application {
     Path path;
     Scene startScene, runScene, drawScene;
     private boolean release = false;
+
+    //Variable control is here to show which mode is being used in CreateGraph window
+    //mode 0 - nothing
+    //mode 1 - create verts
+    //mode 2 - create edges
+    //mode 3 - delete verts
     private int control = 0;
     private Graph graph;
+<<<<<<< HEAD
     private String fileName = "Graph1";
+=======
+
+>>>>>>> Kostya
     public static void main(String[] args) {
 
         launch(args);
@@ -98,6 +108,16 @@ public class Main extends Application {
         Button prnt = new Button("Print check");
 
 
+        saveConfigbtn.setOnMouseClicked(event -> {
+            if (!drawSceneElements.getChildren().isEmpty()){
+                //create new xml
+                XMLCreator xmlCreator = new XMLCreator();
+
+                xmlCreator.createXML(graph);
+            }
+        });
+
+
         GridPane CreateConfigMenuPlacer = new GridPane();
 
         CreateConfigMenuPlacer.add(interSectbtn, 0, 0);
@@ -112,7 +132,7 @@ public class Main extends Application {
         drawSceneElements.getChildren().add(CreateConfigMenuPlacer);
 
 
-        Graph graph = new Graph();
+        graph = new Graph();
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
@@ -145,11 +165,17 @@ public class Main extends Application {
                 System.out.println("IOException");
             }
 
+<<<<<<< HEAD
+=======
+
+        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+>>>>>>> Kostya
 
 
         });
 
 
+<<<<<<< HEAD
         EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
             @Override
@@ -157,14 +183,43 @@ public class Main extends Application {
 
 
                     if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
+=======
+                    //Before showing a new vertex in gui, check if it doesent intersect with other nodes
+                    //Still buggy - works all the time except the first time lol.
+                    if(!checkShapeIntersection(vertex, drawSceneElements)){
+                        graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+                        drawSceneElements.getChildren().add(vertex);
+                    }
+
+                    //Add a listener to a vertex that will trigger if its being pressed to delete it
+                    vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, arg0 -> {
+>>>>>>> Kostya
 
                         Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 12);
                         vertex.setFill(Color.BLUE);
                         vertex.setStroke(Color.BLACK);
 
+<<<<<<< HEAD
 //                    System.out.println("tessttt" + mouseEvent.getSceneX() + "  " + mouseEvent.getSceneY());
 
                         if (!graph.checkNodesAround(mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
+=======
+                            //remove edges
+                            if(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()).connections.size() > 0){
+
+                                for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
+
+                                    if(drawSceneElements.getChildren().get(i) instanceof Line){
+
+                                        drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
+                                    }
+                                }
+                            }
+
+                            graph.removeNode(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()));
+                            drawSceneElements.getChildren().remove(vertex);
+                            System.out.println(drawSceneElements.getChildren());
+>>>>>>> Kostya
 
                             graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
                             drawSceneElements.getChildren().add(vertex);
@@ -176,6 +231,7 @@ public class Main extends Application {
 
                             if (control == 3) {
 
+<<<<<<< HEAD
                                 drawSceneElements.getChildren().remove(vertex);
 
                                 graph.removeNode(graph.convertCircleToNode(vertex));
@@ -236,6 +292,38 @@ public class Main extends Application {
                                         drawSceneElements.getChildren().add(arrow);
                                         release = false;
                                     }
+=======
+                            if (!release) {
+                                //Create new Line object and set the start of it
+                                graph.addLineStart(vertex);
+                                //highlighting
+                                vertex.setStrokeWidth(3.0);
+                                vertex.setStroke(Color.RED);
+
+                                release = true;
+                            } else {
+                                //get the last line object and set the end of this line
+                                //highlighting
+                                vertex.setStrokeWidth(3.0);
+                                vertex.setStroke(Color.GREEN);
+                                graph.addLineEnd(vertex);
+
+                                //Collision detection for lines. Not working!
+                                /*if(!checkShapeIntersection(graph.lines.get(graph.lines.size()-1),drawSceneElements)){
+                                    System.out.println("INTERSECT");
+                                }*/
+
+                                double stX = graph.lines.get(graph.lines.size()-1).getStartX();
+                                double stY = graph.lines.get(graph.lines.size()-1).getStartY();
+                                double ndX = graph.lines.get(graph.lines.size()-1).getEndX();
+                                double ndY = graph.lines.get(graph.lines.size()-1).getEndY();
+
+                                if (stX != ndX && stY != ndY) {
+                                    arrow = new Arrow(stX, stY, ndX, ndY);
+                                    //add arrow to gui
+                                    drawSceneElements.getChildren().add(arrow);
+                                    release = false;
+>>>>>>> Kostya
                                 }
                             }
                         });
@@ -274,34 +362,13 @@ public class Main extends Application {
         final long startNanoTime = System.nanoTime();
 
 
-        Node n1 = new Node("n1", 50, 50);
-        Node n2 = new Node("n2", 120, 50);
-        Node n3 = new Node("n3", 50, 120);
+        //Tester class for crating graph
+        DummyGraph dummyGraph = new DummyGraph();
+        Graph graph1 = dummyGraph.createDummyGraph();
 
-        Graph grp = new Graph();
+        graph1.printAdjecency();
+        graph1.showGraph(gc);
 
-        grp.addNode(n1);
-        grp.addNode(n2);
-        grp.addNode(n3);
-
-        grp.addEdge(n1, n2);
-        grp.addEdge(n1, n3);
-        grp.addEdge(n2, n1);
-        grp.addEdge(n2, n3);
-        grp.addEdge(n3, n1);
-        grp.addEdge(n3, n2);
-
-        Node n4 = new Node(120,120);
-        grp.addNode(n4);
-
-        grp.addEdge(n2,n4);
-        grp.addEdge(n3,n4);
-        grp.addEdge(n4,n2);
-        grp.addEdge(n4,n3);
-
-
-        grp.printAdjecency();
-        grp.showGraph(gc);
 
 
         primaryStage.setScene(startScene);
@@ -311,6 +378,58 @@ public class Main extends Application {
 
     public GraphicsContext getGC() {
         return gc;
+    }
+
+
+    //Simple Collision detection, only for vertecies now
+
+    private boolean checkShapeIntersection(Shape block, Group elements) {
+
+        boolean collisionDetected = false;
+
+        ArrayList<Circle> allVertsInGroup = new ArrayList<>();
+//        ArrayList<Line> allLineInGroup = new ArrayList<>();
+
+        for (int i = 0; i < elements.getChildren().size()-1; i++) {
+            if(elements.getChildren().get(i) instanceof Circle){
+                allVertsInGroup.add((Circle) elements.getChildren().get(i));
+            }
+           /* if(elements.getChildren().get(i) instanceof Line){
+                allLineInGroup.add((Line) elements.getChildren().get(i));
+            }*/
+        }
+
+
+        for (Shape shape : allVertsInGroup) {
+
+            if (shape != block) {
+                Shape intersect = Shape.intersect(block, shape);
+                if (intersect.getBoundsInLocal().getWidth() != -1) {
+                    collisionDetected = true;
+                }
+            }
+            else return false;
+        }
+
+
+       /* for (Shape shape : allLineInGroup) {
+
+            if (shape != block) {
+                Shape intersect = Shape.intersect(block, shape);
+                if (intersect.getBoundsInLocal().getWidth() != -1) {
+                    collisionDetected = true;
+                }
+            }
+            else return false;
+        }*/
+
+
+
+        if (collisionDetected) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
