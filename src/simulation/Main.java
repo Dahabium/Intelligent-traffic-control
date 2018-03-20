@@ -34,6 +34,7 @@ public class Main extends Application {
     //mode 2 - create edges
     //mode 3 - delete verts
     private int control = 0;
+    private Graph graph;
 
     public static void main(String[] args) {
 
@@ -84,6 +85,9 @@ public class Main extends Application {
         saveConfigbtn.setOnMouseClicked(event -> {
             if (!drawSceneElements.getChildren().isEmpty()){
                 //create new xml
+                XMLCreator xmlCreator = new XMLCreator();
+
+                xmlCreator.createXML(graph);
             }
         });
 
@@ -102,7 +106,7 @@ public class Main extends Application {
         drawSceneElements.getChildren().add(CreateConfigMenuPlacer);
 
 
-        Graph graph = new Graph();
+        graph = new Graph();
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
@@ -145,8 +149,21 @@ public class Main extends Application {
 
                         if (control == 3) {
 
+                            //remove edges
+                            if(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()).connections.size() > 0){
+
+                                for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
+
+                                    if(drawSceneElements.getChildren().get(i) instanceof Line){
+
+                                        drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
+                                    }
+                                }
+                            }
+
+                            graph.removeNode(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()));
                             drawSceneElements.getChildren().remove(vertex);
-                            graph.removeNode(graph.convertCircleToNode(vertex));
+                            System.out.println(drawSceneElements.getChildren());
 
                         }
 
@@ -236,9 +253,7 @@ public class Main extends Application {
         graph1.printAdjecency();
         graph1.showGraph(gc);
 
-        XMLCreator xmlCreator = new XMLCreator();
 
-        xmlCreator.createXML(graph1);
 
         primaryStage.setScene(startScene);
         primaryStage.show();

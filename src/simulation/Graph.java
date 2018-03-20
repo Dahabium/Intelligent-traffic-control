@@ -27,6 +27,7 @@ public class Graph {
     public void addNode(Node node){
         this.nodes.add(node);
     }
+
     public void removeNode(Node node){
         this.nodes.remove(node);
     }
@@ -98,6 +99,16 @@ public class Graph {
                 lines.get(lines.size()-1).setEndY(end.getCenterY());
             }
         }
+    }
+
+    public Node getNodeAtCoord(double x, double y){
+        for (int i = 0; i < this.nodes.size()-1; i++) {
+            if(this.nodes.get(i).Xpos == x && this.nodes.get(i).Ypos == y){
+                return this.nodes.get(i);
+            }
+        }
+
+        return null;
     }
 
 
