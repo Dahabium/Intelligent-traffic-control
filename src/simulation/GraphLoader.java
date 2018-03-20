@@ -113,4 +113,20 @@ public class GraphLoader {
 
 
     }
+
+
+    public Graph getGraph()
+    {
+        for(int i = 0; i<graph.nodes.size(); i++)
+        {
+            System.out.println(graph.nodes.get(i).name + " = id");
+        }
+
+        for(int i = 0; i<graph.edges.size(); i++)
+        {
+            System.out.println(graph.edges.get(i).start + " " + graph.edges.get(i).end);
+        }
+        return graph;
+    }
+
 }

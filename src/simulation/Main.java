@@ -120,7 +120,7 @@ public class Main extends Application {
 
         saveConfigbtn.setOnMouseClicked(event -> {
             if (!drawSceneElements.getChildren().isEmpty()){
-                //create new xml
+                //create new xmlgetGraph
             }
         });
 
