@@ -47,12 +47,12 @@ public class Main extends Application {
     }
 
 
-    public void create() {
-
-        graph.printAdjecency();
-        graph.showGraph(gc);
-
-    }
+//    public void create() {
+//
+////        graph.printAdjecency();
+////        graph.showGraph(gc);
+//
+//    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -82,22 +82,20 @@ public class Main extends Application {
         });
 
         TextField loadGraphTXT = new TextField(fileName);
-        loadGraphTXT.setOnAction(e ->
-        {
+        loadGraphTXT.textProperty().addListener((observable, oldValue, newValue) -> {
             //File Name of Graph1.xml = Graph1
-            //The current path is: /Users/Rik/Documents/GitHub/Intelligent-traffic-control/
-            fileName = loadGraphTXT.getCharacters().toString();
+            fileName = observable.getValue();
+
         });
 
         Button loadGraphbtn = new Button("Load Configuration");
         loadGraphbtn.setOnAction(e ->
         {
-            System.out.println("loading from file");
+            System.out.println("loading from file " + fileName);
             GraphLoader graphLoader = new GraphLoader(fileName);
 
             graph = graphLoader.getGraph();
-
-            create();
+            graph.showGraph(gc);
 
             //TODO
             primaryStage.setScene(runScene);
@@ -218,7 +216,12 @@ public class Main extends Application {
 
                                     if (drawSceneElements.getChildren().get(i) instanceof Path) {
 
-                                        drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
+                                        if(drawSceneElements.getChildren().get(i).contains(vertex.getCenterX(), vertex.getCenterY()) ){
+
+                                            drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
+                                            System.out.println(drawSceneElements.getChildren().get(i));
+                                        }
+
                                     }
                                 }
                             }
@@ -269,7 +272,6 @@ public class Main extends Application {
                                     arrow = new Arrow(stX, stY, ndX, ndY);
 
                                     graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
-
                                     drawSceneElements.getChildren().add(arrow);
                                     release = false;
                                 }

@@ -191,18 +191,13 @@ public class Graph {
 
     public void addLineStart(Circle start) {
 
-        for (int i = 0; i < nodes.size(); i++) {
-            if(start.getCenterX() == nodes.get(i).Xpos &&
-                    start.getCenterY() == nodes.get(i).Ypos){
+        Line line = new Line();
 
-                Line line = new Line();
+        line.setStartX(start.getCenterX());
+        line.setStartY(start.getCenterY());
 
-                line.setStartX(start.getCenterX());
-                line.setStartY(start.getCenterY());
+        lines.add(line);
 
-                lines.add(line);
-            }
-        }
 
     }
 
@@ -216,10 +211,6 @@ public class Graph {
             System.out.println("LINE START " + lines.get(lines.size() - 1).getStartX() + "  " + lines.get(lines.size() - 1).getStartY());
             System.out.println("LINE END " + lines.get(lines.size() - 1).getEndX() + "  " + lines.get(lines.size() - 1).getEndY());
 
-            System.out.println(this.edges.size());
-
-//            addEdge(getNodeAtCoord(lines.get(lines.size() - 1).getStartX(), lines.get(lines.size() - 1).getStartY()),
-//                    getNodeAtCoord(lines.get(lines.size() - 1).getEndX(), lines.get(lines.size() - 1).getEndY()));
 
     }
 
