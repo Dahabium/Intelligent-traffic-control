@@ -83,6 +83,7 @@ public class Main extends Application {
             //File Name of Graph1.xml = Graph1
             //The current path is: /Users/Rik/Documents/GitHub/Intelligent-traffic-control/
             fileName = loadGraphTXT.getCharacters().toString();
+
         });
 
         Button loadGraphbtn = new Button("Load Configuration");
