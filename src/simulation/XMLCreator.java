@@ -30,7 +30,7 @@ public class XMLCreator {
             Element rootElement = doc.createElement("Graph");
             doc.appendChild(rootElement);
 
-            for (int i = 0; i < graph.nodes.size()-1; i++) {
+            for (int i = 0; i < graph.nodes.size(); i++) {
 
                 // Vertex elements
                 Element node = doc.createElement("Node");
@@ -42,11 +42,10 @@ public class XMLCreator {
 
 
                 // edges elements
-                for (int j = 0; j < graph.nodes.get(i).connections.size()-1; j++) {
+                for (int j = 0; j < graph.getAdjecents(graph.nodes.get(i)).size(); j++) {
 
                     Element edge = doc.createElement("edges");
-                    edge.appendChild(doc.createTextNode("Start " + graph.nodes.get(i).connections.get(j).start.name + " end " +
-                            graph.nodes.get(i).connections.get(j).end.name));
+                    edge.appendChild(doc.createTextNode("adjecents " + graph.getAdjecents(graph.nodes.get(i)).get(j) ));
 
                     node.appendChild(edge);
 

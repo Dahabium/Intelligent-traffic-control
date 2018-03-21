@@ -32,10 +32,7 @@ public class Graph {
         this.nodes.remove(node);
     }
 
-//    public void addEdge(Node start, Node end,int incominglanes, int outcominglanes, double weight){
-//        start.connections.add(new Edge(start,end, incominglanes, outcominglanes, weight));
-//
-//    }
+
 
     public void addEdge(Node start, Node end){
         edges.add(new Edge(start,end));
@@ -66,9 +63,34 @@ public class Graph {
     }
 
     public void printAdjecency(){
-        for (int i = 0; i < this.edges.size(); i++) {
-            System.out.println("node " + this.edges.get(i).start.name + " is connected to " + this.edges.get(i).end.name);
+
+        System.out.println("Number of nodes " + this.nodes.size());
+
+        for (int i = 0; i < this.nodes.size(); i++) {
+            System.out.println("Current node " + i + "  " + this.nodes.get(i).Xpos + "  " + this.nodes.get(i).Ypos);
+
         }
+
+        System.out.println("Number of edges " + this.edges.size());
+
+        for (int j = 0; j < this.edges.size(); j++) {
+            System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.Xpos + "  " + this.edges.get(j).start.Ypos + "  end "+
+                    this.edges.get(j).end.Xpos + "  " + this.edges.get(j).end.Ypos);
+
+        }
+
+
+    }
+
+    public List<Node> getAdjecents(Node node){
+        List<Node> out = new ArrayList<>();
+        for (int i = 0; i < this.edges.size(); i++) {
+            if(this.edges.get(i).start == node){
+                out.add(this.edges.get(i).end);
+            }
+        }
+
+        return out;
     }
 
     public Node convertCircleToNode(Circle circle){
@@ -82,6 +104,7 @@ public class Graph {
         for (int i = 0; i < nodes.size(); i++) {
             if(start.getCenterX() == nodes.get(i).Xpos &&
                     start.getCenterY() == nodes.get(i).Ypos){
+
                 Line line = new Line();
 
                 line.setStartX(start.getCenterX());
@@ -92,13 +115,22 @@ public class Graph {
         }
 
     }
+
+    //This method is used to create an edge in both graph class and visual graphics
     public void addLineEnd(Circle end){
-        for (int i = 0; i < nodes.size() ; i++) {
-            if(end.getCenterX() == nodes.get(i).Xpos && end.getCenterY() == nodes.get(i).Ypos) {
-                lines.get(lines.size()-1).setEndX(end.getCenterX());
-                lines.get(lines.size()-1).setEndY(end.getCenterY());
-            }
-        }
+
+
+            lines.get(lines.size() - 1).setEndX(end.getCenterX());
+            lines.get(lines.size() - 1).setEndY(end.getCenterY());
+
+            System.out.println("LINE START " + lines.get(lines.size() - 1).getStartX() + "  " + lines.get(lines.size() - 1).getStartY());
+            System.out.println("LINE END " + lines.get(lines.size() - 1).getEndX() + "  " + lines.get(lines.size() - 1).getEndY());
+
+            System.out.println(this.edges.size());
+
+            addEdge(getNodeAtCoord(lines.get(lines.size() - 1).getStartX(), lines.get(lines.size() - 1).getStartY()),
+                    getNodeAtCoord(lines.get(lines.size() - 1).getEndX(), lines.get(lines.size() - 1).getEndY()));
+
     }
 
     public Node getNodeAtCoord(double x, double y){

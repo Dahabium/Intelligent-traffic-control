@@ -138,8 +138,8 @@ public class Main extends Application {
                     vertex.setStroke(Color.BLACK);
 
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
-                    //Still buggy - works all the time except the first time lol.
                     if(!checkShapeIntersection(vertex, drawSceneElements)){
+
                         graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
                         drawSceneElements.getChildren().add(vertex);
                     }
@@ -150,20 +150,24 @@ public class Main extends Application {
                         if (control == 3) {
 
                             //remove edges
-                            if(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()).connections.size() > 0){
+                            if(graph.getAdjecents(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY())).size() > 0){
 
-                                for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
+                                System.out.println("Check");
 
-                                    if(drawSceneElements.getChildren().get(i) instanceof Line){
+                                for (int i = 0; i < drawSceneElements.getChildren().size(); i++) {
+
+                                    if(drawSceneElements.getChildren().get(i) instanceof Path){
 
                                         drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
                                     }
                                 }
                             }
 
+
+                            System.out.println("Node removed " + graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()));
                             graph.removeNode(graph.getNodeAtCoord(vertex.getCenterX(),vertex.getCenterY()));
                             drawSceneElements.getChildren().remove(vertex);
-                            System.out.println(drawSceneElements.getChildren());
+
 
                         }
 
@@ -182,6 +186,7 @@ public class Main extends Application {
                             if (!release) {
                                 //Create new Line object and set the start of it
                                 graph.addLineStart(vertex);
+
                                 //highlighting
                                 vertex.setStrokeWidth(3.0);
                                 vertex.setStroke(Color.RED);
@@ -192,6 +197,7 @@ public class Main extends Application {
                                 //highlighting
                                 vertex.setStrokeWidth(3.0);
                                 vertex.setStroke(Color.GREEN);
+
                                 graph.addLineEnd(vertex);
 
                                 //Collision detection for lines. Not working!
@@ -208,6 +214,11 @@ public class Main extends Application {
                                     arrow = new Arrow(stX, stY, ndX, ndY);
                                     //add arrow to gui
                                     drawSceneElements.getChildren().add(arrow);
+
+                                    for (int i = 0; i < drawSceneElements.getChildren().size()-1; i++) {
+                                        System.out.println(drawSceneElements.getChildren().get(i));
+                                    }
+
                                     release = false;
                                 }
                             }
@@ -250,7 +261,6 @@ public class Main extends Application {
         DummyGraph dummyGraph = new DummyGraph();
         Graph graph1 = dummyGraph.createDummyGraph();
 
-        graph1.printAdjecency();
         graph1.showGraph(gc);
 
 
@@ -266,7 +276,6 @@ public class Main extends Application {
 
 
     //Simple Collision detection, only for vertecies now
-
     private boolean checkShapeIntersection(Shape block, Group elements) {
 
         boolean collisionDetected = false;
