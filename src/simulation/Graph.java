@@ -1,5 +1,6 @@
 package simulation;
 
+import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -32,6 +33,10 @@ public class Graph {
 
     public void addNode(Node node){
         this.nodes.add(node);
+    }
+
+    public void addMultipleNodes(ArrayList<Node> nodes){
+        this.nodes.addAll(nodes);
     }
 
     public void removeNode(Node node){
@@ -133,22 +138,30 @@ public class Graph {
         edges.remove(edge);
     }
 
-    public void showGraph(GraphicsContext gc){
+    public void showGraph(Group group){
 
         //Show the Vertexes in GUI
         for (int i = 0; i < this.nodes.size(); i++) {
 
-            gc.fillOval(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 30, 30);
-            gc.setFill(Color.WHITE);
-            gc.fillText(this.nodes.get(i).name, this.nodes.get(i).Xpos + 7, this.nodes.get(i).Ypos + 15);
-            gc.setFill(Color.BLACK);
+//            gc.fillOval(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 30, 30);
+//            gc.setFill(Color.WHITE);
+//            gc.fillText(this.nodes.get(i).name, this.nodes.get(i).Xpos + 7, this.nodes.get(i).Ypos + 15);
+//            gc.setFill(Color.BLACK);
+
+            Circle vertex = new Circle(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 12);
+            vertex.setFill(Color.BLUE);
+            vertex.setStroke(Color.BLACK);
+
+
+            group.getChildren().add(vertex);
 
         }
 
         //Show the edges between vertexes in GUI
         for (int i = 0; i < this.edges.size(); i++) {
-            gc.strokeLine(this.edges.get(i).start.Xpos + 15, this.edges.get(i).start.Ypos + 15,
-                    this.edges.get(i).end.Xpos + 15, this.edges.get(i).end.Ypos + 15);
+            Arrow arrow = new Arrow(this.edges.get(i).start.Xpos, this.edges.get(i).start.Ypos,
+                    this.edges.get(i).end.Xpos, this.edges.get(i).end.Ypos);
+            group.getChildren().add(arrow);
 
         }
     }

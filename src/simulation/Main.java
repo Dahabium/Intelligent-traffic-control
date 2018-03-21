@@ -27,8 +27,8 @@ import java.util.List;
 
 public class Main extends Application {
 
-    static GraphicsContext gc = null;
     Path path;
+    //runscene - scene for simulation, drawscene - scene for creating a graph. startscene - startup menu
     Scene startScene, runScene, drawScene;
     private boolean release = false;
 
@@ -47,13 +47,6 @@ public class Main extends Application {
     }
 
 
-//    public void create() {
-//
-////        graph.printAdjecency();
-////        graph.showGraph(gc);
-//
-//    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -63,15 +56,15 @@ public class Main extends Application {
 
         Group root = new Group();
         Group drawSceneElements = new Group();
+        Group simulationElements = new Group();
 
         startScene = new Scene(root);
         drawScene = new Scene(drawSceneElements, 300, 250);
 
+
         primaryStage.setScene(startScene);
 
-        Canvas canvas = new Canvas(500, 500);
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
 
         //============================START MENU START===============================
 
@@ -95,9 +88,10 @@ public class Main extends Application {
             GraphLoader graphLoader = new GraphLoader(fileName);
 
             graph = graphLoader.getGraph();
-            graph.showGraph(gc);
 
-            //TODO
+            //TODO - test if this works
+            graph.showGraph(simulationElements);
+
             primaryStage.setScene(runScene);
             primaryStage.show();
         });
@@ -107,14 +101,14 @@ public class Main extends Application {
 
             //Tester class for creating graph
             DummyGraph dummyGraph = new DummyGraph();
-            Graph dummyGraph1 = dummyGraph.createDummyGraph();
-            dummyGraph1.showGraph(gc);
+            Graph dummyGraph1 = dummyGraph.createModelTestGraph();
+
+            dummyGraph1.showGraph(simulationElements);
             primaryStage.setScene(runScene);
 
 
             XMLCreator xmlCreator = new XMLCreator();
             xmlCreator.createXML(dummyGraph1);
-
 
         });
 
@@ -244,7 +238,9 @@ public class Main extends Application {
                                 }
                             }
 
+
                             Arrow arrow;
+
 
                             if (!release) {
                                 //Create new Line object and set the start of it
@@ -293,20 +289,13 @@ public class Main extends Application {
 
         VBox layout2 = new VBox(20);
         layout2.getChildren().add(button2);
-        runScene = new Scene(layout2, 300, 250);
-
-        layout2.getChildren().add(canvas);
+        runScene = new Scene(simulationElements, 300, 250);
 
 
         primaryStage.setScene(startScene);
         primaryStage.show();
 
 //        final long startNanoTime = System.nanoTime();
-    }
-
-
-    public GraphicsContext getGC() {
-        return gc;
     }
 
 
