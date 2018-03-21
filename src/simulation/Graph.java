@@ -75,8 +75,8 @@ public class Graph {
 
         Element xmlNodes = xmlDocument.createElement("Nodes");
         xmlDocument.appendChild(xmlNodes);
-        for(int i = 0; i<nodes.size(); i++)
-        {
+        for(int i = 0; i<nodes.size(); i++) {
+
             Element xmlNode = xmlDocument.createElement("Node");
             String id = Integer.toString(i);
             String xmlX = Double.toString(nodes.get(i).Xpos);
@@ -86,10 +86,11 @@ public class Graph {
 
             Element xmlEdges = xmlDocument.createElement("Edges");
             xmlNode.appendChild(xmlEdges);
+
             //loop through the edges of this node and add each to the edgeslist
-            for(int j = 0; j<nodes.get(i).connections.size(); j++)
-            {
-                if(nodes.get(i).connections.get(j).start == nodes.get(i)) {
+            for(int j = 0; j<edges.size(); j++) {
+                //if an edge has node i as a starting point
+                if(edges.get(j).start == nodes.get(i)) {
 
                     System.out.println("edge " + j);
                     Element xmlEdge = xmlDocument.createElement("Edge");
@@ -97,8 +98,11 @@ public class Graph {
 
                     String from = id;
                     String to = " ";
+
+                    //add endpoint to the edge
                     for (int k = 0; k < nodes.size(); k++) {
-                        if (nodes.get(i).connections.get(j).end == nodes.get(k)) {
+                        if(edges.get(j).end == nodes.get(k) ) {
+
                             to = Integer.toString(k);
                         }
                     }
@@ -150,9 +154,33 @@ public class Graph {
     }
 
     public void printAdjecency(){
-        for (int i = 0; i < this.edges.size(); i++) {
-            System.out.println("node " + this.edges.get(i).start.name + " is connected to " + this.edges.get(i).end.name);
+
+        System.out.println("Number of nodes " + this.nodes.size());
+
+        for (int i = 0; i < this.nodes.size(); i++) {
+            System.out.println("Current node " + i + "  " + this.nodes.get(i).Xpos + "  " + this.nodes.get(i).Ypos);
+
         }
+
+        System.out.println("Number of edges " + this.edges.size());
+
+        for (int j = 0; j < this.edges.size(); j++) {
+            System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.Xpos + "  " + this.edges.get(j).start.Ypos +
+                    "  end " + this.edges.get(j).end.Xpos + "  " + this.edges.get(j).end.Ypos);
+
+        }
+
+    }
+
+    public List<Node> getAdjecents(Node node){
+        List<Node> out = new ArrayList<>();
+        for (int i = 0; i < this.edges.size(); i++) {
+            if(this.edges.get(i).start == node){
+                out.add(this.edges.get(i).end);
+            }
+        }
+
+        return out;
     }
 
     public Node convertCircleToNode(Circle circle){
@@ -163,26 +191,27 @@ public class Graph {
 
     public void addLineStart(Circle start) {
 
-        for (int i = 0; i < nodes.size(); i++) {
-            if(start.getCenterX() == nodes.get(i).Xpos &&
-                    start.getCenterY() == nodes.get(i).Ypos){
-                Line line = new Line();
+        Line line = new Line();
 
-                line.setStartX(start.getCenterX());
-                line.setStartY(start.getCenterY());
+        line.setStartX(start.getCenterX());
+        line.setStartY(start.getCenterY());
 
-                lines.add(line);
-            }
-        }
+        lines.add(line);
+
 
     }
+
+    //This method is used to create an edge in both graph class and visual graphics
     public void addLineEnd(Circle end){
-        for (int i = 0; i < nodes.size() ; i++) {
-            if(end.getCenterX() == nodes.get(i).Xpos && end.getCenterY() == nodes.get(i).Ypos) {
-                lines.get(lines.size()-1).setEndX(end.getCenterX());
-                lines.get(lines.size()-1).setEndY(end.getCenterY());
-            }
-        }
+
+
+            lines.get(lines.size() - 1).setEndX(end.getCenterX());
+            lines.get(lines.size() - 1).setEndY(end.getCenterY());
+
+            System.out.println("LINE START " + lines.get(lines.size() - 1).getStartX() + "  " + lines.get(lines.size() - 1).getStartY());
+            System.out.println("LINE END " + lines.get(lines.size() - 1).getEndX() + "  " + lines.get(lines.size() - 1).getEndY());
+
+
     }
 
     public Node getNodeAtCoord(double x, double y){
