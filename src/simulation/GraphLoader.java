@@ -3,10 +3,7 @@ package simulation;
 import org.w3c.dom.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import com.sun.org.apache.xml.internal.serialize.*;
 
@@ -77,6 +74,7 @@ public class GraphLoader {
                     stLi.add(stringList.get(j));
                 }
             }
+
             for(int j = 3; j<stLi.size()-1; j+=2)
             {
                 System.out.println(stLi.get(j) + " blabla " + stLi.get(j+1));
@@ -99,16 +97,18 @@ public class GraphLoader {
         for (int i = 0; i < edgeList.size(); i++) {
             Node start = null;
             Node end = null;
+
             for (int j = 0; j < graph.nodes.size(); j++) {
 
                 System.out.println(graph.nodes.get(j).name);
-                if (edgeList.get(i)[0] == graph.nodes.get(j).name) ;
-                {
+
+                if (Objects.equals(edgeList.get(i)[0], graph.nodes.get(j).name)){
+
                     start = graph.nodes.get(j);
                     System.out.println(edgeList.get(i)[0] + ", " + edgeList.get(i)[1]);
                     System.out.println("Start found");
                 }
-                if (edgeList.get(i)[1] == graph.nodes.get(j).name) {
+                if (Objects.equals(edgeList.get(i)[1], graph.nodes.get(j).name)) {
                     end = graph.nodes.get(j);
                     System.out.println("End found");
                 }
@@ -119,8 +119,6 @@ public class GraphLoader {
             graph.addEdge(start, end);
 
         }
-
-
 
     }
 

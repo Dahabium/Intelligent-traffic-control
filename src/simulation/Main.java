@@ -91,9 +91,9 @@ public class Main extends Application {
 
             //TODO - test if this works
             graph.showGraph(simulationElements);
-
             primaryStage.setScene(runScene);
-            primaryStage.show();
+
+//            primaryStage.show();
         });
 
         Button testbtn = new Button("Show Test Graph");
@@ -265,7 +265,7 @@ public class Main extends Application {
                                 double ndY = graph.lines.get(graph.lines.size() - 1).getEndY();
 
                                 if (stX != ndX && stY != ndY) {
-                                    Arrow arrow = new Arrow(stX, stY, ndX, ndY);
+                                    arrow = new Arrow(stX, stY, ndX, ndY);
 
                                     graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
                                     drawSceneElements.getChildren().add(arrow);

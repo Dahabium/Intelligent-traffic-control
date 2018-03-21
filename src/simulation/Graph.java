@@ -143,11 +143,6 @@ public class Graph {
         //Show the Vertexes in GUI
         for (int i = 0; i < this.nodes.size(); i++) {
 
-//            gc.fillOval(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 30, 30);
-//            gc.setFill(Color.WHITE);
-//            gc.fillText(this.nodes.get(i).name, this.nodes.get(i).Xpos + 7, this.nodes.get(i).Ypos + 15);
-//            gc.setFill(Color.BLACK);
-
             Circle vertex = new Circle(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 12);
             vertex.setFill(Color.BLUE);
             vertex.setStroke(Color.BLACK);
@@ -158,6 +153,8 @@ public class Graph {
         }
 
         //Show the edges between vertexes in GUI
+        System.out.println("amount of edges " + this.edges.size());
+
         for (int i = 0; i < this.edges.size(); i++) {
             Arrow arrow = new Arrow(this.edges.get(i).start.Xpos, this.edges.get(i).start.Ypos,
                     this.edges.get(i).end.Xpos, this.edges.get(i).end.Ypos);
