@@ -244,7 +244,7 @@ public class Main extends Application {
                                 }
                             }
 
-                            Arrow arrow;
+                            //Arrow arrow;
 
                             if (!release) {
                                 //Create new Line object and set the start of it
@@ -269,7 +269,7 @@ public class Main extends Application {
                                 double ndY = graph.lines.get(graph.lines.size() - 1).getEndY();
 
                                 if (stX != ndX && stY != ndY) {
-                                    arrow = new Arrow(stX, stY, ndX, ndY);
+                                    Arrow arrow = new Arrow(stX, stY, ndX, ndY);
 
                                     graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
                                     drawSceneElements.getChildren().add(arrow);
