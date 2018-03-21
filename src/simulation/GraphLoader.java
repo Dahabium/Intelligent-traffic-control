@@ -23,7 +23,7 @@ public class GraphLoader {
     private ArrayList<Edge> edges;
     private Graph graph;
     private String fileName;
-    private ArrayList<int[]> edgeList = new ArrayList<>();
+    private ArrayList<String[]> edgeList = new ArrayList<>();
 
     public GraphLoader(String fileName) {
         this.fileName = fileName;
@@ -70,13 +70,24 @@ public class GraphLoader {
             Node tempNode = new Node(id, (int) x, (int) y);
             //nodes.add(tempNode);
             graph.addNode(tempNode);
+            ArrayList<String> stLi = new ArrayList<>();
+            for(int j = 0; j<stringList.size(); j++)
+            {
+                if(!stringList.get(j).isEmpty()) {
+                    stLi.add(stringList.get(j));
+                }
+            }
+            for(int j = 3; j<stLi.size()-1; j+=2)
+            {
+                System.out.println(stLi.get(j) + " blabla " + stLi.get(j+1));
+                String[] startend = new String[2];
 
-            for (int j = 3; j < stringList.size() - 1; j += 2) {
-                int[] edgeCoords = new int[2];
-                System.out.println("blabla" + stringList.get(j) + stringList.get(j + 1));
-                edgeCoords[0] = parseInt(stringList.get(j));
-                edgeCoords[1] = parseInt(stringList.get(j + 1));
-                edgeList.add(edgeCoords);
+                startend[0] = stLi.get(j);
+                startend[1] = stLi.get(j+1);
+
+                edgeList.add(startend);
+
+
             }
 
 //            Node tempNode = new Node();
@@ -89,17 +100,22 @@ public class GraphLoader {
             Node start = null;
             Node end = null;
             for (int j = 0; j < graph.nodes.size(); j++) {
-                if (edgeList.get(i)[0] == parseInt(graph.nodes.get(j).name)) ;
+
+                System.out.println(graph.nodes.get(j).name);
+                if (edgeList.get(i)[0] == graph.nodes.get(j).name) ;
                 {
                     start = graph.nodes.get(j);
+                    System.out.println(edgeList.get(i)[0] + ", " + edgeList.get(i)[1]);
+                    System.out.println("Start found");
                 }
-                if (edgeList.get(i)[1] == parseInt(graph.nodes.get(j).name)) {
+                if (edgeList.get(i)[1] == graph.nodes.get(j).name) {
                     end = graph.nodes.get(j);
+                    System.out.println("End found");
                 }
 
             }
 
-
+            System.out.println("Edge registered");
             graph.addEdge(start, end);
 
         }
