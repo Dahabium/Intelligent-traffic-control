@@ -8,6 +8,12 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.List;
 
+//for exporting to XML file
+import org.w3c.dom.*;
+import java.io.*;
+import com.sun.org.apache.xml.internal.serialize.*;
+import javax.xml.parsers.*;
+
 public class Graph {
 
     public List<Node> nodes;
@@ -32,7 +38,88 @@ public class Graph {
         this.nodes.remove(node);
     }
 
+//    public void addEdge(Node start, Node end,int incominglanes, int outcominglanes, double weight){
+//        start.connections.add(new Edge(start,end, incominglanes, outcominglanes, weight));
+//
+//    }
+    public void export() throws ParserConfigurationException, FileNotFoundException, IOException
+    {
+        DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+        Document xmlDocument = documentBuilder.newDocument();
+//        <Nodes>
+//            <Node>
+//                  ID, Xpos, Ypos
 
+//                  <Edges>
+//                      <Edge>
+//                          ID, Egdge ID, Start ID, End ID
+
+//                      </Edge>
+//                  </Edges>
+//            </Node>
+//        </Nodes>
+//        Element intersectionsXML = xmlDocument.createElement("Nodes");
+//        Element intXML = xmlDocument.createElement("Node");
+//        Element nodeID = xmlDocument.createElement("ID");
+//        Element roadsXML = xmlDocument.createElement("Edges");
+//        Element roXML = xmlDocument.createElement("Edge");
+//        Element edgeID = xmlDocument.createElement("Edge ID");
+//        Element startEnd = xmlDocument.createElement("Start End");
+//        Text productnameText = xmlDocument.createTextNode("Graph");
+//        Element xyCoords = xmlDocument.createElement("x and y");
+//
+//
+//        xmlDocument.appendChild(intersectionsXML);
+//        intersectionsXML.appendChild()
+
+        Element xmlNodes = xmlDocument.createElement("Nodes");
+        xmlDocument.appendChild(xmlNodes);
+        for(int i = 0; i<nodes.size(); i++)
+        {
+            Element xmlNode = xmlDocument.createElement("Node");
+            String id = Integer.toString(i);
+            String xmlX = Double.toString(nodes.get(i).Xpos);
+            String xmlY = Double.toString(nodes.get(i).Ypos);
+            xmlNode.setTextContent(id + " " + xmlX + " " + xmlY);
+            xmlNodes.appendChild(xmlNode);
+
+            Element xmlEdges = xmlDocument.createElement("Edges");
+            xmlNode.appendChild(xmlEdges);
+            //loop through the edges of this node and add each to the edgeslist
+            for(int j = 0; j<nodes.get(i).connections.size(); j++)
+            {
+                if(nodes.get(i).connections.get(j).start == nodes.get(i)) {
+
+                    System.out.println("edge " + j);
+                    Element xmlEdge = xmlDocument.createElement("Edge");
+                    xmlEdges.appendChild(xmlEdge);
+
+                    String from = id;
+                    String to = " ";
+                    for (int k = 0; k < nodes.size(); k++) {
+                        if (nodes.get(i).connections.get(j).end == nodes.get(k)) {
+                            to = Integer.toString(k);
+                        }
+                    }
+                    xmlEdge.setTextContent(from + " " + to);
+                }
+
+                //Text edgeID = xmlDocument.createTextNode("Edge ID");
+            }
+            System.out.println("Node " + i);
+        }
+
+        OutputFormat output = new OutputFormat(xmlDocument);
+        output.setIndenting(true);
+        File xmlFile = new File("Graph1.xml");
+        FileOutputStream outputStream = new FileOutputStream(xmlFile);
+        XMLSerializer serializer = new XMLSerializer(outputStream, output);
+        serializer.serialize(xmlDocument);
+
+
+
+    }
 
     public void addEdge(Node start, Node end){
         edges.add(new Edge(start,end));

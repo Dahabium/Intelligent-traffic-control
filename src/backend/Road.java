@@ -2,8 +2,8 @@ package backend;
 
 public class Road {
 
-	private Intersection beginning;
-	private Intersection end;
+	public Intersection beginning;
+	public Intersection end;
 	private int lanes;
 	private int speedLimit;
 	private int distance;
