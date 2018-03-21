@@ -1,18 +1,1 @@
-<<<<<<< HEAD
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Graph>
-    <Node>Node number 0
-        <edges>adjecents simulation.Node@2e4a7187</edges>
-    </Node>
-    <Node>Node number 1
-        <edges>adjecents simulation.Node@5d95ed6f</edges>
-    </Node>
-    <Node>Node number 2
-        <edges>adjecents null</edges>
-    </Node>
-    <Node>Node number 3</Node>
-    <Node>Node number 4</Node>
-</Graph>
-=======
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Graph><Node>Node number 0</Node><Node>Node number 1</Node><Node>Node number 2</Node></Graph>
->>>>>>> Rik
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Graph><Node>Node number 0<edges>adjecents simulation.Node@44887523</edges><edges>adjecents simulation.Node@71728b52</edges></Node><Node>Node number 1<edges>adjecents simulation.Node@3ff4bf2c</edges><edges>adjecents simulation.Node@71728b52</edges><edges>adjecents simulation.Node@7853d25d</edges></Node><Node>Node number 2<edges>adjecents simulation.Node@3ff4bf2c</edges><edges>adjecents simulation.Node@44887523</edges><edges>adjecents simulation.Node@7853d25d</edges></Node><Node>Node number 3<edges>adjecents simulation.Node@44887523</edges><edges>adjecents simulation.Node@71728b52</edges></Node></Graph>

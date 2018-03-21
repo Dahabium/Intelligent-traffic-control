@@ -75,8 +75,8 @@ public class Graph {
 
         Element xmlNodes = xmlDocument.createElement("Nodes");
         xmlDocument.appendChild(xmlNodes);
-        for(int i = 0; i<nodes.size(); i++)
-        {
+        for(int i = 0; i<nodes.size(); i++) {
+
             Element xmlNode = xmlDocument.createElement("Node");
             String id = Integer.toString(i);
             String xmlX = Double.toString(nodes.get(i).Xpos);
@@ -86,10 +86,11 @@ public class Graph {
 
             Element xmlEdges = xmlDocument.createElement("Edges");
             xmlNode.appendChild(xmlEdges);
+
             //loop through the edges of this node and add each to the edgeslist
-            for(int j = 0; j<nodes.get(i).connections.size(); j++)
-            {
-                if(nodes.get(i).connections.get(j).start == nodes.get(i)) {
+            for(int j = 0; j<edges.size(); j++) {
+                //if an edge has node i as a starting point
+                if(edges.get(j).start == nodes.get(i)) {
 
                     System.out.println("edge " + j);
                     Element xmlEdge = xmlDocument.createElement("Edge");
@@ -97,8 +98,11 @@ public class Graph {
 
                     String from = id;
                     String to = " ";
+
+                    //add endpoint to the edge
                     for (int k = 0; k < nodes.size(); k++) {
-                        if (nodes.get(i).connections.get(j).end == nodes.get(k)) {
+                        if(edges.get(j).end == nodes.get(k) ) {
+
                             to = Integer.toString(k);
                         }
                     }
@@ -161,11 +165,10 @@ public class Graph {
         System.out.println("Number of edges " + this.edges.size());
 
         for (int j = 0; j < this.edges.size(); j++) {
-            System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.Xpos + "  " + this.edges.get(j).start.Ypos + "  end "+
-                    this.edges.get(j).end.Xpos + "  " + this.edges.get(j).end.Ypos);
+            System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.Xpos + "  " + this.edges.get(j).start.Ypos +
+                    "  end " + this.edges.get(j).end.Xpos + "  " + this.edges.get(j).end.Ypos);
 
         }
-
 
     }
 
@@ -215,8 +218,8 @@ public class Graph {
 
             System.out.println(this.edges.size());
 
-            addEdge(getNodeAtCoord(lines.get(lines.size() - 1).getStartX(), lines.get(lines.size() - 1).getStartY()),
-                    getNodeAtCoord(lines.get(lines.size() - 1).getEndX(), lines.get(lines.size() - 1).getEndY()));
+//            addEdge(getNodeAtCoord(lines.get(lines.size() - 1).getStartX(), lines.get(lines.size() - 1).getStartY()),
+//                    getNodeAtCoord(lines.get(lines.size() - 1).getEndX(), lines.get(lines.size() - 1).getEndY()));
 
     }
 

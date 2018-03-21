@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Nodes/>
+<Nodes>
+    <Node>0 79.0 98.0<Edges>
+            <Edge>0 2</Edge>
+        </Edges>
+    </Node>
+    <Node>1 203.0 116.0<Edges/>
+    </Node>
+    <Node>2 84.0 180.0<Edges>
+            <Edge>2  </Edge>
+        </Edges>
+    </Node>
+    <Node>3 141.0 185.0<Edges/>
+    </Node>
+</Nodes>
