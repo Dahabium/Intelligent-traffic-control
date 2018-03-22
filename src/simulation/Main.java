@@ -38,6 +38,7 @@ public class Main extends Application {
     //mode 2 - create edges
     //mode 3 - delete verts + edges
     private int control = 0;
+    private int indexCount = 0;
     private Graph graph;
     private String fileName = "Graph1";
 
@@ -85,7 +86,7 @@ public class Main extends Application {
         loadGraphbtn.setOnAction(e ->
         {
             System.out.println("loading from file " + fileName);
-            GraphLoader graphLoader = new GraphLoader(fileName);
+            XMLLoader graphLoader = new XMLLoader(fileName);
 
             graph = graphLoader.getGraph();
 
@@ -149,15 +150,15 @@ public class Main extends Application {
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
-            System.out.println(control);
+            System.out.println("Vertex creation mode (code " + control + ")" );
         });
         joinbtn.setOnMouseClicked(event -> {
             control = 2;
-            System.out.println(control);
+            System.out.println("Edges creation mode (code " + control + ")");
         });
         deletebtn.setOnMouseClicked(event -> {
             control = 3;
-            System.out.println(control);
+            System.out.println("Vertex deletion mode (code " + control + ")");
         });
         prnt.setOnMouseClicked(event -> {
             graph.printAdjecency();
@@ -192,8 +193,14 @@ public class Main extends Application {
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
-                        graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+//                        Node newNode = new Node(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                        graph.addNodeV2(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+
+                        System.out.println("Node added  " +graph.getNodeByIndex(indexCount));
+
+                        indexCount++;
                         drawSceneElements.getChildren().add(vertex);
+//                        graph.printAdjecency();
                     }
 
                     //Add a listener to a vertex that will trigger if its being pressed to delete it
@@ -220,12 +227,9 @@ public class Main extends Application {
                                 }
                             }
 
-
                             System.out.println("Node removed " + graph.getNodeAtCoord(vertex.getCenterX(), vertex.getCenterY()));
                             graph.removeNode(graph.getNodeAtCoord(vertex.getCenterX(), vertex.getCenterY()));
                             drawSceneElements.getChildren().remove(vertex);
-
-
                         }
 
                         if (control == 2) {
@@ -238,9 +242,7 @@ public class Main extends Application {
                                 }
                             }
 
-
                             Arrow arrow;
-
 
                             if (!release) {
                                 //Create new Line object and set the start of it
@@ -267,6 +269,8 @@ public class Main extends Application {
                                 if (stX != ndX && stY != ndY) {
                                     arrow = new Arrow(stX, stY, ndX, ndY);
 
+                                    System.out.println(graph.getNodeAtCoord(stX,stY) +"  " + graph.getNodeAtCoord(ndX,ndY));
+
                                     graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
                                     drawSceneElements.getChildren().add(arrow);
                                     release = false;
@@ -280,7 +284,7 @@ public class Main extends Application {
             }
         };
 
-        drawScene.setOnMouseDragged(mouseHandler);
+//        drawScene.setOnMouseDragged(mouseHandler);
         drawScene.setOnMouseClicked(mouseHandler);
 
 

@@ -10,6 +10,7 @@ public class Node {
 
     public String name;
     public double Xpos,Ypos;
+    public int index;
 
 
     public Node(String name, int Xpos, int Ypos){
@@ -22,6 +23,12 @@ public class Node {
     public Node(double Xpos, double Ypos){
         this.Xpos = Xpos;
         this.Ypos = Ypos;
+    }
+
+    public Node(int index, double Xpos, double Ypos){
+        this.Xpos = Xpos;
+        this.Ypos = Ypos;
+        this.index = index;
     }
 
 
