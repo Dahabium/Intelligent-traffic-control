@@ -40,7 +40,7 @@ public class Main extends Application {
     private int control = 0;
     private int indexCount = 0;
     private Graph graph;
-    private String fileName = "Graph1";
+    private String fileName = "graph2";
 
     public static void main(String[] args) {
 
