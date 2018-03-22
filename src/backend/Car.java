@@ -1,4 +1,5 @@
 package backend;
+import simulation.Node;
 
 public class Car {
 
@@ -24,6 +25,24 @@ public class Car {
 	private int vel;
 	private double acc;
 	
+	public Node getStart() {
+		return start;
+	}
+
+	public void setStart(Node start) {
+		this.start = start;
+	}
+
+	public Node getEnd() {
+		return end;
+	}
+
+	public void setEnd(Node end) {
+		this.end = end;
+	}
+
+	private Node start;
+	private Node end;
 	// departure and arrival locations need to be added
 	// current location aswell
 	

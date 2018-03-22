@@ -192,7 +192,31 @@ public class Graph {
         return null;
     }
 
-    public Node convertCircleToNode(Circle circle){
+    public List<Node> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<Node> nodes) {
+		this.nodes = nodes;
+	}
+
+	public List<Edge> getEdges() {
+		return edges;
+	}
+
+	public void setEdges(List<Edge> edges) {
+		this.edges = edges;
+	}
+
+	public ArrayList<Line> getLines() {
+		return lines;
+	}
+
+	public void setLines(ArrayList<Line> lines) {
+		this.lines = lines;
+	}
+
+	public Node convertCircleToNode(Circle circle){
         Node node = new Node(circle.getCenterX(),circle.getCenterY());
 
         return node;
