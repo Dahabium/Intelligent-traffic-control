@@ -27,8 +27,8 @@ import java.util.List;
 
 public class Main extends Application {
 
-    static GraphicsContext gc = null;
     Path path;
+    //runscene - scene for simulation, drawscene - scene for creating a graph. startscene - startup menu
     Scene startScene, runScene, drawScene;
     private boolean release = false;
 
@@ -38,21 +38,15 @@ public class Main extends Application {
     //mode 2 - create edges
     //mode 3 - delete verts + edges
     private int control = 0;
+    private int indexCount = 0;
     private Graph graph;
-    private String fileName = "Graph1";
+    private String fileName = "graph2";
 
     public static void main(String[] args) {
 
         launch(args);
     }
 
-
-//    public void create() {
-//
-////        graph.printAdjecency();
-////        graph.showGraph(gc);
-//
-//    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -63,15 +57,15 @@ public class Main extends Application {
 
         Group root = new Group();
         Group drawSceneElements = new Group();
+        Group simulationElements = new Group();
 
         startScene = new Scene(root);
         drawScene = new Scene(drawSceneElements, 300, 250);
 
+
         primaryStage.setScene(startScene);
 
-        Canvas canvas = new Canvas(500, 500);
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
 
         //============================START MENU START===============================
 
@@ -92,14 +86,15 @@ public class Main extends Application {
         loadGraphbtn.setOnAction(e ->
         {
             System.out.println("loading from file " + fileName);
-            GraphLoader graphLoader = new GraphLoader(fileName);
+            XMLLoader graphLoader = new XMLLoader(fileName);
 
             graph = graphLoader.getGraph();
-            graph.showGraph(gc);
 
-            //TODO
+            //TODO - test if this works
+            graph.showGraph(simulationElements);
             primaryStage.setScene(runScene);
-            primaryStage.show();
+
+//            primaryStage.show();
         });
 
         Button testbtn = new Button("Show Test Graph");
@@ -107,14 +102,14 @@ public class Main extends Application {
 
             //Tester class for creating graph
             DummyGraph dummyGraph = new DummyGraph();
-            Graph dummyGraph1 = dummyGraph.createDummyGraph();
-            dummyGraph1.showGraph(gc);
+            Graph dummyGraph1 = dummyGraph.createModelTestGraph();
+
+            dummyGraph1.showGraph(simulationElements);
             primaryStage.setScene(runScene);
 
 
             XMLCreator xmlCreator = new XMLCreator();
             xmlCreator.createXML(dummyGraph1);
-
 
         });
 
@@ -155,15 +150,15 @@ public class Main extends Application {
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
-            System.out.println(control);
+            System.out.println("Vertex creation mode (code " + control + ")" );
         });
         joinbtn.setOnMouseClicked(event -> {
             control = 2;
-            System.out.println(control);
+            System.out.println("Edges creation mode (code " + control + ")");
         });
         deletebtn.setOnMouseClicked(event -> {
             control = 3;
-            System.out.println(control);
+            System.out.println("Vertex deletion mode (code " + control + ")");
         });
         prnt.setOnMouseClicked(event -> {
             graph.printAdjecency();
@@ -198,8 +193,14 @@ public class Main extends Application {
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
-                        graph.addNode(new Node(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+//                        Node newNode = new Node(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                        graph.addNodeV2(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+
+                        System.out.println("Node added  " +graph.getNodeByIndex(indexCount));
+
+                        indexCount++;
                         drawSceneElements.getChildren().add(vertex);
+//                        graph.printAdjecency();
                     }
 
                     //Add a listener to a vertex that will trigger if its being pressed to delete it
@@ -226,12 +227,9 @@ public class Main extends Application {
                                 }
                             }
 
-
                             System.out.println("Node removed " + graph.getNodeAtCoord(vertex.getCenterX(), vertex.getCenterY()));
                             graph.removeNode(graph.getNodeAtCoord(vertex.getCenterX(), vertex.getCenterY()));
                             drawSceneElements.getChildren().remove(vertex);
-
-
                         }
 
                         if (control == 2) {
@@ -244,7 +242,7 @@ public class Main extends Application {
                                 }
                             }
 
-                            //Arrow arrow;
+                            Arrow arrow;
 
                             if (!release) {
                                 //Create new Line object and set the start of it
@@ -269,7 +267,9 @@ public class Main extends Application {
                                 double ndY = graph.lines.get(graph.lines.size() - 1).getEndY();
 
                                 if (stX != ndX && stY != ndY) {
-                                    Arrow arrow = new Arrow(stX, stY, ndX, ndY);
+                                    arrow = new Arrow(stX, stY, ndX, ndY);
+
+                                    System.out.println(graph.getNodeAtCoord(stX,stY) +"  " + graph.getNodeAtCoord(ndX,ndY));
 
                                     graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
                                     drawSceneElements.getChildren().add(arrow);
@@ -284,7 +284,7 @@ public class Main extends Application {
             }
         };
 
-        drawScene.setOnMouseDragged(mouseHandler);
+//        drawScene.setOnMouseDragged(mouseHandler);
         drawScene.setOnMouseClicked(mouseHandler);
 
 
@@ -293,20 +293,13 @@ public class Main extends Application {
 
         VBox layout2 = new VBox(20);
         layout2.getChildren().add(button2);
-        runScene = new Scene(layout2, 300, 250);
-
-        layout2.getChildren().add(canvas);
+        runScene = new Scene(simulationElements, 300, 250);
 
 
         primaryStage.setScene(startScene);
         primaryStage.show();
 
 //        final long startNanoTime = System.nanoTime();
-    }
-
-
-    public GraphicsContext getGC() {
-        return gc;
     }
 
 

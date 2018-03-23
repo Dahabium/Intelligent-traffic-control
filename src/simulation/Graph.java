@@ -1,5 +1,6 @@
 package simulation;
 
+import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -13,6 +14,11 @@ import org.w3c.dom.*;
 import java.io.*;
 import com.sun.org.apache.xml.internal.serialize.*;
 import javax.xml.parsers.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 public class Graph {
 
@@ -31,95 +37,85 @@ public class Graph {
     }
 
     public void addNode(Node node){
+
         this.nodes.add(node);
+    }
+    public void addNodeV2(int index, double Xpos, double Ypos){
+        Node temp = new Node(index,Xpos,Ypos);
+        this.nodes.add(temp);
+
+        System.out.println(this.nodes);
+    }
+
+    public void addMultipleNodes(ArrayList<Node> nodes){
+        this.nodes.addAll(nodes);
     }
 
     public void removeNode(Node node){
         this.nodes.remove(node);
     }
 
-//    public void addEdge(Node start, Node end,int incominglanes, int outcominglanes, double weight){
-//        start.connections.add(new Edge(start,end, incominglanes, outcominglanes, weight));
-//
-//    }
+
     public void export() throws ParserConfigurationException, FileNotFoundException, IOException
     {
-        DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
-        Document xmlDocument = documentBuilder.newDocument();
-//        <Nodes>
-//            <Node>
-//                  ID, Xpos, Ypos
+        try {
 
-//                  <Edges>
-//                      <Edge>
-//                          ID, Egdge ID, Start ID, End ID
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-//                      </Edge>
-//                  </Edges>
-//            </Node>
-//        </Nodes>
-//        Element intersectionsXML = xmlDocument.createElement("Nodes");
-//        Element intXML = xmlDocument.createElement("Node");
-//        Element nodeID = xmlDocument.createElement("ID");
-//        Element roadsXML = xmlDocument.createElement("Edges");
-//        Element roXML = xmlDocument.createElement("Edge");
-//        Element edgeID = xmlDocument.createElement("Edge ID");
-//        Element startEnd = xmlDocument.createElement("Start End");
-//        Text productnameText = xmlDocument.createTextNode("Graph");
-//        Element xyCoords = xmlDocument.createElement("x and y");
-//
-//
-//        xmlDocument.appendChild(intersectionsXML);
-//        intersectionsXML.appendChild()
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("Graph");
+            doc.appendChild(rootElement);
 
-        Element xmlNodes = xmlDocument.createElement("Nodes");
-        xmlDocument.appendChild(xmlNodes);
-        for(int i = 0; i<nodes.size(); i++) {
+            Element nodes = doc.createElement("Nodes");
+            rootElement.appendChild(nodes);
 
-            Element xmlNode = xmlDocument.createElement("Node");
-            String id = Integer.toString(i);
-            String xmlX = Double.toString(nodes.get(i).Xpos);
-            String xmlY = Double.toString(nodes.get(i).Ypos);
-            xmlNode.setTextContent(id + " " + xmlX + " " + xmlY);
-            xmlNodes.appendChild(xmlNode);
+            for (int i = 0; i < this.nodes.size(); i++) {
 
-            Element xmlEdges = xmlDocument.createElement("Edges");
-            xmlNode.appendChild(xmlEdges);
+                // node elements
+                Element node = doc.createElement("Node");
+                nodes.appendChild(node);
 
-            //loop through the edges of this node and add each to the edgeslist
-            for(int j = 0; j<edges.size(); j++) {
-                //if an edge has node i as a starting point
-                if(edges.get(j).start == nodes.get(i)) {
+                // set attribute to node element
+                node.setAttribute("index", (String.valueOf(this.nodes.get(i).index)));
+                node.setAttribute("posX", String.valueOf(this.nodes.get(i).Xpos));
+                node.setAttribute("posY", String.valueOf(this.nodes.get(i).Ypos));
 
-                    System.out.println("edge " + j);
-                    Element xmlEdge = xmlDocument.createElement("Edge");
-                    xmlEdges.appendChild(xmlEdge);
 
-                    String from = id;
-                    String to = " ";
-
-                    //add endpoint to the edge
-                    for (int k = 0; k < nodes.size(); k++) {
-                        if(edges.get(j).end == nodes.get(k) ) {
-
-                            to = Integer.toString(k);
-                        }
-                    }
-                    xmlEdge.setTextContent(from + " " + to);
-                }
-
-                //Text edgeID = xmlDocument.createTextNode("Edge ID");
             }
-            System.out.println("Node " + i);
-        }
 
-        OutputFormat output = new OutputFormat(xmlDocument);
-        output.setIndenting(true);
-        File xmlFile = new File("Graph1.xml");
-        FileOutputStream outputStream = new FileOutputStream(xmlFile);
-        XMLSerializer serializer = new XMLSerializer(outputStream, output);
-        serializer.serialize(xmlDocument);
+            //Edges group
+            Element edges = doc.createElement("Edges");
+            rootElement.appendChild(edges);
+
+            //edges elements
+            for (int j = 0; j < this.edges.size()-1; j++) {
+                Element edge = doc.createElement("Edge");
+                edge.setAttribute("start", String.valueOf(this.edges.get(j).start.index));
+                edge.setAttribute("end",String.valueOf(this.edges.get(j).end.index));
+                edges.appendChild(edge);
+
+            }
+
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File("graph2.xml"));
+
+            // Output to console for testing
+            // StreamResult result = new StreamResult(System.out);
+
+            transformer.transform(source, result);
+
+            System.out.println("File saved!");
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        }
 
 
 
@@ -127,28 +123,34 @@ public class Graph {
 
     public void addEdge(Node start, Node end){
         edges.add(new Edge(start,end));
+//        System.out.println("Edge added " + start.Xpos + "  " + start.Ypos + "  " + end.Xpos + "  " +end.Ypos);
     }
 
     public void removeEdge(Edge edge){
         edges.remove(edge);
     }
 
-    public void showGraph(GraphicsContext gc){
+    public void showGraph(Group group){
 
         //Show the Vertexes in GUI
         for (int i = 0; i < this.nodes.size(); i++) {
 
-            gc.fillOval(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 30, 30);
-            gc.setFill(Color.WHITE);
-            gc.fillText(this.nodes.get(i).name, this.nodes.get(i).Xpos + 7, this.nodes.get(i).Ypos + 15);
-            gc.setFill(Color.BLACK);
+            Circle vertex = new Circle(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 12);
+            vertex.setFill(Color.BLUE);
+            vertex.setStroke(Color.BLACK);
+
+
+            group.getChildren().add(vertex);
 
         }
 
         //Show the edges between vertexes in GUI
+        System.out.println("amount of edges " + this.edges.size());
+
         for (int i = 0; i < this.edges.size(); i++) {
-            gc.strokeLine(this.edges.get(i).start.Xpos + 15, this.edges.get(i).start.Ypos + 15,
-                    this.edges.get(i).end.Xpos + 15, this.edges.get(i).end.Ypos + 15);
+            Arrow arrow = new Arrow(this.edges.get(i).start.Xpos, this.edges.get(i).start.Ypos,
+                    this.edges.get(i).end.Xpos, this.edges.get(i).end.Ypos);
+            group.getChildren().add(arrow);
 
         }
     }
@@ -164,9 +166,8 @@ public class Graph {
 
         System.out.println("Number of edges " + this.edges.size());
 
-        for (int j = 0; j < this.edges.size(); j++) {
-            System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.Xpos + "  " + this.edges.get(j).start.Ypos +
-                    "  end " + this.edges.get(j).end.Xpos + "  " + this.edges.get(j).end.Ypos);
+        for (int j = 0; j < this.edges.size()-1; j++) {
+            System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.index + "  " + this.edges.get(j).end.index);
 
         }
 
@@ -182,8 +183,40 @@ public class Graph {
 
         return out;
     }
+    public Node getNodeByIndex(int index){
+        for (int i = 0; i < nodes.size(); i++) {
+            if(nodes.get(i).index == index ){
+                return nodes.get(i);
+            }
+        }
+        return null;
+    }
 
-    public Node convertCircleToNode(Circle circle){
+    public List<Node> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<Node> nodes) {
+		this.nodes = nodes;
+	}
+
+	public List<Edge> getEdges() {
+		return edges;
+	}
+
+	public void setEdges(List<Edge> edges) {
+		this.edges = edges;
+	}
+
+	public ArrayList<Line> getLines() {
+		return lines;
+	}
+
+	public void setLines(ArrayList<Line> lines) {
+		this.lines = lines;
+	}
+
+	public Node convertCircleToNode(Circle circle){
         Node node = new Node(circle.getCenterX(),circle.getCenterY());
 
         return node;
@@ -197,25 +230,18 @@ public class Graph {
         line.setStartY(start.getCenterY());
 
         lines.add(line);
-
-
     }
 
     //This method is used to create an edge in both graph class and visual graphics
     public void addLineEnd(Circle end){
-
-
             lines.get(lines.size() - 1).setEndX(end.getCenterX());
             lines.get(lines.size() - 1).setEndY(end.getCenterY());
-
-            System.out.println("LINE START " + lines.get(lines.size() - 1).getStartX() + "  " + lines.get(lines.size() - 1).getStartY());
-            System.out.println("LINE END " + lines.get(lines.size() - 1).getEndX() + "  " + lines.get(lines.size() - 1).getEndY());
 
 
     }
 
     public Node getNodeAtCoord(double x, double y){
-        for (int i = 0; i < this.nodes.size()-1; i++) {
+        for (int i = 0; i < this.nodes.size(); i++) {
             if(this.nodes.get(i).Xpos == x && this.nodes.get(i).Ypos == y){
                 return this.nodes.get(i);
             }

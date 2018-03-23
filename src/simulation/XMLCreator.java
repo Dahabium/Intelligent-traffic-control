@@ -34,24 +34,31 @@ public class XMLCreator {
 
                 // Vertex elements
                 Element node = doc.createElement("Node");
-                node.appendChild(doc.createTextNode("Node number " + Integer.toString(i)));
+                rootElement.appendChild(node);
 
-                // set attribute to Vertex element
-//                node.setAttribute("node id", Integer.toString(i) );
+                //set index as attribute to node element
+                node.setAttribute("id", (String.valueOf(i)));
 
+                //add a position element
+                Element position = doc.createElement("Position");
+                String positionString = String.valueOf(graph.nodes.get(i).Xpos) + String.valueOf(graph.nodes.get(i).Ypos);
+                position.appendChild(doc.createTextNode(positionString));
+                node.appendChild(position);
 
+                //Edges group
+                Element edges = doc.createElement("Edges");
+                node.appendChild(edges);
 
                 // edges elements
                 for (int j = 0; j < graph.getAdjecents(graph.nodes.get(i)).size(); j++) {
 
-                    Element edge = doc.createElement("edges");
-                    edge.appendChild(doc.createTextNode("adjecents " + graph.getAdjecents(graph.nodes.get(i)).get(j) ));
-
-                    node.appendChild(edge);
+                    Element edge = doc.createElement("Edge");
+                    edge.appendChild(doc.createTextNode(graph.getAdjecents(graph.nodes.get(i)).get(j).Xpos +","+
+                            graph.getAdjecents(graph.nodes.get(i)).get(j).Ypos ));
+                    edges.appendChild(edge);
 
                 }
 
-                rootElement.appendChild(node);
             }
 
 
@@ -59,7 +66,7 @@ public class XMLCreator {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("createdGraph.xml"));
+            StreamResult result = new StreamResult(new File("file.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
