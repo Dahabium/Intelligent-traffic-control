@@ -13,6 +13,7 @@ public class Node {
     public int index;
 
 
+
     public Node(String name, int Xpos, int Ypos){
         this.name = name;
         this.Xpos = Xpos;
