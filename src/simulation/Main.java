@@ -37,6 +37,7 @@ public class Main extends Application {
     //mode 1 - create verts
     //mode 2 - create edges
     //mode 3 - delete verts + edges
+
     private int control = 0;
     private int indexCount = 0;
     private Graph graph;
@@ -166,17 +167,6 @@ public class Main extends Application {
 
         drawSceneElements.getChildren().add(boardPane);
 
-//        // vertical lines
-//        for(int i = 0 ; i < drawScene.getWidth() ; i+=30){
-//            Line line = new Line(i,30,i,(drawScene.getHeight() - drawScene.getHeight()%30));
-//            drawSceneElements.getChildren().add(line);
-//        }
-//
-//        // horizontal lines
-//        for(int i = 30 ; i < drawScene.getHeight(); i+=30){
-//            Line line = new Line(30, i, drawScene.getWidth(), i);
-//            drawSceneElements.getChildren().add(line);
-//        }
 
 
         interSectbtn.setOnMouseClicked(event -> {
