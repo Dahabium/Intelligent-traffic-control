@@ -42,5 +42,9 @@ public class Arrow extends Path {
         this(startX, startY, endX, endY, defaultArrowHeadSize);
     }
 
+//    public void setCoords(double startX, double startY, double endX, double endY){
+//        this
+//    }
+
 
 }

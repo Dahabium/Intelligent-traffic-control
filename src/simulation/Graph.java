@@ -126,6 +126,17 @@ public class Graph {
 //        System.out.println("Edge added " + start.Xpos + "  " + start.Ypos + "  " + end.Xpos + "  " +end.Ypos);
     }
 
+    public boolean existsEdge(Node start, Node end){
+        Edge temp = new Edge(start,end);
+        boolean out = false;
+        for (int i = 0; i < this.edges.size(); i++) {
+            if(this.edges.get(i).start == temp.start && this.edges.get(i).end == temp.end){
+                out = true;
+            }
+        }
+        return out;
+    }
+
     public void removeEdge(Edge edge){
         edges.remove(edge);
     }

@@ -10,10 +10,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
@@ -52,15 +52,17 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Intelligent Traffic Control");
-        primaryStage.setHeight(500);
-        primaryStage.setWidth(500);
+        primaryStage.setHeight(600);
+        primaryStage.setWidth(600);
 
         Group root = new Group();
         Group drawSceneElements = new Group();
         Group simulationElements = new Group();
 
         startScene = new Scene(root);
-        drawScene = new Scene(drawSceneElements, 300, 250);
+        drawScene = new Scene(drawSceneElements, 500, 500);
+        BorderPane drawScenePane = new BorderPane();
+
 
 
         primaryStage.setScene(startScene);
@@ -147,6 +149,35 @@ public class Main extends Application {
 
         drawSceneElements.getChildren().add(CreateConfigMenuPlacer);
 
+        ScrollPane boardPane = new ScrollPane();
+        Board board = new Board(10,10);
+
+        for (int i = 0; i < board.getBoardSizeX(); i++) {
+            for (int j = 0; j < board.getBoardSizeY(); j++) {
+                Tile tile = new Tile();
+                board.setTileAtCoordinates(tile,i,j);
+            }
+        }
+
+        boardPane.setContent(board);
+
+        boardPane.setLayoutX(20);
+        boardPane.setLayoutY(100);
+
+        drawSceneElements.getChildren().add(boardPane);
+
+//        // vertical lines
+//        for(int i = 0 ; i < drawScene.getWidth() ; i+=30){
+//            Line line = new Line(i,30,i,(drawScene.getHeight() - drawScene.getHeight()%30));
+//            drawSceneElements.getChildren().add(line);
+//        }
+//
+//        // horizontal lines
+//        for(int i = 30 ; i < drawScene.getHeight(); i+=30){
+//            Line line = new Line(30, i, drawScene.getWidth(), i);
+//            drawSceneElements.getChildren().add(line);
+//        }
+
 
         interSectbtn.setOnMouseClicked(event -> {
             control = 1;
@@ -183,7 +214,6 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-
                 if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
                     Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 12);
@@ -193,14 +223,12 @@ public class Main extends Application {
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
-//                        Node newNode = new Node(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
                         graph.addNodeV2(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
 
                         System.out.println("Node added  " +graph.getNodeByIndex(indexCount));
 
                         indexCount++;
                         drawSceneElements.getChildren().add(vertex);
-//                        graph.printAdjecency();
                     }
 
                     //Add a listener to a vertex that will trigger if its being pressed to delete it
@@ -214,7 +242,7 @@ public class Main extends Application {
                                 System.out.println("Removing edge(es) ");
 
                                 for (int i = 0; i < drawSceneElements.getChildren().size(); i++) {
-
+                                    System.out.println(drawSceneElements.getChildren().get(i));
                                     if (drawSceneElements.getChildren().get(i) instanceof Path) {
 
                                         if(drawSceneElements.getChildren().get(i).contains(vertex.getCenterX(), vertex.getCenterY()) ){
@@ -267,13 +295,22 @@ public class Main extends Application {
                                 double ndY = graph.lines.get(graph.lines.size() - 1).getEndY();
 
                                 if (stX != ndX && stY != ndY) {
-                                    arrow = new Arrow(stX, stY, ndX, ndY);
 
-                                    System.out.println(graph.getNodeAtCoord(stX,stY) +"  " + graph.getNodeAtCoord(ndX,ndY));
+//                  TODO move edges if there is an existing edge.
+//                                    if(graph.existsEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY))){
+//                                        arrow = new Arrow(stX+2, stY+2, ndX+2, ndY+2);
+//
+//                                        graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
+//                                        drawSceneElements.getChildren().add(arrow);
+//                                        release = false;
+//                                    }
+//                                    else{
+                                        arrow = new Arrow(stX, stY, ndX, ndY);
 
-                                    graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
-                                    drawSceneElements.getChildren().add(arrow);
-                                    release = false;
+                                        graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
+                                        drawSceneElements.getChildren().add(arrow);
+                                        release = false;
+//                                    }
                                 }
                             }
                         }
