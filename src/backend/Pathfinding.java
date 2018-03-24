@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import simulation.*; 
 
 
-public class Pathfinding {
+public class Pathfinding{
 
 
 	private ArrayList<AStarNode> newGraph = new ArrayList<AStarNode>();
@@ -54,10 +54,11 @@ public class Pathfinding {
 		
 		newGraph.get(start).setG_score(0);
 		newGraph.get(start).setF_score(calcPytho(newGraph.get(start), newGraph.get(end)));
+
+		AStarNode current;
 		
 		while(!openSet.isEmpty()){
-			
-			AStarNode current;
+
 			
 			int index = 0;
 			double score = Double.MAX_VALUE;
@@ -75,6 +76,7 @@ public class Pathfinding {
 			if(current == newGraph.get(end)) {
 				
 				// return the path
+				constructPath(current, newGraph.get(start));
 			}
 			
 			openSet.remove(index);
@@ -118,7 +120,20 @@ public class Pathfinding {
 			}
 		}
 			
-		
+
+	}
+
+	public ArrayList<AStarNode> constructPath(AStarNode current, AStarNode start){
+
+		ArrayList<AStarNode> path = new ArrayList<>();
+		path.add(current);
+
+		while(current.getCameFrom() != start){
+			current = current.getCameFrom();
+			path.add(current);
+		}
+
+			return path;
 	}
 	
 	
