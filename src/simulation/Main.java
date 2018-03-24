@@ -41,7 +41,7 @@ public class Main extends Application {
     private int indexCount = 0;
     private Graph graph;
     private String fileName = "graph2";
-
+    private GridSnapper gridSnapper = new GridSnapper();
     public static void main(String[] args) {
 
         launch(args);
@@ -216,14 +216,24 @@ public class Main extends Application {
 
                 if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
-                    Circle vertex = new Circle(mouseEvent.getSceneX(), mouseEvent.getSceneY(), 12);
+                    double mX = mouseEvent.getSceneX();
+                    double mY = mouseEvent.getSceneY();
+
+
+                    double [] gridXY = gridSnapper.getGridXY(mX, mY);
+                    double gridX = gridXY[0];
+                    double gridY = gridXY[1];
+
+                    Circle vertex = new Circle(gridX, gridY, 12);
                     vertex.setFill(Color.BLUE);
                     vertex.setStroke(Color.BLACK);
 
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
-                        graph.addNodeV2(indexCount, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+
+
+                        graph.addNodeV2(indexCount, gridX, gridY);
 
                         System.out.println("Node added  " +graph.getNodeByIndex(indexCount));
 
