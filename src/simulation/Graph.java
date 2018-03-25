@@ -40,8 +40,10 @@ public class Graph {
 
         this.nodes.add(node);
     }
-    public void addNodeV2(int index, double Xpos, double Ypos){
-        Node temp = new Node(index,Xpos,Ypos);
+    public void addNodeV2(int index, double Xpos, double Ypos, int x, int y, int type){
+
+        Node temp = new Node(index,Xpos,Ypos, x, y, type);
+
         this.nodes.add(temp);
 
         System.out.println(this.nodes);
@@ -81,7 +83,9 @@ public class Graph {
                 node.setAttribute("index", (String.valueOf(this.nodes.get(i).index)));
                 node.setAttribute("posX", String.valueOf(this.nodes.get(i).Xpos));
                 node.setAttribute("posY", String.valueOf(this.nodes.get(i).Ypos));
-
+                node.setAttribute("x", String.valueOf(this.nodes.get(i).x));
+                node.setAttribute("y", String.valueOf(this.nodes.get(i).y));
+                node.setAttribute("type", String.valueOf(this.nodes.get(i).type));
 
             }
 
@@ -90,12 +94,12 @@ public class Graph {
             rootElement.appendChild(edges);
 
             //edges elements
-            for (int j = 0; j < this.edges.size()-1; j++) {
+            for (int j = 0; j < this.edges.size(); j++) {
                 Element edge = doc.createElement("Edge");
                 edge.setAttribute("start", String.valueOf(this.edges.get(j).start.index));
                 edge.setAttribute("end",String.valueOf(this.edges.get(j).end.index));
+                edge.setAttribute("type", String.valueOf(this.edges.get(j).type));
                 edges.appendChild(edge);
-
             }
 
             // write the content into xml file
@@ -120,6 +124,12 @@ public class Graph {
 
 
     }
+
+    public void showGraph()
+    {
+
+    }
+
 
     public void addEdge(Node start, Node end){
         edges.add(new Edge(start,end));

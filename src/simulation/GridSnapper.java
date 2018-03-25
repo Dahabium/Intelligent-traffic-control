@@ -14,16 +14,18 @@ public class GridSnapper {
             {
                 double x = j*51 + 46.5;
                 double y = i*51 + 126.5;
-                double[] xy = new double[2];
+                double[] xy = new double[4];
                 xy[0] = x;
                 xy[1] = y;
+                xy[2] = j;
+                xy[3] = i;
                 grid.add(xy);
             }
         }
     }
     public double[] getGridXY(double x, double y)
     {
-        double[] closest = new double[2];
+        double[] closest = new double[4];
         double minimum = 9999999;
         for(int i = 0; i<grid.size(); i++)
         {

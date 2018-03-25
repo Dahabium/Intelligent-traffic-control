@@ -4,8 +4,9 @@ public class Edge {
 
     public Node start;
     public Node end;
-    public int incomingLanes,outcominglanes;
+    public int incomingLanes,outcominglanes, type = 0;
     public double weight;
+
 
 
     public Edge(Node start, Node end, int incomingLanes, int outcominglanes, double weight){

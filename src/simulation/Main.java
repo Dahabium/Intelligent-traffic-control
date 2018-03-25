@@ -12,21 +12,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main extends Application {
-
+    public StackPane stackPane = new StackPane();;
     Path path;
     //runscene - scene for simulation, drawscene - scene for creating a graph. startscene - startup menu
     Scene startScene, runScene, drawScene;
@@ -39,7 +46,7 @@ public class Main extends Application {
     //mode 3 - delete verts + edges
     private int control = 0;
     private int indexCount = 0;
-    private Graph graph;
+    public Graph graph;
     private String fileName = "graph2";
     private GridSnapper gridSnapper = new GridSnapper();
     public static void main(String[] args) {
@@ -93,7 +100,39 @@ public class Main extends Application {
             graph = graphLoader.getGraph();
 
             //TODO - test if this works
-            graph.showGraph(simulationElements);
+            //graph.showGraph(simulationElements);
+            graph.showGraph();
+//            LoadImage loadImage = new LoadImage(graph.nodes.size(), graph.edges.size());
+//            ArrayList<ImageView> imageList = loadImage.getImage();
+//            ImageView img = imageList.get(0);
+//            imageList.remove(0);
+//            simulationElements.getChildren().add(img);
+//            for(int j = 0; j<imageList.size(); j++)
+//            {
+//
+//                double imageX = j*100;
+//                double imageY = j*100;
+//                simulationElements.getChildren().add(imageList.get(j));
+//
+//            }
+            //set Background
+            javafx.scene.image.Image img = new Image("background.JPG", 3000,1000,false,false);
+            ImageView imgView = new ImageView(img);
+            simulationElements.getChildren().add(imgView);
+
+            Board simulationBoard = new Board(30,10);
+            simulationBoard.setBoard(graph);
+            ScrollPane simulationPane = new ScrollPane();
+            simulationPane.setContent(imgView);
+            simulationPane.setContent(simulationBoard);
+
+            simulationPane.setFitToHeight(false);
+            simulationPane.setFitToWidth(false);
+
+            simulationElements.getChildren().add(simulationPane);
+
+
+            //graph.showGraph(simulationElements);
             primaryStage.setScene(runScene);
 
 //            primaryStage.show();
@@ -209,10 +248,11 @@ public class Main extends Application {
 
         //============================CREATE GRAPH WINDOW END===============================
 
-        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+        EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
 
             @Override
             public void handle(MouseEvent mouseEvent) {
+
 
                 if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
@@ -223,7 +263,8 @@ public class Main extends Application {
                     double [] gridXY = gridSnapper.getGridXY(mX, mY);
                     double gridX = gridXY[0];
                     double gridY = gridXY[1];
-
+                    int x = (int)gridXY[2];
+                    int y = (int)gridXY[3];
                     Circle vertex = new Circle(gridX, gridY, 12);
                     vertex.setFill(Color.BLUE);
                     vertex.setStroke(Color.BLACK);
@@ -231,11 +272,13 @@ public class Main extends Application {
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
+                        if(mouseEvent.isSecondaryButtonDown())
+                        {
+                            graph.addNodeV2(indexCount, gridX, gridY, x, y, 1);
+                        }
+                        else graph.addNodeV2(indexCount, gridX, gridY, x, y, 0);
 
-
-                        graph.addNodeV2(indexCount, gridX, gridY);
-
-                        System.out.println("Node added  " +graph.getNodeByIndex(indexCount));
+                        System.out.println("Node added  "+ indexCount+ " x,y :" +graph.getNodeByIndex(indexCount).x + " " + graph.getNodeByIndex(indexCount).y);
 
                         indexCount++;
                         drawSceneElements.getChildren().add(vertex);
@@ -304,7 +347,7 @@ public class Main extends Application {
                                 double ndX = graph.lines.get(graph.lines.size() - 1).getEndX();
                                 double ndY = graph.lines.get(graph.lines.size() - 1).getEndY();
 
-                                if (stX != ndX && stY != ndY) {
+                                if (stX != ndX || stY != ndY) {
 
 //                  TODO move edges if there is an existing edge.
 //                                    if(graph.existsEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY))){
@@ -399,7 +442,14 @@ public class Main extends Application {
     }
 
 
+    public Scene getDrawScene()
+    {
+        return drawScene;
+    }
+
 }
+
+
 
 
 

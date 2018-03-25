@@ -11,6 +11,8 @@ public class Node {
     public String name;
     public double Xpos,Ypos;
     public int index;
+    public int type = 0;
+    public int x, y;
 
 
 
@@ -24,13 +26,30 @@ public class Node {
     public Node(double Xpos, double Ypos){
         this.Xpos = Xpos;
         this.Ypos = Ypos;
+
     }
 
-    public Node(int index, double Xpos, double Ypos){
+	public Node(int index, double Xpos, double Ypos){
+		this.Xpos = Xpos;
+		this.Ypos = Ypos;
+
+		this.index = index;
+	}
+    public Node(int index, double Xpos, double Ypos, int x, int y){
         this.Xpos = Xpos;
         this.Ypos = Ypos;
+		this.x = x;
+		this.y = y;
         this.index = index;
     }
+	public Node(int index, double Xpos, double Ypos, int x, int y, int type){
+		this.Xpos = Xpos;
+		this.Ypos = Ypos;
+		this.x = x;
+		this.y = y;
+		this.index = index;
+		this.type = type;
+	}
 	public String getName() {
 		return name;
 	}
