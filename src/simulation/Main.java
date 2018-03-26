@@ -272,7 +272,7 @@ public class Main extends Application {
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
-                        if(mouseEvent.isSecondaryButtonDown())
+                        if(mouseEvent.isShiftDown())
                         {
                             graph.addNodeV2(indexCount, gridX, gridY, x, y, 1);
                         }

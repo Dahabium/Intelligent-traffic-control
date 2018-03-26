@@ -1,5 +1,7 @@
 package simulation;
 
+import backend.Intersection;
+import backend.SubIntersection;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -13,7 +15,7 @@ public class Node {
     public int index;
     public int type = 0;
     public int x, y;
-
+	public Intersection intersection;
 
 
     public Node(String name, int Xpos, int Ypos){
@@ -49,7 +51,34 @@ public class Node {
 		this.y = y;
 		this.index = index;
 		this.type = type;
+		System.out.println("Type = " + type);
+		createIntersections(true, true, true, true);
 	}
+
+	public void createIntersections(boolean left, boolean right, boolean up, boolean down)
+	{
+		this.intersection = new Intersection();
+
+		if(left)
+		{
+			intersection.setLeft(new SubIntersection());
+		}
+		if(right)
+		{
+			intersection.setRight(new SubIntersection());
+		}
+		if(up)
+		{
+			intersection.setUp(new SubIntersection());
+		}
+		if(down)
+		{
+			intersection.setDown(new SubIntersection());
+		}
+
+
+	}
+
 	public String getName() {
 		return name;
 	}

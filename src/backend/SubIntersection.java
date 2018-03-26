@@ -3,7 +3,9 @@ package backend;
 public class SubIntersection {
 
 	
-	private int in;
-	private int out;
-	private Road road; 
+	private int in = 1;
+	private int out = 1;
+	private Road road;
+
+
 }

@@ -73,7 +73,7 @@ public class Board extends GridPane{
             }
             if(graph.nodes.get(i).type == 1)
             {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("roundabout.JPG", 150,150,true,false);
+                javafx.scene.image.Image img = new javafx.scene.image.Image("roundabout.png", 150,150,true,false);
                 imgView = new ImageView(img);
                 tile.getChildren().add(imgView);
             }

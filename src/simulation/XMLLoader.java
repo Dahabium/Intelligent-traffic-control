@@ -57,7 +57,7 @@ public class XMLLoader {
 
                 Element nodeElement = (Element) nNode;
                 simulation.Node temp = new simulation.Node(Integer.parseInt(nodeElement.getAttribute("index")),
-                        Double.parseDouble(nodeElement.getAttribute("posX")), Double.parseDouble(nodeElement.getAttribute("posY")), Integer.parseInt(nodeElement.getAttribute("x")), Integer.parseInt(nodeElement.getAttribute("y")));
+                        Double.parseDouble(nodeElement.getAttribute("posX")), Double.parseDouble(nodeElement.getAttribute("posY")), Integer.parseInt(nodeElement.getAttribute("x")), Integer.parseInt(nodeElement.getAttribute("y")), Integer.parseInt(nodeElement.getAttribute("type")));
 
                 graph.addNode(temp);
 
