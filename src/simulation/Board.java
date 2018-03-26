@@ -16,6 +16,8 @@ public class Board extends GridPane{
         this.ySize = ySize;
         board = new Tile[xSize][ySize];
         empty = true;
+
+        addSquares();
         //initBoard();
     }
 
@@ -34,6 +36,23 @@ public class Board extends GridPane{
         empty = false;
         return true;
     }
+
+    public void addSquares(){
+
+        for (int i = 0; i < this.getBoardSizeX(); i++) {
+            for (int j = 0; j < this.getBoardSizeY(); j++) {
+                Tile tile = new Tile();
+                this.setTileAtCoordinates(tile,i,j);
+            }
+        }
+
+    }
+
+    public Tile getTileatCoord(int x, int y){
+        return board[x][y];
+
+    }
+
 
 
 

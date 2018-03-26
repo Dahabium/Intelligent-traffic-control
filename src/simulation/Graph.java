@@ -239,12 +239,16 @@ public class Graph {
 
         line.setStartX(start.getCenterX());
         line.setStartY(start.getCenterY());
+        System.out.println("added new line start " + start.getCenterX() + "  " + start.getCenterY() );
 
         lines.add(line);
     }
 
     //This method is used to create an edge in both graph class and visual graphics
     public void addLineEnd(Circle end){
+
+        System.out.println("add line end ");
+
             lines.get(lines.size() - 1).setEndX(end.getCenterX());
             lines.get(lines.size() - 1).setEndY(end.getCenterY());
 

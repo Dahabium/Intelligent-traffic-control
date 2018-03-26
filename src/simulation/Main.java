@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -153,12 +155,9 @@ public class Main extends Application {
         ScrollPane boardPane = new ScrollPane();
         Board board = new Board(10,10);
 
-        for (int i = 0; i < board.getBoardSizeX(); i++) {
-            for (int j = 0; j < board.getBoardSizeY(); j++) {
-                Tile tile = new Tile();
-                board.setTileAtCoordinates(tile,i,j);
-            }
-        }
+        Image image = new Image("1.jpeg");
+        board.getTileatCoord(5,5).getChildren().add(new ImageView(image));
+
 
         boardPane.setContent(board);
 
@@ -209,8 +208,8 @@ public class Main extends Application {
                     double mX = mouseEvent.getSceneX();
                     double mY = mouseEvent.getSceneY();
 
-
                     double [] gridXY = gridSnapper.getGridXY(mX, mY);
+
                     double gridX = gridXY[0];
                     double gridY = gridXY[1];
 
@@ -219,9 +218,9 @@ public class Main extends Application {
                     vertex.setStroke(Color.BLACK);
 
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
+                    //TODO remove collision if we are using a grid
+
                     if (!checkShapeIntersection(vertex, drawSceneElements)) {
-
-
 
                         graph.addNodeV2(indexCount, gridX, gridY);
 
@@ -234,9 +233,9 @@ public class Main extends Application {
                     //Add a listener to a vertex that will trigger if its being pressed to delete it
                     vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, arg0 -> {
 
+                        //remove edges
                         if (control == 3) {
 
-                            //remove edges
                             if (graph.getAdjecents(graph.getNodeAtCoord(vertex.getCenterX(), vertex.getCenterY())).size() > 0) {
 
                                 System.out.println("Removing edge(es) ");
@@ -260,6 +259,7 @@ public class Main extends Application {
                             drawSceneElements.getChildren().remove(vertex);
                         }
 
+                        //Add edges
                         if (control == 2) {
 
                             //reset strokes
@@ -274,6 +274,7 @@ public class Main extends Application {
 
                             if (!release) {
                                 //Create new Line object and set the start of it
+
                                 graph.addLineStart(vertex);
 
                                 //highlighting
@@ -294,24 +295,14 @@ public class Main extends Application {
                                 double ndX = graph.lines.get(graph.lines.size() - 1).getEndX();
                                 double ndY = graph.lines.get(graph.lines.size() - 1).getEndY();
 
-                                if (stX != ndX && stY != ndY) {
 
-//                  TODO move edges if there is an existing edge.
-//                                    if(graph.existsEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY))){
-//                                        arrow = new Arrow(stX+2, stY+2, ndX+2, ndY+2);
-//
-//                                        graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
-//                                        drawSceneElements.getChildren().add(arrow);
-//                                        release = false;
-//                                    }
-//                                    else{
-                                        arrow = new Arrow(stX, stY, ndX, ndY);
+                                arrow = new Arrow(stX, stY, ndX, ndY);
 
-                                        graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
-                                        drawSceneElements.getChildren().add(arrow);
-                                        release = false;
-//                                    }
-                                }
+                                graph.addEdge(graph.getNodeAtCoord(stX, stY), graph.getNodeAtCoord(ndX, ndY));
+
+                                drawSceneElements.getChildren().add(arrow);
+                                System.out.println(drawSceneElements.getChildren());
+                                release = false;
                             }
                         }
                     });
