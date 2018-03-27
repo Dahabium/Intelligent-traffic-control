@@ -1,35 +1,30 @@
 package simulation;
 
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 
 public class Main extends Application {
@@ -44,11 +39,14 @@ public class Main extends Application {
     //mode 1 - create verts
     //mode 2 - create edges
     //mode 3 - delete verts + edges
+
     private int control = 0;
     private int indexCount = 0;
     public Graph graph;
     private String fileName = "graph2";
-    private GridSnapper gridSnapper = new GridSnapper();
+//    private GridSnapper gridSnapper = new GridSnapper();
+    Board board;
+
     public static void main(String[] args) {
 
         launch(args);
@@ -68,19 +66,17 @@ public class Main extends Application {
 
         startScene = new Scene(root);
         drawScene = new Scene(drawSceneElements, 500, 500);
-        BorderPane drawScenePane = new BorderPane();
-
-
 
         primaryStage.setScene(startScene);
-
-
 
         //============================START MENU START===============================
 
         Button drawGraphbtn = new Button("Create Configuration");
         drawGraphbtn.setOnAction(e -> {
             graph = new Graph();
+            board = new Board(30,10);
+
+
             primaryStage.setScene(drawScene);
         });
 
@@ -99,29 +95,13 @@ public class Main extends Application {
 
             graph = graphLoader.getGraph();
 
-            //TODO - test if this works
-            //graph.showGraph(simulationElements);
-            graph.showGraph();
-//            LoadImage loadImage = new LoadImage(graph.nodes.size(), graph.edges.size());
-//            ArrayList<ImageView> imageList = loadImage.getImage();
-//            ImageView img = imageList.get(0);
-//            imageList.remove(0);
-//            simulationElements.getChildren().add(img);
-//            for(int j = 0; j<imageList.size(); j++)
-//            {
-//
-//                double imageX = j*100;
-//                double imageY = j*100;
-//                simulationElements.getChildren().add(imageList.get(j));
-//
-//            }
-            //set Background
             javafx.scene.image.Image img = new Image("background.JPG", 3000,1000,false,false);
             ImageView imgView = new ImageView(img);
             simulationElements.getChildren().add(imgView);
 
             Board simulationBoard = new Board(30,10);
             simulationBoard.setBoard(graph);
+
             ScrollPane simulationPane = new ScrollPane();
             simulationPane.setContent(imgView);
             simulationPane.setContent(simulationBoard);
@@ -131,8 +111,15 @@ public class Main extends Application {
 
             simulationElements.getChildren().add(simulationPane);
 
+            ArrayList<Integer> arr = new ArrayList<>();
+            arr.addAll(Arrays.asList(0,1,2,3));
 
-            //graph.showGraph(simulationElements);
+            AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
+
+            Group animGroup = new Group(animationParts.getAnimatedCircle());
+
+            simulationElements.getChildren().add(animGroup);
+
             primaryStage.setScene(runScene);
 
 //            primaryStage.show();
@@ -256,15 +243,14 @@ public class Main extends Application {
 
                 if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
-                    double mX = mouseEvent.getSceneX();
-                    double mY = mouseEvent.getSceneY();
+                    double[] gridXY = board.getGridXY(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 
-
-                    double [] gridXY = gridSnapper.getGridXY(mX, mY);
                     double gridX = gridXY[0];
                     double gridY = gridXY[1];
+
                     int x = (int)gridXY[2];
                     int y = (int)gridXY[3];
+
                     Circle vertex = new Circle(gridX, gridY, 12);
                     vertex.setFill(Color.BLUE);
                     vertex.setStroke(Color.BLACK);
@@ -390,6 +376,79 @@ public class Main extends Application {
         primaryStage.show();
 
 //        final long startNanoTime = System.nanoTime();
+    }
+
+    private Group addAnimation() {
+        //Drawing a Circle
+        Circle circle = new Circle();
+
+        //Setting the position of the circle
+        circle.setCenterX(300.0f);
+        circle.setCenterY(135.0f);
+
+        //Setting the radius of the circle
+        circle.setRadius(25.0f);
+
+        //Setting the color of the circle
+        circle.setFill(Color.BROWN);
+
+        //Setting the stroke width of the circle
+        circle.setStrokeWidth(20);
+
+        //Creating a Path
+        Path path = new Path();
+
+        //Moving to the starting point
+        MoveTo moveTo = new MoveTo(108, 71);
+
+        //Creating 1st line
+        LineTo line1 = new LineTo(321, 161);
+
+        //Creating 2nd line
+        LineTo line2 = new LineTo(126,232);
+
+        //Creating 3rd line
+        LineTo line3 = new LineTo(232,52);
+
+        //Creating 4th line
+        LineTo line4 = new LineTo(269, 250);
+
+        //Creating 5th line
+        LineTo line5 = new LineTo(108, 71);
+
+        //Adding all the elements to the path
+        path.getElements().add(moveTo);
+        path.getElements().addAll(line1, line2, line3, line4, line5);
+
+        //Creating the path transition
+        PathTransition pathTransition = new PathTransition();
+
+        //Setting the duration of the transition
+        pathTransition.setDuration(Duration.millis(1000));
+
+        //Setting the node for the transition
+        pathTransition.setNode(circle);
+
+        //Setting the path for the transition
+        pathTransition.setPath(path);
+
+        //Setting the orientation of the path
+        pathTransition.setOrientation(
+                PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
+        //Setting the cycle count for the transition
+        pathTransition.setCycleCount(2);
+
+        //Setting auto reverse value to true
+        pathTransition.setAutoReverse(false);
+
+        //Playing the animation
+        pathTransition.play();
+
+        Group root = new Group(circle);
+
+        return root;
+
     }
 
 

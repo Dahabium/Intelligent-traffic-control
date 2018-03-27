@@ -125,11 +125,6 @@ public class Graph {
 
     }
 
-    public void showGraph()
-    {
-
-    }
-
 
     public void addEdge(Node start, Node end){
         edges.add(new Edge(start,end));
@@ -187,7 +182,7 @@ public class Graph {
 
         System.out.println("Number of edges " + this.edges.size());
 
-        for (int j = 0; j < this.edges.size()-1; j++) {
+        for (int j = 0; j < this.edges.size(); j++) {
             System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.index + "  " + this.edges.get(j).end.index);
 
         }
