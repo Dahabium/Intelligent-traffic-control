@@ -16,6 +16,7 @@ public class Node {
     public int type = 0;
     public int x, y;
 	public Intersection intersection;
+	boolean left, up, right, down;
 
 
     public Node(String name, int Xpos, int Ypos){
@@ -52,10 +53,10 @@ public class Node {
 		this.index = index;
 		this.type = type;
 		System.out.println("Type = " + type);
-		createIntersections(true, true, true, true);
+		createIntersections();
 	}
 
-	public void createIntersections(boolean left, boolean right, boolean up, boolean down)
+	public void createIntersections()
 	{
 		this.intersection = new Intersection();
 
@@ -75,8 +76,6 @@ public class Node {
 		{
 			intersection.setDown(new SubIntersection());
 		}
-
-
 	}
 
 	public String getName() {

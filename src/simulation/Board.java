@@ -54,6 +54,7 @@ public class Board extends GridPane {
 
     public void setBoard(Graph graph) {
 
+        graph.setSubIntersections();
         for (int i = 0; i < ySize; i++) {
             for (int j = 0; j < xSize; j++) {
 
@@ -68,29 +69,72 @@ public class Board extends GridPane {
         }
 
 
-        for (int i = 0; i < graph.nodes.size(); i++) {
+        for(int i = 0; i<graph.nodes.size(); i++)
+        {
             System.out.println("Nodes X & Y positions respectively are: " + graph.nodes.get(i).x + "x " + graph.nodes.get(i).y + "y ");
             Tile tile = new Tile();
             ImageView imgView;
 
-            if (graph.nodes.get(i).type == 0) {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.JPG", SIM_SIZE, SIM_SIZE, true, false);
+            if(graph.nodes.get(i).type == 0)
+            {
+                javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.JPG",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
                 tile.getChildren().add(imgView);
             }
-            if (graph.nodes.get(i).type == 1) {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("roundabout.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            if(graph.nodes.get(i).type == 1)
+            {
+                javafx.scene.image.Image img = new javafx.scene.image.Image("roundabout.png",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
                 tile.getChildren().add(imgView);
             }
-            if (graph.nodes.get(i).type == 2) {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.JPG", SIM_SIZE, SIM_SIZE, true, false);
+
+            if(graph.nodes.get(i).type == 2)
+            {
+                javafx.scene.image.Image img = new javafx.scene.image.Image("Corner.png",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
+                if(graph.nodes.get(i).left && graph.nodes.get(i).up)
+                {
+                    imgView.setRotate(90);
+                }
+                if(graph.nodes.get(i).up && graph.nodes.get(i).right)
+                {
+                    imgView.setRotate(180);
+                }
+                if(graph.nodes.get(i).right && graph.nodes.get(i).down)
+                {
+                    imgView.setRotate(270);
+                }
+                if(graph.nodes.get(i).left && graph.nodes.get(i).down)
+                {
+                    imgView.setRotate(360);
+                }
+                tile.getChildren().add(imgView);
+            }
+
+            if(graph.nodes.get(i).type == 3)
+            {
+                javafx.scene.image.Image img = new javafx.scene.image.Image("Ttype.png",  SIM_SIZE, SIM_SIZE,true,false);
+                imgView = new ImageView(img);
+                if(graph.nodes.get(i).intersection.getLeft() == null)
+                {
+                    imgView.setRotate(180);
+                }
+                if(graph.nodes.get(i).intersection.getDown() == null)
+                {
+                    imgView.setRotate(90);
+                }
+                if(graph.nodes.get(i).intersection.getUp() == null)
+                {
+                    imgView.setRotate(270);
+                }
+
                 tile.getChildren().add(imgView);
             }
 
             setTileAtCoordinates(tile, graph.nodes.get(i).x, graph.nodes.get(i).y);
         }
+
 
         System.out.println("There are " + graph.edges.size() + " edges");
         for(int i = 0; i<graph.edges.size(); i++)
@@ -175,21 +219,6 @@ public class Board extends GridPane {
 
 
         }
-
-
-//        javafx.scene.image.Image bckgrnd = new javafx.scene.image.Image("background.JPG", 100,100,false,false);
-//        ImageView background = new ImageView(bckgrnd);
-//        for(int i = 0; i<ySize; i++)
-//        {
-//            for(int j = 0; j<xSize; j++)
-//            {
-//                if(board[j][i] == null) {
-//                    Tile tile = new Tile();
-//                    tile.getChildren().add(background);
-//                    setTileAtCoordinates(tile, j, i);
-//                }
-//            }
-//        }
 
     }
 
