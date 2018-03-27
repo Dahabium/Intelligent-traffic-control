@@ -116,7 +116,7 @@ public class Main extends Application {
 
             AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
 
-            Group animGroup = new Group(animationParts.getAnimatedCircle());
+            Group animGroup = new Group(animationParts.getAnimatedCar());
 
             simulationElements.getChildren().add(animGroup);
 
@@ -256,19 +256,15 @@ public class Main extends Application {
                     vertex.setStroke(Color.BLACK);
 
                     //Before showing a new vertex in gui, check if it doesent intersect with other nodes
-                    if (!checkShapeIntersection(vertex, drawSceneElements)) {
 
-                        if(mouseEvent.isShiftDown())
-                        {
-                            graph.addNodeV2(indexCount, gridX, gridY, x, y, 1);
-                        }
-                        else graph.addNodeV2(indexCount, gridX, gridY, x, y, 0);
+                    if (mouseEvent.isShiftDown()) {
+                        graph.addNodeV2(indexCount, gridX, gridY, x, y, 1);
+                    } else graph.addNodeV2(indexCount, gridX, gridY, x, y, 0);
 
-                        System.out.println("Node added  "+ indexCount+ " x,y :" +graph.getNodeByIndex(indexCount).x + " " + graph.getNodeByIndex(indexCount).y);
+                    System.out.println("Node added  " + indexCount + " x,y :" + graph.getNodeByIndex(indexCount).x + " " + graph.getNodeByIndex(indexCount).y);
 
-                        indexCount++;
-                        drawSceneElements.getChildren().add(vertex);
-                    }
+                    indexCount++;
+                    drawSceneElements.getChildren().add(vertex);
 
                     //Add a listener to a vertex that will trigger if its being pressed to delete it
                     vertex.addEventHandler(MouseEvent.MOUSE_CLICKED, arg0 -> {
@@ -335,21 +331,11 @@ public class Main extends Application {
 
                                 if (stX != ndX || stY != ndY) {
 
-//                  TODO move edges if there is an existing edge.
-//                                    if(graph.existsEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY))){
-//                                        arrow = new Arrow(stX+2, stY+2, ndX+2, ndY+2);
-//
-//                                        graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
-//                                        drawSceneElements.getChildren().add(arrow);
-//                                        release = false;
-//                                    }
-//                                    else{
-                                        arrow = new Arrow(stX, stY, ndX, ndY);
+                                    arrow = new Arrow(stX, stY, ndX, ndY);
 
-                                        graph.addEdge(graph.getNodeAtCoord(stX,stY), graph.getNodeAtCoord(ndX,ndY));
-                                        drawSceneElements.getChildren().add(arrow);
-                                        release = false;
-//                                    }
+                                    graph.addEdge(graph.getNodeAtCoord(stX, stY), graph.getNodeAtCoord(ndX, ndY));
+                                    drawSceneElements.getChildren().add(arrow);
+                                    release = false;
                                 }
                             }
                         }
@@ -451,54 +437,6 @@ public class Main extends Application {
 
     }
 
-
-    //Simple Collision detection, only for vertecies now
-    private boolean checkShapeIntersection(Shape block, Group elements) {
-
-        boolean collisionDetected = false;
-
-        ArrayList<Circle> allVertsInGroup = new ArrayList<>();
-//        ArrayList<Line> allLineInGroup = new ArrayList<>();
-
-        for (int i = 0; i < elements.getChildren().size() - 1; i++) {
-            if (elements.getChildren().get(i) instanceof Circle) {
-                allVertsInGroup.add((Circle) elements.getChildren().get(i));
-            }
-           /* if(elements.getChildren().get(i) instanceof Line){
-                allLineInGroup.add((Line) elements.getChildren().get(i));
-            }*/
-        }
-
-
-        for (Shape shape : allVertsInGroup) {
-
-            if (shape != block) {
-                Shape intersect = Shape.intersect(block, shape);
-                if (intersect.getBoundsInLocal().getWidth() != -1) {
-                    collisionDetected = true;
-                }
-            } else return false;
-        }
-
-
-       /* for (Shape shape : allLineInGroup) {
-
-            if (shape != block) {
-                Shape intersect = Shape.intersect(block, shape);
-                if (intersect.getBoundsInLocal().getWidth() != -1) {
-                    collisionDetected = true;
-                }
-            }
-            else return false;
-        }*/
-
-
-        if (collisionDetected) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
     public Scene getDrawScene()

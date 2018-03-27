@@ -1,6 +1,7 @@
 package simulation;
 
 import javafx.animation.PathTransition;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
@@ -13,6 +14,7 @@ public class AnimationParts {
     Path path;
 
     Circle agent;
+    ImageView imgView;
 
     public AnimationParts(ArrayList<Integer> IntPath, Graph graph, Board board) {
 
@@ -21,14 +23,20 @@ public class AnimationParts {
         this.path = new Path();
         agent.setFill(Color.RED);
 
+        javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", 25 , 25, true, false);
+        imgView = new ImageView(img);
+
+
 
         for (int i = 0; i < IntPath.size(); i++) {
+
             if (i == 0){
                 //set the start of the car movement animation
                 MoveTo moveTo = new MoveTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2, graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE/2);
                 path.getElements().add(moveTo);
             }
             else {
+
                 LineTo lineTo = new LineTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 , graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE/2 );
                 path.getElements().add(lineTo);
             }
@@ -38,7 +46,8 @@ public class AnimationParts {
 
         PathTransition transition = new PathTransition();
         transition.setDuration(Duration.millis(10000));
-        transition.setNode(this.agent);
+        transition.setNode(this.imgView);
+//        transition.setNode(this.agent);
         transition.setPath(this.path);
 
 //        transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -56,5 +65,8 @@ public class AnimationParts {
 
     public Circle getAnimatedCircle() {
         return this.agent;
+    }
+    public ImageView getAnimatedCar() {
+        return this.imgView;
     }
 }
