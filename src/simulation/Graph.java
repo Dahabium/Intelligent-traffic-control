@@ -56,6 +56,11 @@ public class Graph {
     public void removeNode(Node node){
         this.nodes.remove(node);
     }
+    public int[] maxXY()
+    {
+        int[] max = new int[2];
+        max[0] = 0;
+        max[1] = 0;
 
     public int[] maxXY() {
         int[] max = new int[2];

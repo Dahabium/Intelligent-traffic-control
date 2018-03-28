@@ -61,7 +61,7 @@ public class Node {
 		this.intersection = new Intersection();
 	}
 
-	public void createIntersections(boolean left, boolean right, boolean up, boolean down)
+	public void createIntersections()
 	{
 		this.intersection = new Intersection();
 
@@ -81,8 +81,6 @@ public class Node {
 		{
 			intersection.setDown(new SubIntersection());
 		}
-
-
 	}
 
 	public String getName() {
