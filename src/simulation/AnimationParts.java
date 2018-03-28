@@ -12,7 +12,8 @@ import javafx.scene.shape.*;
 import java.util.ArrayList;
 
 public class AnimationParts {
-    final DoubleProperty carVelocity = new SimpleDoubleProperty();
+//    DoubleProperty carVelocity = new SimpleDoubleProperty();
+    double catVelocity;
     final LongProperty lastUpdateTime = new SimpleLongProperty();
     ArrayList<Integer> IntPath;
     Circle agent;
@@ -31,7 +32,7 @@ public class AnimationParts {
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
 
-        carVelocity.set(100);
+        catVelocity = 100;
 
         pathIterator = 1;
 
@@ -90,7 +91,7 @@ public class AnimationParts {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double deltaX = elapsedSeconds * carVelocity.get();
+                    final double deltaX = elapsedSeconds * catVelocity;
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
@@ -107,6 +108,8 @@ public class AnimationParts {
                         else if(newY < yCoord) {
                             imgView.setTranslateY(newY);
                         }
+
+                        catVelocity++;
 
                     }
 
