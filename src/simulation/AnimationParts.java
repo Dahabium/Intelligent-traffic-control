@@ -56,17 +56,15 @@ public class AnimationParts {
 
                 } else {
 
-                    checkDirection(imgView, graph.getNodeByIndex(IntPath.get(i)).x, graph.getNodeByIndex(IntPath.get(i)).y,
+                    int dir = checkDirection( graph.getNodeByIndex(IntPath.get(i)).x, graph.getNodeByIndex(IntPath.get(i)).y,
                             graph.getNodeByIndex(IntPath.get(i - 1)).x, graph.getNodeByIndex(IntPath.get(i - 1)).y);
 
-
-                    System.out.println("Direction " + previousPosition);
 
                     LineTo lineTo = new LineTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
                             graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
 
                     simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
+                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2, dir);
 
                 }
 
@@ -109,20 +107,60 @@ public class AnimationParts {
                             imgView.setTranslateY(newY);
                         }
 
-                        catVelocity++;
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
+
 
                     }
+
 
                     else {
 
                         if(pathIterator < simPath.path.size()-1){
 
+                            imgView.setTranslateX(Math.round(newX));
+                            imgView.setTranslateY(Math.round(newY));
+
+
+                            int oldDir = simPath.directions.get(pathIterator-1);
                             pathIterator++;
+                            int newDir = simPath.directions.get(pathIterator-1);
+//
+                            if(oldDir == 6){
+                                if(newDir == 8){
+                                    imgView.setRotate(270);
+                                }
+                                if(newDir == 2){
+                                    imgView.setRotate(90);
+                                }
+                            }
+                            if(oldDir == 4){
+                                if(newDir == 8){
+                                    imgView.setRotate(270);
+                                }
+                                if(newDir == 2){
+                                    imgView.setRotate(90);
+                                }
+                            }
 
-                            int xCoord = simPath.path.get(pathIterator).get(0);
-                            int yCoord = simPath.path.get(pathIterator).get(1);
+                            if(oldDir == 2){
+                                if(newDir == 4){
+                                    imgView.setRotate(180);
+                                }
+                                if(newDir == 6){
+                                    imgView.setRotate(0);
+                                }
+                            }
+                            if(oldDir == 8){
+                                if(newDir == 4){
+                                    imgView.setRotate(180);
+                                }
+                                if(newDir == 6){
+                                    imgView.setRotate(0);
+                                }
+                            }
 
-                            if (xCoord > imgView.getTranslateX())
+
+                            System.out.println(simPath.directions);
 
                         }
                         else{
@@ -160,25 +198,27 @@ public class AnimationParts {
     }
 
 
-    private void checkDirection(ImageView imgView, int oldX, int oldY, int newX, int newY) {
+    private int checkDirection(int oldX, int oldY, int newX, int newY) {
 
         //north
         if (oldX == newX && oldY > newY) {
-            previousPosition = 2;
+            return 2;
         }
         //south
         if (oldX == newX && oldY < newY) {
-            previousPosition = 8;
+            return 8;
         }
         //east
         if (oldX < newX && oldY == newY) {
             //turn east
-            previousPosition = 4;
+            return 4;
         }
         //west
         if (oldX > newX && oldY == newY) {
-            previousPosition = 6;
+            return 6;
         }
+
+        return 0;
 
     }
 
