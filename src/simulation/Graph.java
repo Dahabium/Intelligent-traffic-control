@@ -40,8 +40,10 @@ public class Graph {
 
         this.nodes.add(node);
     }
-    public void addNodeV2(int index, double Xpos, double Ypos){
-        Node temp = new Node(index,Xpos,Ypos);
+    public void addNodeV2(int index, double Xpos, double Ypos, int x, int y, int type){
+
+        Node temp = new Node(index,Xpos,Ypos, x, y, type);
+
         this.nodes.add(temp);
 
         System.out.println(this.nodes);
@@ -54,6 +56,64 @@ public class Graph {
     public void removeNode(Node node){
         this.nodes.remove(node);
     }
+    public int[] maxXY()
+    {
+        int[] max = new int[2];
+        max[0] = 0;
+        max[1] = 0;
+
+
+
+        for (Node n : nodes) {
+            if (n.x > max[0]) max[0] = n.x;
+            if (n.y > max[1]) max[1] = n.y;
+        }
+        return max;
+    }
+
+    public boolean isBorder(Node n)
+    {
+        int[] temp = maxXY();
+
+        if(n.x == 0 || n.y == 0) return true;
+        if(n.x == temp[0] || n.y == temp[1]) return true;
+
+        return false;
+    }
+
+    public int determineType(Node n)
+    {
+        System.out.println("# of edges" + this.getAdjecents(n).size());
+        if(n.type == 1) return 1;
+        if(n.type == 0 && isBorder(n)) return 0;
+        else if(n.type == 0 && this.getAdjecents(n).size() == 2) return 2;
+        else if(n.type == 0 && this.getAdjecents(n).size() == 3) return 3;
+
+        return 0;
+    }
+
+    public void setSubIntersections()
+    {
+        for(int i = 0; i<nodes.size(); i++)
+        {
+            List<Node> adj = getAdjecents(nodes.get(i));
+
+            for (int j = 0; j < adj.size(); j++)
+            {
+                if(adj.get(j).x>nodes.get(i).x) nodes.get(i).right = true;
+                if(adj.get(j).x<nodes.get(i).x) nodes.get(i).left = true;
+                if(adj.get(j).y>nodes.get(i).y) nodes.get(i).down = true;
+                if(adj.get(j).y<nodes.get(i).y) nodes.get(i).up = true;
+            }
+
+            System.out.println("Adjacent nodes: " + nodes.get(i).left + " " + nodes.get(i).up + " " + nodes.get(i).right + " " + nodes.get(i).down);
+            nodes.get(i).createIntersections();
+        }
+    }
+
+
+
+
 
 
     public void export() throws ParserConfigurationException, FileNotFoundException, IOException
@@ -81,6 +141,9 @@ public class Graph {
                 node.setAttribute("index", (String.valueOf(this.nodes.get(i).index)));
                 node.setAttribute("posX", String.valueOf(this.nodes.get(i).Xpos));
                 node.setAttribute("posY", String.valueOf(this.nodes.get(i).Ypos));
+                node.setAttribute("x", String.valueOf(this.nodes.get(i).x));
+                node.setAttribute("y", String.valueOf(this.nodes.get(i).y));
+                node.setAttribute("type", String.valueOf(determineType(this.nodes.get(i))));
 
 
             }
@@ -90,12 +153,12 @@ public class Graph {
             rootElement.appendChild(edges);
 
             //edges elements
-            for (int j = 0; j < this.edges.size()-1; j++) {
+            for (int j = 0; j < this.edges.size(); j++) {
                 Element edge = doc.createElement("Edge");
                 edge.setAttribute("start", String.valueOf(this.edges.get(j).start.index));
                 edge.setAttribute("end",String.valueOf(this.edges.get(j).end.index));
+                edge.setAttribute("type", String.valueOf(this.edges.get(j).type));
                 edges.appendChild(edge);
-
             }
 
             // write the content into xml file
@@ -120,6 +183,7 @@ public class Graph {
 
 
     }
+
 
     public void addEdge(Node start, Node end){
         edges.add(new Edge(start,end));
@@ -177,7 +241,7 @@ public class Graph {
 
         System.out.println("Number of edges " + this.edges.size());
 
-        for (int j = 0; j < this.edges.size()-1; j++) {
+        for (int j = 0; j < this.edges.size(); j++) {
             System.out.println("Edge :" + j + " start  " + this.edges.get(j).start.index + "  " + this.edges.get(j).end.index);
 
         }
