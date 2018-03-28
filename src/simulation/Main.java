@@ -111,20 +111,18 @@ public class Main extends Application {
 
             simulationElements.getChildren().add(simulationPane);
 
+
             ArrayList<Integer> arr = new ArrayList<>();
-            arr.addAll(Arrays.asList(0,1,2,5,4,7,8));
+            arr.addAll(Arrays.asList(0,1,4,5,8));
 
-            ArrayList<Integer> arr2 = new ArrayList<>();
-            arr2.addAll(Arrays.asList(0,3,4,7,8));
+            AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
+            animationParts.animationTimer.start();
 
-//            AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
-//            AnimationParts animationParts2 = new AnimationParts(arr2, graph, simulationBoard);
-//
-//            Group animGroup = new Group();
-//            animGroup.getChildren().add(animationParts.getAnimatedCar());
-//            animGroup.getChildren().add(animationParts2.getAnimatedCar());
-//
-//            simulationElements.getChildren().add(animGroup);
+
+            Group animGroup = new Group();
+            animGroup.getChildren().add(animationParts.getAnimatedCar());
+
+            simulationElements.getChildren().add(animGroup);
 
             primaryStage.setScene(runScene);
 
@@ -199,14 +197,14 @@ public class Main extends Application {
         drawSceneElements.getChildren().add(boardPane);
 
 //        // vertical lines
-//        for(int i = 0 ; i < drawScene.getWidth() ; i+=30){
-//            Line line = new Line(i,30,i,(drawScene.getHeight() - drawScene.getHeight()%30));
+//        for(int pathIterator = 0 ; pathIterator < drawScene.getWidth() ; pathIterator+=30){
+//            Line line = new Line(pathIterator,30,pathIterator,(drawScene.getHeight() - drawScene.getHeight()%30));
 //            drawSceneElements.getChildren().add(line);
 //        }
 //
 //        // horizontal lines
-//        for(int i = 30 ; i < drawScene.getHeight(); i+=30){
-//            Line line = new Line(30, i, drawScene.getWidth(), i);
+//        for(int pathIterator = 30 ; pathIterator < drawScene.getHeight(); pathIterator+=30){
+//            Line line = new Line(30, pathIterator, drawScene.getWidth(), pathIterator);
 //            drawSceneElements.getChildren().add(line);
 //        }
 
