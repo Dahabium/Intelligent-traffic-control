@@ -1,4 +1,6 @@
 package backend;
+import simulation.Edge;
+import simulation.Graph;
 import simulation.Node;
 
 public class Car {
@@ -22,7 +24,7 @@ public class Car {
 	private double distTran;
 	private double obeyFactor;
 	
-	private int vel;
+	private double vel;
 	private double acc;
 	
 	public Node getStart() {
@@ -45,8 +47,9 @@ public class Car {
 	private Node end;
 	// departure and arrival locations need to be added
 	// current location aswell
+
 	
-	public Car(Node start, Node end){
+	public Car(Node start, Node end, Graph graph){
 		this.desVel = 80;
 		this.maxVel = 120;
 		this.minimumSpacing = 5;
@@ -62,7 +65,7 @@ public class Car {
 		this.obeyFactor = 1;
 		this.start = start;
 		this.end = end;
-		 
+		this.locRoad = graph.getEdge(start, graph.getNodeByIndex(1)).getRoad();
 	}
 	
 	public double getObeyFactor() {
@@ -73,11 +76,11 @@ public class Car {
 		this.obeyFactor = obeyFactor;
 	}
 
-	public int getVel() {
+	public double getVel() {
 		return vel;
 	}
 
-	public void setVel(int vel) {
+	public void setVel(double vel) {
 		this.vel = vel;
 	}
 

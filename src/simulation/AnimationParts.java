@@ -1,5 +1,7 @@
 package simulation;
 
+import backend.Car;
+import backend.Model;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.LongProperty;
@@ -32,7 +34,11 @@ public class AnimationParts {
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
 
-        catVelocity = 100;
+        Car car = new Car(graph.getNodeByIndex(0), graph.getNodeByIndex(8), graph);
+        Model model = new Model();
+
+
+        catVelocity = car.getDesVel();
 
         pathIterator = 1;
 
@@ -91,7 +97,11 @@ public class AnimationParts {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double deltaX = elapsedSeconds * catVelocity;
+                    car.setAcc(model.acceleration(car, 10000, 80));
+                    car.setVel(model.desiredVelocity(car));
+
+
+                    final double deltaX = elapsedSeconds * car.getVel();
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
@@ -119,10 +129,10 @@ public class AnimationParts {
 
                             pathIterator++;
 
-                            int xCoord = simPath.path.get(pathIterator).get(0);
-                            int yCoord = simPath.path.get(pathIterator).get(1);
+                          //  int xCoord = simPath.path.get(pathIterator).get(0);
+                            //int yCoord = simPath.path.get(pathIterator).get(1);
 
-                            if (xCoord > imgView.getTranslateX())
+                            //if (xCoord > imgView.getTranslateX())
 
                         }
                         else{
