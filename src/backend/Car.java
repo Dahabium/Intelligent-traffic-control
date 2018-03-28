@@ -14,8 +14,8 @@ public class Car {
 	private double maxDec;
 	private int exponent;
 	private Road locRoad;
-	private int locX;
-	private int locY;
+	private double locX;
+	private double locY;
 	private double time;
 	private boolean carFollow;
 	private double distCar;
@@ -46,7 +46,22 @@ public class Car {
 	// departure and arrival locations need to be added
 	// current location aswell
 	
-	public Car(int desiredVelocity, int minimumSpacing){
+	public Car(Node start, Node end){
+		this.desVel = 80;
+		this.maxVel = 120;
+		this.minimumSpacing = 5;
+		this.timeHeadway = 10;
+		this.desAcc = 1;
+		this.maxAcc = 3;
+		this.desDec = 1;
+		this.maxDec = 3;
+		this.exponent = 4;
+		this.locX = start.getXpos();
+		this.locY = start.getYpos();
+		this.carFollow = false;
+		this.obeyFactor = 1;
+		this.start = start;
+		this.end = end;
 		 
 	}
 	
@@ -154,19 +169,19 @@ public class Car {
 		this.locRoad = locRoad;
 	}
 
-	public int getLocX() {
+	public double getLocX() {
 		return locX;
 	}
 
-	public void setLocX(int locX) {
+	public void setLocX(double locX) {
 		this.locX = locX;
 	}
 
-	public int getLocY() {
+	public double getLocY() {
 		return locY;
 	}
 
-	public void setLocY(int locY) {
+	public void setLocY(double locY) {
 		this.locY = locY;
 	}
 

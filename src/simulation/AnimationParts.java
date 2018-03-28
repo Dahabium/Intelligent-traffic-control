@@ -1,5 +1,6 @@
 package simulation;
 
+import backend.Car;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.LongProperty;
@@ -30,6 +31,9 @@ public class AnimationParts {
         this.IntPath = IntPath;
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
+
+        Car car = new Car(graph.getNodeByIndex(0),graph.getNodeByIndex(8));
+
 
         carVelocity.set(100);
 
