@@ -1,6 +1,5 @@
 package simulation;
 
-import backend.Car;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.LongProperty;
@@ -13,7 +12,8 @@ import javafx.scene.shape.*;
 import java.util.ArrayList;
 
 public class AnimationParts {
-    final DoubleProperty carVelocity = new SimpleDoubleProperty();
+//    DoubleProperty carVelocity = new SimpleDoubleProperty();
+    double catVelocity;
     final LongProperty lastUpdateTime = new SimpleLongProperty();
     ArrayList<Integer> IntPath;
     Circle agent;
@@ -32,10 +32,7 @@ public class AnimationParts {
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
 
-        Car car = new Car(graph.getNodeByIndex(0),graph.getNodeByIndex(8));
-
-
-        carVelocity.set(100);
+        catVelocity = 100;
 
         pathIterator = 1;
 
@@ -94,7 +91,7 @@ public class AnimationParts {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double deltaX = elapsedSeconds * carVelocity.get();
+                    final double deltaX = elapsedSeconds * catVelocity;
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
@@ -112,14 +109,21 @@ public class AnimationParts {
                             imgView.setTranslateY(newY);
                         }
 
+                        catVelocity++;
+
                     }
 
                     else {
 
                         if(pathIterator < simPath.path.size()-1){
-                            imgView.setTranslateX(Math.round(newX));
-                            imgView.setTranslateY(Math.round(newY));
+
                             pathIterator++;
+
+                            int xCoord = simPath.path.get(pathIterator).get(0);
+                            int yCoord = simPath.path.get(pathIterator).get(1);
+
+                            if (xCoord > imgView.getTranslateX())
+
                         }
                         else{
                             stop();
