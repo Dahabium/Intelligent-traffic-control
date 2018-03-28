@@ -54,6 +54,8 @@ public class Board extends GridPane {
 
     public void setBoard(Graph graph) {
 
+        graph.setSubIntersections();
+
         for (int i = 0; i < ySize; i++) {
             for (int j = 0; j < xSize; j++) {
 
