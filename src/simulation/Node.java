@@ -61,7 +61,7 @@ public class Node {
 		this.intersection = new Intersection();
 	}
 
-	public void createIntersections()
+	public void createIntersections(boolean left, boolean right, boolean up, boolean down)
 	{
 		this.intersection = new Intersection();
 

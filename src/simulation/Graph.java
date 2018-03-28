@@ -62,10 +62,7 @@ public class Graph {
         max[0] = 0;
         max[1] = 0;
 
-    public int[] maxXY() {
-        int[] max = new int[2];
-        max[0] = 0;
-        max[1] = 0;
+
 
         for (Node n : nodes) {
             if (n.x > max[0]) max[0] = n.x;
@@ -110,7 +107,7 @@ public class Graph {
             }
 
             System.out.println("Adjacent nodes: " + nodes.get(i).left + " " + nodes.get(i).up + " " + nodes.get(i).right + " " + nodes.get(i).down);
-            nodes.get(i).createIntersections();;
+            nodes.get(i).createIntersections();
         }
     }
 
@@ -146,7 +143,6 @@ public class Graph {
                 node.setAttribute("posY", String.valueOf(this.nodes.get(i).Ypos));
                 node.setAttribute("x", String.valueOf(this.nodes.get(i).x));
                 node.setAttribute("y", String.valueOf(this.nodes.get(i).y));
-                node.setAttribute("type", String.valueOf(this.nodes.get(i).type));
                 node.setAttribute("type", String.valueOf(determineType(this.nodes.get(i))));
 
 

@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Graph>
-    <Nodes>
-        <Node index="0" posX="148.5" posY="177.5" type="0" x="2" y="1"/>
-        <Node index="1" posX="403.5" posY="177.5" type="0" x="7" y="1"/>
-        <Node index="2" posX="403.5" posY="381.5" type="0" x="7" y="5"/>
-        <Node index="3" posX="148.5" posY="381.5" type="0" x="2" y="5"/>
-    </Nodes>
-    <Edges>
-        <Edge end="1" start="0" type="0"/>
-        <Edge end="2" start="1" type="0"/>
-        <Edge end="3" start="2" type="0"/>
-        <Edge end="0" start="3" type="0"/>
-    </Edges>
-</Graph>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Graph><Nodes><Node index="0" posX="148.5" posY="279.5" type="0" x="2" y="3"/><Node index="1" posX="301.5" posY="279.5" type="1" x="5" y="3"/><Node index="2" posX="454.5" posY="279.5" type="0" x="8" y="3"/></Nodes><Edges><Edge end="1" start="0" type="0"/><Edge end="2" start="1" type="0"/></Edges></Graph>

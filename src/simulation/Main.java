@@ -117,14 +117,14 @@ public class Main extends Application {
             ArrayList<Integer> arr2 = new ArrayList<>();
             arr2.addAll(Arrays.asList(0,3,4,7,8));
 
-            AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
-            AnimationParts animationParts2 = new AnimationParts(arr2, graph, simulationBoard);
-
-            Group animGroup = new Group();
-            animGroup.getChildren().add(animationParts.getAnimatedCar());
-            animGroup.getChildren().add(animationParts2.getAnimatedCar());
-
-            simulationElements.getChildren().add(animGroup);
+//            AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
+//            AnimationParts animationParts2 = new AnimationParts(arr2, graph, simulationBoard);
+//
+//            Group animGroup = new Group();
+//            animGroup.getChildren().add(animationParts.getAnimatedCar());
+//            animGroup.getChildren().add(animationParts2.getAnimatedCar());
+//
+//            simulationElements.getChildren().add(animGroup);
 
             primaryStage.setScene(runScene);
 
