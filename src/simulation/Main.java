@@ -28,8 +28,7 @@ import java.util.Arrays;
 
 
 public class Main extends Application {
-    public StackPane stackPane = new StackPane();;
-    Path path;
+
     //runscene - scene for simulation, drawscene - scene for creating a graph. startscene - startup menu
     Scene startScene, runScene, drawScene;
     private boolean release = false;
@@ -44,7 +43,6 @@ public class Main extends Application {
     private int indexCount = 0;
     public Graph graph;
     private String fileName = "graph2";
-//    private GridSnapper gridSnapper = new GridSnapper();
     Board board;
 
     public static void main(String[] args) {
@@ -129,21 +127,6 @@ public class Main extends Application {
 //            primaryStage.show();
         });
 
-        Button testbtn = new Button("Show Test Graph");
-        testbtn.setOnAction(event -> {
-
-            //Tester class for creating graph
-            DummyGraph dummyGraph = new DummyGraph();
-            Graph dummyGraph1 = dummyGraph.createModelTestGraph();
-
-            dummyGraph1.showGraph(simulationElements);
-            primaryStage.setScene(runScene);
-
-
-            XMLCreator xmlCreator = new XMLCreator();
-            xmlCreator.createXML(dummyGraph1);
-
-        });
 
         Button backToMenubtn = new Button("Go to main menu");
         backToMenubtn.setOnAction(e -> primaryStage.setScene(startScene));
@@ -155,7 +138,6 @@ public class Main extends Application {
         StartMenuPlacer.add(drawGraphbtn, 1, 1);
         StartMenuPlacer.add(loadGraphbtn, 1, 2);
         StartMenuPlacer.add(loadGraphTXT, 2, 2);
-        StartMenuPlacer.add(testbtn, 1, 3);
         root.getChildren().add(StartMenuPlacer);
 
         //============================START MENU END===============================
@@ -195,18 +177,6 @@ public class Main extends Application {
         boardPane.setLayoutY(100);
 
         drawSceneElements.getChildren().add(boardPane);
-
-//        // vertical lines
-//        for(int pathIterator = 0 ; pathIterator < drawScene.getWidth() ; pathIterator+=30){
-//            Line line = new Line(pathIterator,30,pathIterator,(drawScene.getHeight() - drawScene.getHeight()%30));
-//            drawSceneElements.getChildren().add(line);
-//        }
-//
-//        // horizontal lines
-//        for(int pathIterator = 30 ; pathIterator < drawScene.getHeight(); pathIterator+=30){
-//            Line line = new Line(30, pathIterator, drawScene.getWidth(), pathIterator);
-//            drawSceneElements.getChildren().add(line);
-//        }
 
 
         interSectbtn.setOnMouseClicked(event -> {
@@ -350,7 +320,6 @@ public class Main extends Application {
             }
         };
 
-//        drawScene.setOnMouseDragged(mouseHandler);
         drawScene.setOnMouseClicked(mouseHandler);
 
 
@@ -365,115 +334,5 @@ public class Main extends Application {
         primaryStage.setScene(startScene);
         primaryStage.show();
 
-//        final long startNanoTime = System.nanoTime();
     }
-
-    private Group addAnimation() {
-        //Drawing a Circle
-        Circle circle = new Circle();
-
-        //Setting the position of the circle
-        circle.setCenterX(300.0f);
-        circle.setCenterY(135.0f);
-
-        //Setting the radius of the circle
-        circle.setRadius(25.0f);
-
-        //Setting the color of the circle
-        circle.setFill(Color.BROWN);
-
-        //Setting the stroke width of the circle
-        circle.setStrokeWidth(20);
-
-        //Creating a Path
-        Path path = new Path();
-
-        //Moving to the starting point
-        MoveTo moveTo = new MoveTo(108, 71);
-
-        //Creating 1st line
-        LineTo line1 = new LineTo(321, 161);
-
-        //Creating 2nd line
-        LineTo line2 = new LineTo(126,232);
-
-        //Creating 3rd line
-        LineTo line3 = new LineTo(232,52);
-
-        //Creating 4th line
-        LineTo line4 = new LineTo(269, 250);
-
-        //Creating 5th line
-        LineTo line5 = new LineTo(108, 71);
-
-        //Adding all the elements to the path
-        path.getElements().add(moveTo);
-        path.getElements().addAll(line1, line2, line3, line4, line5);
-
-        //Creating the path transition
-        PathTransition pathTransition = new PathTransition();
-
-        //Setting the duration of the transition
-        pathTransition.setDuration(Duration.millis(1000));
-
-        //Setting the node for the transition
-        pathTransition.setNode(circle);
-
-        //Setting the path for the transition
-        pathTransition.setPath(path);
-
-        //Setting the orientation of the path
-        pathTransition.setOrientation(
-                PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-
-        //Setting the cycle count for the transition
-        pathTransition.setCycleCount(2);
-
-        //Setting auto reverse value to true
-        pathTransition.setAutoReverse(false);
-
-        //Playing the animation
-        pathTransition.play();
-
-        Group root = new Group(circle);
-
-        return root;
-
-    }
-
-
-
-    public Scene getDrawScene()
-    {
-        return drawScene;
-    }
-
 }
-
-
-
-
-
-
-/*
-Simple animation in JavaFX
-
-        new AnimationTimer()
-        {
-            public void handle(long currentNanoTime)
-            {
-                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-
-                double x = 232 + 128 * Math.cos(t);
-                double y = 232 + 128 * Math.sin(t);
-
-                // background image clears canvas
-                gc.setFill(Color.WHITE);
-                gc.fillRect(0,0,500,500);
-                gc.setFill(Color.CYAN);
-                gc.fillRect(x,y,50,50);
-
-            }
-        }.start();
- */
-

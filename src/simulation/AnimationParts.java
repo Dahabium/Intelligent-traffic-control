@@ -116,9 +116,14 @@ public class AnimationParts {
                     else {
 
                         if(pathIterator < simPath.path.size()-1){
-                            imgView.setTranslateX(Math.round(newX));
-                            imgView.setTranslateY(Math.round(newY));
+
                             pathIterator++;
+
+                            int xCoord = simPath.path.get(pathIterator).get(0);
+                            int yCoord = simPath.path.get(pathIterator).get(1);
+
+                            if (xCoord > imgView.getTranslateX())
+
                         }
                         else{
                             stop();
