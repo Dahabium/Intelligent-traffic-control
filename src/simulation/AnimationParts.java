@@ -69,7 +69,7 @@ public class AnimationParts {
             }
         }
 
-        imgView.setTranslateX(simPath.startX);
+        imgView.setTranslateX(simPath.startX-10);
         imgView.setTranslateY(simPath.startY);
 
         //prerotate
@@ -98,7 +98,7 @@ public class AnimationParts {
 
                 if (lastUpdateTime.get() > 0) {
 
-                    int xCoord = simPath.path.get(pathIterator).get(0);
+                    int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
