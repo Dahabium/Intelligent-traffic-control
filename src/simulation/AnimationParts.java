@@ -3,9 +3,7 @@ package simulation;
 import backend.Car;
 import backend.Model;
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 
 public class AnimationParts {
 //    DoubleProperty carVelocity = new SimpleDoubleProperty();
-    double catVelocity;
+    double carVelocity;
     final LongProperty lastUpdateTime = new SimpleLongProperty();
     ArrayList<Integer> IntPath;
     Circle agent;
@@ -38,7 +36,7 @@ public class AnimationParts {
         Model model = new Model();
 
 
-        catVelocity = car.getDesVel();
+        carVelocity = car.getDesVel();
 
         pathIterator = 1;
 
@@ -53,8 +51,7 @@ public class AnimationParts {
 
                 //set the start of the car movement animation
                 if (i == 0) {
-                    MoveTo moveTo = new MoveTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
+
                     previousPosition = 10;
 
                     simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
@@ -66,8 +63,7 @@ public class AnimationParts {
                             graph.getNodeByIndex(IntPath.get(i - 1)).x, graph.getNodeByIndex(IntPath.get(i - 1)).y);
 
 
-                    LineTo lineTo = new LineTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
+
 
                     simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
                             graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2, dir);
@@ -77,8 +73,24 @@ public class AnimationParts {
             }
         }
 
-        imgView.setTranslateX(simPath.startX);
+        imgView.setTranslateX(simPath.startX-10);
         imgView.setTranslateY(simPath.startY);
+
+        //prerotate
+        if(simPath.directions.get(0) == 8)
+        {
+            imgView.setRotate(270);
+        }
+
+        if(simPath.directions.get(0) == 4)
+        {
+            imgView.setRotate(180);
+        }
+
+        if(simPath.directions.get(0) == 2)
+        {
+            imgView.setRotate(90);
+        }
 
 
         animationTimer = new AnimationTimer() {
@@ -90,35 +102,52 @@ public class AnimationParts {
 
                 if (lastUpdateTime.get() > 0) {
 
-                    int xCoord = simPath.path.get(pathIterator).get(0);
+                    int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
+//                    final double delta = elapsedSeconds * carVelocity;
 
 
 
-                    final double deltaX = elapsedSeconds * car.getVel();
+                    final double delta = elapsedSeconds * car.getVel();
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
+                    double newX = oldX + delta;
+                    double newY = oldY + delta;
+                    if(simPath.directions.get(pathIterator-1) == 4)
+                    {
+                        newX = oldX - delta;
+                    }
 
-                    final double newX = oldX + deltaX;
-                    final double newY = oldY + deltaX;
+                    if(simPath.directions.get(pathIterator-1) == 8)
+                    {
+                        newY = oldY - delta;
+                    }
 
-                    if (newX < xCoord || newY < yCoord) {
 
-                        if (newX < xCoord){
-                            imgView.setTranslateX(newX);
-                        }
 
-                        else if(newY < yCoord) {
-                            imgView.setTranslateY(newY);
-                        }
-
+                    if(simPath.directions.get(pathIterator-1) == 6 && newX<xCoord)
+                    {
+                        imgView.setTranslateX(newX);
                         System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
-
-
+                    }
+                    else if(simPath.directions.get(pathIterator-1) == 4 && newX>xCoord)
+                    {
+                        imgView.setTranslateX(newX);
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
+                    }
+                    else if(simPath.directions.get(pathIterator-1) == 2 && newY<yCoord)
+                    {
+                        imgView.setTranslateY(newY);
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
+                    }
+                    else if(simPath.directions.get(pathIterator-1) == 8 && newY>yCoord)
+                    {
+                        imgView.setTranslateY(newY);
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
                     }
 
 
@@ -133,7 +162,7 @@ public class AnimationParts {
                             int oldDir = simPath.directions.get(pathIterator-1);
                             pathIterator++;
                             int newDir = simPath.directions.get(pathIterator-1);
-//
+
                             if(oldDir == 6){
                                 if(newDir == 8){
                                     imgView.setRotate(270);
