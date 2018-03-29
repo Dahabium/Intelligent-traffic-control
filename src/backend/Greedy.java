@@ -12,10 +12,17 @@ import java.util.List;
 public class Greedy {
 
     private ArrayList<Node> path = new ArrayList<Node>();
+    private ArrayList<Boolean> visited = new ArrayList<Boolean>();
 
     public Greedy(Node start, Node end, Graph graph)
     {
+        for (int i = 0; i < graph.getNodes().size(); i++) {
+
+            visited.add(false);
+        }
+
         path.add(start);
+        visited.set(start.getIndex(), true);
 
         List<Node> neighbours = graph.getAdjecents(start);
 
@@ -24,13 +31,24 @@ public class Greedy {
 
         while (path.get(path.size() - 1) != end) {
             for (int i = 0; i < neighbours.size(); i++) {
-                if (calcPytho(neighbours.get(i), end) < max) {
+                if (calcPytho(neighbours.get(i), end) < max && !visited.get(neighbours.get(i).getIndex())) {
                     max = calcPytho(neighbours.get(i), end);
                     index = i;
                 }
             }
 
-            path.add(neighbours.get(index));
+            if(!visited.get(neighbours.get(index).getIndex())) {
+                path.add(neighbours.get(index));
+                visited.set(neighbours.get(index).getIndex(), true);
+            } else {
+
+                if(path.size() > 0) {
+                    visited.set(path.get(path.size() - 1).getIndex(), true);
+                    path.remove(path.get(path.size() - 1));
+                } else {
+                    return;
+                }
+            }
         }
     }
 
