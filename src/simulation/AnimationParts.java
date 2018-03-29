@@ -47,8 +47,7 @@ public class AnimationParts {
 
                 //set the start of the car movement animation
                 if (i == 0) {
-                    MoveTo moveTo = new MoveTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
+
                     previousPosition = 10;
 
                     simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
@@ -60,8 +59,7 @@ public class AnimationParts {
                             graph.getNodeByIndex(IntPath.get(i - 1)).x, graph.getNodeByIndex(IntPath.get(i - 1)).y);
 
 
-                    LineTo lineTo = new LineTo(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
+
 
                     simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
                             graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2, dir);
@@ -73,6 +71,22 @@ public class AnimationParts {
 
         imgView.setTranslateX(simPath.startX);
         imgView.setTranslateY(simPath.startY);
+
+        //prerotate
+        if(simPath.directions.get(0) == 8)
+        {
+            imgView.setRotate(270);
+        }
+
+        if(simPath.directions.get(0) == 4)
+        {
+            imgView.setRotate(180);
+        }
+
+        if(simPath.directions.get(0) == 2)
+        {
+            imgView.setRotate(90);
+        }
 
 
         animationTimer = new AnimationTimer() {
@@ -89,27 +103,45 @@ public class AnimationParts {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double deltaX = elapsedSeconds * catVelocity;
+                    final double delta = elapsedSeconds * catVelocity;
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
+                    double newX = oldX + delta;
+                    double newY = oldY + delta;
+                    if(simPath.directions.get(pathIterator-1) == 4)
+                    {
+                        newX = oldX - delta;
+                    }
 
-                    final double newX = oldX + deltaX;
-                    final double newY = oldY + deltaX;
+                    if(simPath.directions.get(pathIterator-1) == 8)
+                    {
+                        newY = oldY - delta;
+                    }
 
-                    if (newX < xCoord || newY < yCoord) {
 
-                        if (newX < xCoord){
-                            imgView.setTranslateX(newX);
-                        }
 
-                        else if(newY < yCoord) {
-                            imgView.setTranslateY(newY);
-                        }
 
+
+                    if(simPath.directions.get(pathIterator-1) == 6 && newX<xCoord)
+                    {
+                        imgView.setTranslateX(newX);
                         System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
-
-
+                    }
+                    else if(simPath.directions.get(pathIterator-1) == 4 && newX>xCoord)
+                    {
+                        imgView.setTranslateX(newX);
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
+                    }
+                    else if(simPath.directions.get(pathIterator-1) == 2 && newY<yCoord)
+                    {
+                        imgView.setTranslateY(newY);
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
+                    }
+                    else if(simPath.directions.get(pathIterator-1) == 8 && newY>yCoord)
+                    {
+                        imgView.setTranslateY(newY);
+                        System.out.println(imgView.getTranslateX() + "  " + imgView.getTranslateY());
                     }
 
 

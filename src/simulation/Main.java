@@ -111,7 +111,7 @@ public class Main extends Application {
 
 
             ArrayList<Integer> arr = new ArrayList<>();
-            arr.addAll(Arrays.asList(0,1,4,5,8));
+            arr.addAll(Arrays.asList(8,5,4,1,0));
 
             AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
             animationParts.animationTimer.start();
