@@ -34,5 +34,13 @@ public class simulationPath {
         path.add(point);
     }
 
+    public int getX(int intex){
+        return this.path.get(intex).get(0);
+    }
+
+    public int getY(int intex){
+        return this.path.get(intex).get(1);
+    }
+
 
 }

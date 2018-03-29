@@ -259,6 +259,7 @@ public class Graph {
         return out;
     }
     public Node getNodeByIndex(int index){
+
         for (int i = 0; i < nodes.size(); i++) {
             if(nodes.get(i).index == index ){
                 return nodes.get(i);
@@ -329,5 +330,13 @@ public class Graph {
         return null;
     }
 
+    public Edge getEdge(Node start, Node end){
+        for (int i = 0; i < edges.size(); i++) {
+            if(edges.get(i).start == start && edges.get(i).end == end){
+                return edges.get(i);
+            }
+        }
+        return null;
+    }
 
 }
