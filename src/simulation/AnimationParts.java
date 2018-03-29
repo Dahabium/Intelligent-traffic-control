@@ -120,6 +120,7 @@ public class AnimationParts {
                     final double oldY = imgView.getTranslateY();
                     double newX = oldX + delta;
                     double newY = oldY + delta;
+
                     if(simPath.directions.get(pathIterator-1) == 4)
                     {
                         newX = oldX - delta;

@@ -117,15 +117,15 @@ public class Board extends GridPane {
             {
                 javafx.scene.image.Image img = new javafx.scene.image.Image("Ttype.png",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
-                if(graph.nodes.get(i).intersection.getLeft() == null)
+                if(!graph.nodes.get(i).left)
                 {
                     imgView.setRotate(180);
                 }
-                if(graph.nodes.get(i).intersection.getDown() == null)
+                if(!graph.nodes.get(i).down)
                 {
                     imgView.setRotate(90);
                 }
-                if(graph.nodes.get(i).intersection.getUp() == null)
+                if(!graph.nodes.get(i).up)
                 {
                     imgView.setRotate(270);
                 }
