@@ -11,13 +11,15 @@ public class AStarNode {
 	private double f_score;
 	private double x;
 	private double y;
+	private int index;
 	
-	public AStarNode(Node n){
+	public AStarNode(Node n, int index){
 	
 		g_score = Double.MAX_VALUE;
 		f_score = Double.MAX_VALUE;
 		x = n.getXpos();
-		y = n.getYpos();		
+		y = n.getYpos();
+		this.index = index;
 	}
 
 
@@ -68,6 +70,13 @@ public class AStarNode {
 	public void setY(double y) {
 		this.y = y;
 	}
-	
+
+	public void setIndex(int index){
+		this.index = index;
+	}
+
+	public int getIndex(){
+		return index;
+	}
 	
 }
