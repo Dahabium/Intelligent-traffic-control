@@ -95,8 +95,7 @@ public class AnimationParts {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    car.setAcc(model.acceleration(car, 10000, 80));
-                    car.setVel(model.desiredVelocity(car));
+
 
 
                     final double deltaX = elapsedSeconds * car.getVel();
@@ -178,6 +177,12 @@ public class AnimationParts {
                         }
 
                     }
+
+
+
+                    double dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+                    car.setVel((car.getVel() + (model.acceleration(car, dist, 15)* 0.016)));
+                    System.out.println(dist + " " + car.getVel());
 
                 }
 
