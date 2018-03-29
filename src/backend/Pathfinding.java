@@ -14,20 +14,20 @@ public class Pathfinding {
 
         for (int i = 0; i < graph.getNodes().size(); i++) {
 
-            newGraph.add(new AStarNode(graph.getNodes().get(i)));
+            newGraph.add(new AStarNode(graph.getNodes().get(i), i));
         }
 
         for (int i = 0; i < graph.getNodes().size(); i++) {
 
             for (int j = 0; j < graph.getAdjecents(graph.getNodes().get(i)).size(); j++) {
 
-                newGraph.get(i).getNeighbours().add(new AStarNode(graph.getAdjecents(graph.getNodes().get(i)).get(j)));
+                newGraph.get(i).getNeighbours().add(new AStarNode(graph.getAdjecents(graph.getNodes().get(i)).get(j), graph.getAdjecents(graph.getNodes().get(i)).get(j).getIndex()));
 
             }
         }
     }
 
-    public ArrayList<AStarNode> Astar(Car car, Graph graph) {
+    public ArrayList<Integer> Astar(Car car, Graph graph) {
 
         ArrayList<AStarNode> closedSet = new ArrayList<AStarNode>();
         ArrayList<AStarNode> openSet = new ArrayList<AStarNode>();
@@ -127,14 +127,14 @@ public class Pathfinding {
         return null;
     }
 
-    public ArrayList<AStarNode> constructPath(AStarNode current, AStarNode start) {
+    public ArrayList<Integer> constructPath(AStarNode current, AStarNode start) {
 
-        ArrayList<AStarNode> path = new ArrayList<>();
-        path.add(current);
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        path.add(current.getIndex());
 
         while (current.getCameFrom() != start) {
             current = current.getCameFrom();
-            path.add(current);
+            path.add(current.getIndex());
         }
 
         return path;
