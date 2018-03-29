@@ -1,5 +1,7 @@
 package simulation;
 
+import backend.Greedy;
+import backend.Pathfinding;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
 
@@ -111,23 +113,20 @@ public class Main extends Application {
             simulationElements.getChildren().add(simulationPane);
 
 
-            ArrayList<Integer> arr = new ArrayList<>();
             ArrayList<Integer> arr2 = new ArrayList<>();
-            arr.addAll(Arrays.asList(17,0,1,5,6,7,11,15));
-//            Collections.reverse(arr);
             arr2.addAll(Arrays.asList(17,0,1,4,8,12,13,14,15));
+            AnimationParts handAnimation = new AnimationParts(arr2, graph, simulationBoard);
+            handAnimation.animationTimer.start();
 
-            AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
-            AnimationParts animationParts2 = new AnimationParts(arr2, graph, simulationBoard);
 
 
-            animationParts.animationTimer.start();
-            animationParts2.animationTimer.start();
+            AnimationParts autoAnimation = new AnimationParts(graph, simulationBoard);
+            autoAnimation.animationTimer.start();
 
 
             Group animGroup = new Group();
-            animGroup.getChildren().add(animationParts.getAnimatedCar());
-            animGroup.getChildren().add(animationParts2.getAnimatedCar());
+            animGroup.getChildren().add(autoAnimation.getAnimatedCar());
+            animGroup.getChildren().add(handAnimation.getAnimatedCar());
 
             simulationElements.getChildren().add(animGroup);
 

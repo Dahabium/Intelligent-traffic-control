@@ -13,8 +13,13 @@ public class Greedy {
 
     private ArrayList<Node> path = new ArrayList<Node>();
 
-    public Greedy(Node start, Node end, Graph graph)
+    public Greedy()
     {
+
+    }
+
+    public ArrayList<Node> getPath(Node start, Node end, Graph graph){
+
         path.add(start);
 
         List<Node> neighbours = graph.getAdjecents(start);
@@ -32,13 +37,11 @@ public class Greedy {
 
             path.add(neighbours.get(index));
         }
-    }
-
-    public ArrayList<Node> getPath(){
         return path;
     }
 
     public double calcPytho(Node start, Node end) {
+
 
         return Math.sqrt(Math.pow((start.getXpos() - end.getXpos()), 2) + (Math.pow(start.getYpos() - end.getYpos(), 2)));
     }
