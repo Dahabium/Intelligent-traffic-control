@@ -1,4 +1,6 @@
 package backend;
+import simulation.Edge;
+import simulation.Graph;
 import simulation.Node;
 
 public class Car {
@@ -22,8 +24,27 @@ public class Car {
 	private double distTran;
 	private double obeyFactor;
 	
-	private int vel;
-	private double acc;
+	private double vel = 0.1;
+	private double acc = 2;
+
+    public Car(Node start, Node end, Graph graph){
+        this.desVel = 80;
+        this.maxVel = 100;
+        this.minimumSpacing = 0;
+        this.timeHeadway = 2;
+        this.desAcc = 1.5;
+        this.maxAcc = 2.5;
+        this.desDec = 1.67;
+        this.maxDec = 3;
+        this.exponent = 4;
+        this.locX = start.getXpos();
+        this.locY = start.getYpos();
+        this.carFollow = false;
+        this.obeyFactor = 1;
+        this.start = start;
+        this.end = end;
+        this.locRoad = graph.getEdge(start, graph.getNodeByIndex(1)).getRoad();
+    }
 	
 	public Node getStart() {
 		return start;
@@ -46,25 +67,6 @@ public class Car {
 	// departure and arrival locations need to be added
 	// current location aswell
 	
-	public Car(Node start, Node end){
-		this.desVel = 80;
-		this.maxVel = 120;
-		this.minimumSpacing = 5;
-		this.timeHeadway = 10;
-		this.desAcc = 1;
-		this.maxAcc = 3;
-		this.desDec = 1;
-		this.maxDec = 3;
-		this.exponent = 4;
-		this.locX = start.getXpos();
-		this.locY = start.getYpos();
-		this.carFollow = false;
-		this.obeyFactor = 1;
-		this.start = start;
-		this.end = end;
-		 
-	}
-	
 	public double getObeyFactor() {
 		return obeyFactor;
 	}
@@ -73,11 +75,11 @@ public class Car {
 		this.obeyFactor = obeyFactor;
 	}
 
-	public int getVel() {
+	public double getVel() {
 		return vel;
 	}
 
-	public void setVel(int vel) {
+	public void setVel(double vel) {
 		this.vel = vel;
 	}
 

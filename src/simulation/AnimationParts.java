@@ -1,9 +1,9 @@
 package simulation;
 
+import backend.Car;
+import backend.Model;
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class AnimationParts {
 //    DoubleProperty carVelocity = new SimpleDoubleProperty();
-    double catVelocity;
+    double carVelocity;
     final LongProperty lastUpdateTime = new SimpleLongProperty();
     ArrayList<Integer> IntPath;
     Circle agent;
@@ -32,7 +32,11 @@ public class AnimationParts {
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
 
-        catVelocity = 100;
+        Car car = new Car(graph.getNodeByIndex(0), graph.getNodeByIndex(8), graph);
+        Model model = new Model();
+
+
+        carVelocity = car.getDesVel();
 
         pathIterator = 1;
 
@@ -103,7 +107,11 @@ public class AnimationParts {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double delta = elapsedSeconds * catVelocity;
+//                    final double delta = elapsedSeconds * carVelocity;
+
+
+
+                    final double delta = elapsedSeconds * car.getVel();
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
@@ -118,8 +126,6 @@ public class AnimationParts {
                     {
                         newY = oldY - delta;
                     }
-
-
 
 
 
@@ -156,7 +162,7 @@ public class AnimationParts {
                             int oldDir = simPath.directions.get(pathIterator-1);
                             pathIterator++;
                             int newDir = simPath.directions.get(pathIterator-1);
-//
+
                             if(oldDir == 6){
                                 if(newDir == 8){
                                     imgView.setRotate(270);
@@ -200,6 +206,12 @@ public class AnimationParts {
                         }
 
                     }
+
+
+
+                    double dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+                    car.setVel((car.getVel() + (model.acceleration(car, dist, 15)* 0.016)));
+                    System.out.println(dist + " " + car.getVel());
 
                 }
 

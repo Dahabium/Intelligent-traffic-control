@@ -31,4 +31,8 @@ public class Edge {
         this.end = end;
     }
 
+    public Road getRoad(){
+        return this.road;
+    }
+
 }
