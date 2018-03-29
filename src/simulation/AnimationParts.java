@@ -32,7 +32,10 @@ public class AnimationParts {
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
 
-        Car car = new Car(graph.getNodeByIndex(0), graph.getNodeByIndex(8), graph);
+        System.out.println("starrrt " + IntPath.get(0));
+        System.out.println("enddd " + IntPath.get(IntPath.size()-1));
+
+        Car car = new Car(graph.getNodeByIndex(IntPath.get(0)),graph.getNodeByIndex(IntPath.get(1)), graph.getNodeByIndex(IntPath.get(IntPath.size()-1)), graph);
         Model model = new Model();
 
 

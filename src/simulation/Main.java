@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 
 public class Main extends Application {
@@ -111,14 +112,22 @@ public class Main extends Application {
 
 
             ArrayList<Integer> arr = new ArrayList<>();
-            arr.addAll(Arrays.asList(0,1,2,3));
+            ArrayList<Integer> arr2 = new ArrayList<>();
+            arr.addAll(Arrays.asList(17,0,1,5,6,7,11,15));
+//            Collections.reverse(arr);
+            arr2.addAll(Arrays.asList(17,0,1,4,8,12,13,14,15));
 
             AnimationParts animationParts = new AnimationParts(arr, graph, simulationBoard);
+            AnimationParts animationParts2 = new AnimationParts(arr2, graph, simulationBoard);
+
+
             animationParts.animationTimer.start();
+            animationParts2.animationTimer.start();
 
 
             Group animGroup = new Group();
             animGroup.getChildren().add(animationParts.getAnimatedCar());
+            animGroup.getChildren().add(animationParts2.getAnimatedCar());
 
             simulationElements.getChildren().add(animGroup);
 

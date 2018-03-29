@@ -27,7 +27,7 @@ public class Car {
 	private double vel = 0.1;
 	private double acc = 2;
 
-    public Car(Node start, Node end, Graph graph){
+    public Car(Node start, Node startRoadend, Node end, Graph graph){
         this.desVel = 80;
         this.maxVel = 100;
         this.minimumSpacing = 0;
@@ -43,7 +43,7 @@ public class Car {
         this.obeyFactor = 1;
         this.start = start;
         this.end = end;
-        this.locRoad = graph.getEdge(start, graph.getNodeByIndex(1)).getRoad();
+        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
 	
 	public Node getStart() {
