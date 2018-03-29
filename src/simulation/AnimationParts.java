@@ -32,6 +32,7 @@ public class AnimationParts {
     public AnimationParts(ArrayList<Integer> IntPath, Graph graph, Board board) {
 
         this.IntPath = IntPath;
+        System.out.println(IntPath.size() + " intpath");
         this.agent = new Circle(25);
         agent.setFill(Color.RED);
 
