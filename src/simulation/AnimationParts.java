@@ -22,6 +22,8 @@ public class AnimationParts {
     simulationPath simPath;
     AnimationTimer animationTimer;
 
+    Car car;
+
     int pathIterator;
 
 
@@ -247,22 +249,14 @@ public class AnimationParts {
 
     }
 
-    public AnimationParts( Graph graph, Board board) {
+    public AnimationParts( Graph graph, Board board, Car car) {
 
+        this.car = car;
 
         Pathfinding pathfinding = new Pathfinding(graph);
 
-
-        this.agent = new Circle(25);
-        agent.setFill(Color.RED);
-
-        System.out.println("starrrt " + IntPath.get(0));
-        System.out.println("enddd " + IntPath.get(IntPath.size()-1));
-
-        Car car = new Car(graph.getNodeByIndex(IntPath.get(0)),graph.getNodeByIndex(IntPath.get(1)), graph.getNodeByIndex(IntPath.get(IntPath.size()-1)), graph);
-
-
-        this.IntPath = new ArrayList<>(pathfinding.Astar(car,graph));
+        ArrayList<Integer> path = pathfinding.Astar(car,graph);
+        this.IntPath = new ArrayList<>(path);
 
         Model model = new Model();
 
