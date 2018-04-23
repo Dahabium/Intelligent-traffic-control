@@ -27,6 +27,7 @@ public class Car {
 	private double vel = 0.1;
 	private double acc = 2;
 
+	//TODO fix the startroadend thing (why do we need it?)
     public Car(Node start, Node startRoadend, Node end, Graph graph){
         this.desVel = 80;
         this.maxVel = 100;

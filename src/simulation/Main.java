@@ -3,11 +3,13 @@ package simulation;
 import backend.Car;
 import backend.Greedy;
 import backend.Pathfinding;
+import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +22,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -49,6 +53,8 @@ public class Main extends Application {
     private String fileName = "graph2";
     Board board;
 
+    ArrayList<AnimationParts> animationParts;
+
     public static void main(String[] args) {
 
         launch(args);
@@ -57,6 +63,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        Controller controller = new Controller();
+
+        animationParts = new ArrayList<>();
+
 
         primaryStage.setTitle("Intelligent Traffic Control");
         primaryStage.setHeight(600);
@@ -74,19 +85,18 @@ public class Main extends Application {
         //============================START MENU START===============================
 
         Button drawGraphbtn = new Button("Create Configuration");
+//        controller.drawGraphControl(drawGraphbtn);
         drawGraphbtn.setOnAction(e -> {
             graph = new Graph();
             board = new Board(30,10);
-
-
             primaryStage.setScene(drawScene);
+            System.out.println("CHECK!");
         });
 
         TextField loadGraphTXT = new TextField(fileName);
         loadGraphTXT.textProperty().addListener((observable, oldValue, newValue) -> {
-            //File Name of Graph1.xml = Graph1
+            //get the file with the same name as in the textfield
             fileName = observable.getValue();
-
         });
 
         Button loadGraphbtn = new Button("Load Configuration");
@@ -111,11 +121,72 @@ public class Main extends Application {
             simulationPane.setFitToHeight(false);
             simulationPane.setFitToWidth(false);
 
+            BorderPane borderPane = new BorderPane();
+            borderPane.setPadding(new Insets(10, 20, 10, 20));
+
+            borderPane.prefHeightProperty().bind(runScene.heightProperty());
+            borderPane.prefWidthProperty().bind(runScene.widthProperty());
+
+            Button createCar = new Button("Create a car");
+            createCar.setOnMouseClicked(event -> {
+                //create car
+            });
+
+            Button setStart = new Button("Set start");
+            setStart.setOnMouseClicked(event -> {
+                //get the car created previously and add a start location by selecting an intersection.
+            });
+
+            Button setEnd = new Button("Set end");
+            setEnd.setOnMouseClicked(event -> {
+
+            });
+
+            Button showCarInfo = new Button("Show cars information");
+            showCarInfo.setOnMouseClicked(event -> {
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                VBox dialogVbox = new VBox(20);
+
+
+//                dialogVbox.getChildren().add(new Text(String.valueOf(getAnimationParts().car.getAcc())));
+
+                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                dialog.setScene(dialogScene);
+                dialog.show();
+
+            });
+
+
+            Button runSimulation = new Button("Run simulation!");
+
+            Text livespeed = new Text();
+//            livespeed.setText(" info " + String.valueOf(animationParts.get(0).car.getLocX()));
+
+            HBox hbox = new HBox(createCar,setStart,setEnd,showCarInfo,runSimulation, livespeed);
+            hbox.setSpacing(10);
+
+            borderPane.setBottom(hbox);
+
             simulationElements.getChildren().add(simulationPane);
+            simulationElements.getChildren().add(borderPane);
 
+            //===================SIMULATION==========================
 
-            ArrayList<Integer> arr2 = new ArrayList<>();
-            arr2.addAll(Arrays.asList(17,0,1,4,8,12,13,14,15));
+            //Create an arraylist object with the path where a car will go...
+
+            ArrayList<Integer> manualroad = new ArrayList<>(Arrays.asList(17,0,4,8,12,13,14,15));
+
+            AnimationParts handAnimation = new AnimationParts(manualroad, graph, simulationBoard);
+
+            animationParts.add(handAnimation);
+
+            handAnimation.animationTimer.start();
+
+//            ArrayList<Integer> arr3 = new ArrayList<>();
+//            arr2.addAll(Arrays.asList(0,1,2,6,10,11,15,16));
+
 
 //            Greedy greedy = new Greedy(graph.getNodeByIndex(0),graph.getNodeByIndex(15),graph);
 //
@@ -124,10 +195,8 @@ public class Main extends Application {
 //                arr2.add(nodes.get(i).index);
 //            }
 
-
-            AnimationParts handAnimation = new AnimationParts(arr2, graph, simulationBoard);
-            handAnimation.animationTimer.start();
-
+//            AnimationParts handAnimation2 = new AnimationParts(arr3, graph, simulationBoard);
+//            handAnimation.animationTimer.start();
 
 
 //            Car car = new Car(graph.getNodeByIndex(17),graph.getNodeByIndex(0), graph.getNodeByIndex(8), graph);
@@ -137,7 +206,9 @@ public class Main extends Application {
 
 
             Group animGroup = new Group();
+
             animGroup.getChildren().add(handAnimation.getAnimatedCar());
+//            animGroup.getChildren().add(handAnimation2.getAnimatedCar());
 
             simulationElements.getChildren().add(animGroup);
 
@@ -352,5 +423,9 @@ public class Main extends Application {
         primaryStage.setScene(startScene);
         primaryStage.show();
 
+    }
+
+    AnimationParts getAnimationParts(){
+        return this.animationParts.get(animationParts.size()-1);
     }
 }

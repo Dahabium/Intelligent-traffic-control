@@ -13,11 +13,11 @@ import javafx.scene.shape.*;
 import java.util.ArrayList;
 
 public class AnimationParts {
-//    DoubleProperty carVelocity = new SimpleDoubleProperty();
+
     double carVelocity;
+
     final LongProperty lastUpdateTime = new SimpleLongProperty();
     ArrayList<Integer> IntPath;
-    Circle agent;
     ImageView imgView;
     simulationPath simPath;
     AnimationTimer animationTimer;
@@ -25,24 +25,16 @@ public class AnimationParts {
     Car car;
 
     int pathIterator;
+    int previousPosition;
 
-
-    int previousPosition, temp;
-
+    //Constructor for a hardcoded path animation
     public AnimationParts(ArrayList<Integer> IntPath, Graph graph, Board board) {
 
         this.IntPath = IntPath;
-        System.out.println(IntPath.size() + " intpath");
-        this.agent = new Circle(25);
-        agent.setFill(Color.RED);
-
-        System.out.println("starrrt " + IntPath.get(0));
-        System.out.println("enddd " + IntPath.get(IntPath.size()-1));
 
         Car car = new Car(graph.getNodeByIndex(IntPath.get(0)),graph.getNodeByIndex(IntPath.get(1)), graph.getNodeByIndex(IntPath.get(IntPath.size()-1)), graph);
 
         Model model = new Model();
-
 
         carVelocity = car.getDesVel();
 
@@ -230,27 +222,10 @@ public class AnimationParts {
 
         };
 
-
-//        PathTransition transition = new PathTransition();
-//
-//        transition.setDuration(Duration.millis(10000));
-//        transition.setNode(this.imgView);
-//        transition.setPath(this.path);
-//
-//        transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//
-//        transition.setCycleCount(1);
-//
-//        //Setting auto reverse value to true
-//        transition.setAutoReverse(false);
-//
-//        //Playing the animation
-//        transition.play();
-
-
     }
 
-    public AnimationParts( Graph graph, Board board, Car car) {
+    //Constructor to use a pathfinding algo to find the way. (Car object stores the start and end point),
+    public AnimationParts(Graph graph, Board board, Car car) {
 
         this.car = car;
 
@@ -469,7 +444,6 @@ public class AnimationParts {
     }
 
 
-
     private int checkDirection(int oldX, int oldY, int newX, int newY) {
 
         //north
@@ -494,11 +468,10 @@ public class AnimationParts {
 
     }
 
-    public Circle getAnimatedCircle() {
-        return this.agent;
-    }
-
     public ImageView getAnimatedCar() {
         return this.imgView;
+    }
+    public String getCarSpeed(){
+        return String.valueOf(this.carVelocity);
     }
 }
