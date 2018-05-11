@@ -77,7 +77,7 @@ public class CreateGraphController  {
 //                double gridY = gridXY[1];
 
                 int gridX = (int)gridXY[2] * 51 + 25;
-                int gridY = (int)gridXY[3] * 51 + 25;
+                int gridY = (int)gridXY[3] * 51 + 25 + 51;
 
                 int x = (int)gridXY[2];
                 int y = (int)gridXY[3];

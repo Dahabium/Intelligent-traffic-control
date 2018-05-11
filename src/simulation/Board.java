@@ -253,6 +253,7 @@ public class Board extends GridPane {
 
         double[] closest = new double[4];
         double minimum = 9999999;
+
         System.out.println("x " + x + " y" + y);
 
         for (int i = 0; i < grid.size(); i++) {

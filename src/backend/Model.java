@@ -1,11 +1,13 @@
 package backend;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class Model {
 
 	
-	
 	public double desiredVelocity(double maxSpeed, int speedLimit, double obeyFactor){
-		
+
 		return Math.min(maxSpeed, speedLimit * obeyFactor); 
 	}
 	
@@ -16,6 +18,8 @@ public class Model {
 	}
 
 	public double acceleration(Car car, double distCarFront, double carFrontVel) {
+
+//		System.out.println("Acceleration (location) " + car.getVel() + "  " + car.getLocY());
 
 		car.setAcc(acceleration(car.getMinimumSpacing(), desiredVelocity(car), car.getVel(), car.getExponent(), car.getTimeHeadway(), car.getVel() - carFrontVel, distCarFront, car.getMaxAcc(), car.getDesDec()));
 		
