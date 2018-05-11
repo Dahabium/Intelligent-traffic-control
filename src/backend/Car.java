@@ -32,7 +32,8 @@ public class Car {
 	private ArrayList<Integer> path;
 
 	//TODO fix the startroadend thing (why do we need it?)
-    public Car(Node start, Node startRoadend, Node end, Graph graph){
+	//Node startRoadend
+    public Car(Node start, Node end, Graph graph){
         this.desVel = 80;
         this.maxVel = 100;
         this.minimumSpacing = 0;
@@ -48,7 +49,7 @@ public class Car {
         this.obeyFactor = 1;
         this.start = start;
         this.end = end;
-        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
+     //   this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
 
     public ArrayList<Integer> getPath(){

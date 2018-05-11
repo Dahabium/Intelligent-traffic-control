@@ -40,7 +40,7 @@ public class AnimationParts {
 
         ArrayList<Integer> IntPath = getRouteSequence(start,end);
 
-        Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(1)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), graph);
+        Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(1)),  graph);
         car.setPath(IntPath);
 
         collisionDetection.addCar(car);
@@ -68,6 +68,11 @@ public class AnimationParts {
 
     public ArrayList<Integer> getRouteSequence(int start, int end){
         Greedy greedy = new Greedy(graph.getNodeByIndex(start),graph.getNodeByIndex(end),graph);
+        System.out.println("Greedy path" + greedy.getIntPath());
+        
+        Pathfinding path = new Pathfinding(graph);
+        Car car = new Car(graph.getNodeByIndex(start),graph.getNodeByIndex(end),graph);
+        path.Astar(car, graph);
         return greedy.getIntPath();
     }
 
