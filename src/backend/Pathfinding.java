@@ -137,16 +137,20 @@ public class Pathfinding {
         ArrayList<Integer> path = new ArrayList<Integer>();
         path.add(current.getIndex());
         
-        System.out.print("A* path [" + current.getIndex());
 
         while (current.getCameFrom() != start) {
             current = current.getCameFrom();
-            path.add(current.getIndex());
-            System.out.print(", " + current.getIndex());
+            path.add(0, current.getIndex());
         }
 
-        System.out.println("]");
+        System.out.print("A* path [" + start.getIndex());
         
+        for(int i = 0; i < path.size(); i++) {
+        	
+        	System.out.print(", " + path.get(i));
+        }
+        
+        System.out.println("]");
         return path;
     }
 
