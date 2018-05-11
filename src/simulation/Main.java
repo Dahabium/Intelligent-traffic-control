@@ -64,10 +64,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Controller controller = new Controller();
 
         animationParts = new ArrayList<>();
-
 
         primaryStage.setTitle("Intelligent Traffic Control");
         primaryStage.setHeight(600);
@@ -206,6 +204,8 @@ public class Main extends Application {
 
 
             Group animGroup = new Group();
+
+            System.out.println("HALA");
 
             animGroup.getChildren().add(handAnimation.getAnimatedCar());
 //            animGroup.getChildren().add(handAnimation2.getAnimatedCar());
@@ -425,7 +425,4 @@ public class Main extends Application {
 
     }
 
-    AnimationParts getAnimationParts(){
-        return this.animationParts.get(animationParts.size()-1);
-    }
 }
