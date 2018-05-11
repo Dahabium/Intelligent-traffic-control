@@ -1,8 +1,9 @@
 package backend;
 
+import simulation.Graph;
+
 import java.util.ArrayList;
 
-import simulation.*;
 
 
 public class Pathfinding {
@@ -61,7 +62,7 @@ public class Pathfinding {
 
         while (!openSet.isEmpty()) {
 
-
+            System.out.println("open set size " + openSet.size());
             int index = 0;
             double score = Double.MAX_VALUE;
 
@@ -78,6 +79,7 @@ public class Pathfinding {
             if (current == newGraph.get(end)) {
 
                 // return the path
+                System.out.println("A* path found");
                 return constructPath(current, newGraph.get(start));
 
             }
@@ -123,7 +125,7 @@ public class Pathfinding {
             }
         }
 
-
+        System.out.println("No A* path found");
         return null;
     }
 

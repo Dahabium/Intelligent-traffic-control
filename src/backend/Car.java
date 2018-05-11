@@ -1,7 +1,10 @@
 package backend;
-import simulation.Edge;
+
 import simulation.Graph;
 import simulation.Node;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class Car {
 
@@ -24,8 +27,13 @@ public class Car {
 	private double distTran;
 	private double obeyFactor;
 	
-	private double vel = 0.1;
+	private double vel = 0.5;
 	private double acc = 2;
+
+	private int width = 25;
+	private int height = 25;
+
+	private ArrayList<Integer> path;
 
 	//TODO fix the startroadend thing (why do we need it?)
     public Car(Node start, Node startRoadend, Node end, Graph graph){
@@ -46,7 +54,14 @@ public class Car {
         this.end = end;
         this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
-	
+
+    public ArrayList<Integer> getPath(){
+    	return this.path;
+	}
+	public void setPath(ArrayList<Integer> path){
+    	this.path = path;
+	}
+
 	public Node getStart() {
 		return start;
 	}

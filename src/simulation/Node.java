@@ -2,11 +2,6 @@ package simulation;
 
 import backend.Intersection;
 import backend.SubIntersection;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Node {
 

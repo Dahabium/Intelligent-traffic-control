@@ -1,11 +1,10 @@
 package simulation;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Board extends GridPane {
 
@@ -31,6 +30,16 @@ public class Board extends GridPane {
 
         //initBoard();
     }
+
+    public void addIntersectionGUI(int x, int y, int squareSize){
+
+        javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.JPG",  squareSize, squareSize,true,false);
+        ImageView imgView = new ImageView(img);
+
+        this.getTileAtCoordinates(x,y).getChildren().add(imgView);
+    }
+
+
 
     public int getBoardSizeX() {
         return xSize;
@@ -241,8 +250,12 @@ public class Board extends GridPane {
 
 
     public double[] getGridXY(double x, double y) {
+
         double[] closest = new double[4];
         double minimum = 9999999;
+
+        System.out.println("x " + x + " y" + y);
+
         for (int i = 0; i < grid.size(); i++) {
             double diff = Math.abs(grid.get(i)[0] - x) + Math.abs(grid.get(i)[1] - y);
 
@@ -252,6 +265,7 @@ public class Board extends GridPane {
             }
         }
 
+        System.out.println(" closest "+  Arrays.toString(closest));
         return closest;
 
     }

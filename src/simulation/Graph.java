@@ -1,7 +1,6 @@
 package simulation;
 
 import javafx.scene.Group;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -12,7 +11,6 @@ import java.util.List;
 //for exporting to XML file
 import org.w3c.dom.*;
 import java.io.*;
-import com.sun.org.apache.xml.internal.serialize.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -116,7 +114,7 @@ public class Graph {
 
 
 
-    public void export() throws ParserConfigurationException, FileNotFoundException, IOException
+    public void export(String name) throws ParserConfigurationException, FileNotFoundException, IOException
     {
         try {
 
@@ -165,7 +163,7 @@ public class Graph {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("graph2.xml"));
+            StreamResult result = new StreamResult(new File(name+".xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
@@ -249,7 +247,9 @@ public class Graph {
     }
 
     public List<Node> getAdjecents(Node node){
+
         List<Node> out = new ArrayList<>();
+
         for (int i = 0; i < this.edges.size(); i++) {
             if(this.edges.get(i).start == node){
                 out.add(this.edges.get(i).end);
@@ -258,6 +258,7 @@ public class Graph {
 
         return out;
     }
+
     public Node getNodeByIndex(int index){
 
         for (int i = 0; i < nodes.size(); i++) {

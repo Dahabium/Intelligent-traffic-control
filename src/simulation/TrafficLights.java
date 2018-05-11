@@ -1,7 +1,5 @@
 package simulation;
 
-import backend.TrafficLight;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class TrafficLights {
