@@ -14,21 +14,17 @@ import java.util.ArrayList;
 
 public class simulationWindowController {
 
+    Board simulationBoard;
     @FXML
     private ScrollPane simulationScrollpane;
-
     @FXML
     private Group simulationElements;
-
     @FXML
     private Button createCarbtn, setCarStartbtn, setCarEndbtn, runSimbtn, stopSimbtn;
-
     @FXML
     private Text speedVariable;
-
     @FXML
-    private TextField StartInput,EndInput;
-
+    private TextField StartInput, EndInput;
     private Graph graph;
     private String filename;
 
@@ -37,80 +33,95 @@ public class simulationWindowController {
     private int carStart;
     private int carEnd;
 
-    Board simulationBoard;
-
     //TODO PASSING THE FILENAME
-    //TODO fix A* algorithm
-
 
     public void initialize() {
 
         XMLLoader graphLoader = new XMLLoader("graph2");
         graph = graphLoader.getGraph();
 
-        javafx.scene.image.Image img = new Image("background.JPG", 800,800,false,false);
+        javafx.scene.image.Image img = new Image("background.JPG", 800, 800, false, false);
         ImageView imgView = new ImageView(img);
         simulationElements.getChildren().add(imgView);
 
-        simulationBoard = new Board(15,15);
+        simulationBoard = new Board(15, 15);
 
         simulationBoard.setBoard(graph);
 
+
         simulationElements.getChildren().add(simulationBoard);
+
 
         //===============================ANIMATION==========================
 
-        //create the parent class for animation
+        //create the parent class for animation of cars and traffic lights
 
-        animationParts = new AnimationParts(this.graph,this.simulationBoard);
+        animationParts = new AnimationParts(this.graph, this.simulationBoard);
 
+        createTrafficLights();
 
         speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
 
     }
 
+    //TODO move this method to animationParts Class
+    public void createTrafficLights(){
+
+        for (int i = 0; i < graph.edges.size(); i++) {
+            animationParts.addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE);
+            System.out.println("NUMBER OD TRAFFIC LIGHTS " + animationParts.getTrafficLights().size());
+        }
+
+        for (int i = 0; i < this.animationParts.getTrafficLights().size(); i++) {
+            this.simulationElements.getChildren().add(this.animationParts.getTrafficLights().get(i).getTrafficlight());
+        }
+
+    }
+
 
     @FXML
-    public void createCar(){
+    public void createCar() {
 
 
-        this.animationParts.addCarToAnimation(carStart,carEnd);
+        this.animationParts.addCarToAnimation(carStart, carEnd);
 
-        int lastCar =  this.animationParts.carElements.size()-1;
+        int lastCar = this.animationParts.carElements.size() - 1;
 
         this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
 
     }
 
     @FXML
-    public void setCarStart(){
+    public void setCarStart() {
         this.carStart = Integer.parseInt(StartInput.getText());
         System.out.println("CARSTART " + this.carStart);
 
     }
 
     @FXML
-    public void setCarEnd(){
+    public void setCarEnd() {
         this.carEnd = Integer.parseInt(EndInput.getText());
         System.out.println("CAREND " + this.carEnd);
 
     }
 
     @FXML
-    public void runSimulation(){
-
+    public void runSimulation() {
         animationParts.simulate();
+
+        animationParts.getTrafficLights().get(0).changeTrafficLightColor(3);
     }
 
     @FXML
-    public void stopSimulation(){
+    public void stopSimulation() {
         animationParts.stopSimulate();
     }
 
 
+
     //doesent work, the initilize method always triggers first.
-    public void setFilename(String filename){
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 

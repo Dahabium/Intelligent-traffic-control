@@ -1,7 +1,11 @@
 package simulation;
 
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +18,6 @@ public class Board extends GridPane {
 
     ArrayList<double[]> grid;
 
-
     Tile[][] board;
     private boolean empty;
 
@@ -22,13 +25,12 @@ public class Board extends GridPane {
 
         this.xSize = xSize;
         this.ySize = ySize;
+
         board = new Tile[xSize][ySize];
         empty = true;
 
         grid = new ArrayList<>();
         doGrid(xSize, ySize);
-
-        //initBoard();
     }
 
     public void addIntersectionGUI(int x, int y, int squareSize){
@@ -60,6 +62,7 @@ public class Board extends GridPane {
     public Tile getTileAtCoordinates(int x, int y) {
         return this.board[x][y];
     }
+
 
     public void setBoard(Graph graph) {
 

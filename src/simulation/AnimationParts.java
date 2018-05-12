@@ -12,6 +12,8 @@ public class AnimationParts {
 
 
     ArrayList<carAnimation> carElements;
+    ArrayList<TrafficLight> trafficLights;
+
     ArrayList<Car> carBackend;
     Model model;
 
@@ -23,6 +25,7 @@ public class AnimationParts {
     public AnimationParts(Graph graph, Board board){
 
         this.carElements = new ArrayList<>();
+        this.trafficLights = new ArrayList<>();
         this.model = new Model();
         this.graph = graph;
         this.board = board;
@@ -71,8 +74,13 @@ public class AnimationParts {
         return greedy.getIntPath();
     }
 
+    public void addTrafficLight(int XPos, int YPos){
+        TrafficLight test = new TrafficLight(XPos, YPos);
+        this.trafficLights.add(test);
 
+    }
 
-
-
+    public ArrayList<TrafficLight> getTrafficLights(){
+        return this.trafficLights;
+    }
 }
