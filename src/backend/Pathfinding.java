@@ -23,7 +23,6 @@ public class Pathfinding {
             for (int j = 0; j < graph.getAdjecents(graph.getNodes().get(i)).size(); j++) {
 
                 newGraph.get(i).getNeighbours().add(new AStarNode(graph.getAdjecents(graph.getNodes().get(i)).get(j), graph.getAdjecents(graph.getNodes().get(i)).get(j).getIndex()));
-
             }
         }
     }
@@ -75,8 +74,10 @@ public class Pathfinding {
             }
 
             current = openSet.get(index);
+            int in = current.getIndex();
+            System.out.println("Neighbours of node: " + newGraph.get(in).getNeighbours().size() + "  index: " + current.getIndex());
 
-            if (current == newGraph.get(end)) {
+            if (current.getIndex() == newGraph.get(end).getIndex()) {
 
                 // return the path
                 System.out.println("A* path found");
@@ -87,13 +88,14 @@ public class Pathfinding {
             openSet.remove(index);
             closedSet.add(current);
 
-            for (int i = 0; i < current.getNeighbours().size(); i++) {
+            for (int i = 0; i < newGraph.get(in).getNeighbours().size(); i++) {
+
 
                 boolean closed = false;
 
                 for (int j = 0; j < closedSet.size(); j++) {
 
-                    if (closedSet.get(j) == current.getNeighbours().get(i)) {
+                    if (closedSet.get(j) == newGraph.get(in).getNeighbours().get(i)) {
 
                         closed = true;
                     }
@@ -103,7 +105,7 @@ public class Pathfinding {
 
                 for (int j = 0; j < openSet.size(); j++) {
 
-                    if (openSet.get(j) == current.getNeighbours().get(i)) {
+                    if (openSet.get(j) == newGraph.get(in).getNeighbours().get(i)) {
 
                         exists = true;
                     }
@@ -111,16 +113,17 @@ public class Pathfinding {
 
                 if (!exists && !closed) {
 
-                    openSet.add(current.getNeighbours().get(i));
-                }
+                    System.out.println("FOUND A NODE not in open or closed set");
+                    openSet.add(newGraph.get(in).getNeighbours().get(i));
 
-                double tentative_gscore = current.getG_score() + calcPytho(current, current.getNeighbours().get(i));
+                    double tentative_gscore = current.getG_score() + calcPytho(current, newGraph.get(in).getNeighbours().get(i));
 
-                if (tentative_gscore < current.getNeighbours().get(i).getG_score()) {
+                    if (tentative_gscore < newGraph.get(in).getNeighbours().get(i).getG_score()) {
 
-                    current.getNeighbours().get(i).setCameFrom(current);
-                    current.getNeighbours().get(i).setG_score(tentative_gscore);
-                    current.getNeighbours().get(i).setF_score(current.getNeighbours().get(i).getG_score() + calcPytho(current.getNeighbours().get(i), newGraph.get(end)));
+                        newGraph.get(in).getNeighbours().get(i).setCameFrom(current);
+                        newGraph.get(in).getNeighbours().get(i).setG_score(tentative_gscore);
+                        newGraph.get(in).getNeighbours().get(i).setF_score(newGraph.get(in).getNeighbours().get(i).getG_score() + calcPytho(newGraph.get(in).getNeighbours().get(i), newGraph.get(end)));
+                    }
                 }
             }
         }
@@ -131,13 +134,17 @@ public class Pathfinding {
 
     public ArrayList<Integer> constructPath(AStarNode current, AStarNode start) {
 
-        ArrayList<Integer> path = new ArrayList<Integer>();
+        ArrayList<Integer> path = new ArrayList<>();
+
         path.add(current.getIndex());
+
 
         while (current.getCameFrom() != start) {
             current = current.getCameFrom();
-            path.add(current.getIndex());
+            path.add(0, current.getIndex());
         }
+
+        path.add(0,start.getIndex());
 
         return path;
     }

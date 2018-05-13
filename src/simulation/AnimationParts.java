@@ -1,10 +1,6 @@
 package simulation;
 
 import backend.*;
-import javafx.animation.AnimationTimer;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -39,19 +35,36 @@ public class AnimationParts {
 
 
     //input a car object, comute the path here.
-    public void addCarToAnimation(int start, int end){
+    public void addCarToAnimation(int start, int end, int pathFindingMode){
 
-        ArrayList<Integer> IntPath = getRouteSequence(start,end);
+        if(pathFindingMode == 1){
 
-        Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(1)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), graph);
-        car.setPath(IntPath);
+            ArrayList<Integer> IntPath = getRouteGreedy(start,end);
 
-        collisionDetection.addCar(car);
+            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), graph);
+            car.setPath(IntPath);
 
-        carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
-        carElements.add(carAnim);
+            collisionDetection.addCar(car);
+
+            carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
+            carElements.add(carAnim);
 
 
+        }
+
+        if(pathFindingMode == 2){
+            Car car = new Car(graph.getNodeByIndex(start), graph.getNodeByIndex(end), graph);
+
+            ArrayList<Integer> IntPath = getRouteAStar(car);
+            car.setPath(IntPath);
+
+            collisionDetection.addCar(car);
+
+            carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
+            carElements.add(carAnim);
+
+        }
+        
     }
 
     public void simulate(){
@@ -69,9 +82,15 @@ public class AnimationParts {
     }
 
 
-    public ArrayList<Integer> getRouteSequence(int start, int end){
+    public ArrayList<Integer> getRouteGreedy(int start, int end){
         Greedy greedy = new Greedy(graph.getNodeByIndex(start),graph.getNodeByIndex(end),graph);
+
         return greedy.getIntPath();
+    }
+
+    public ArrayList<Integer> getRouteAStar(Car car){
+        Pathfinding path = new Pathfinding(graph);
+        return path.Astar(car, graph);
     }
 
     public void addTrafficLight(int XPos, int YPos){

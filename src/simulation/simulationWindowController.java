@@ -1,9 +1,11 @@
 package simulation;
 
 import backend.Greedy;
+import backend.Pathfinding;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -25,8 +27,12 @@ public class simulationWindowController {
     private Text speedVariable;
     @FXML
     private TextField StartInput, EndInput;
+    @FXML
+    private CheckBox GreedySelector, AStarselector;
     private Graph graph;
     private String filename;
+
+    private int PathfindingMode;
 
     private AnimationParts animationParts;
 
@@ -36,6 +42,7 @@ public class simulationWindowController {
     //TODO PASSING THE FILENAME
 
     public void initialize() {
+        PathfindingMode = 1;
 
         XMLLoader graphLoader = new XMLLoader("graph2");
         graph = graphLoader.getGraph();
@@ -84,7 +91,7 @@ public class simulationWindowController {
     public void createCar() {
 
 
-        this.animationParts.addCarToAnimation(carStart, carEnd);
+        this.animationParts.addCarToAnimation(carStart, carEnd, PathfindingMode);
 
         int lastCar = this.animationParts.carElements.size() - 1;
 
@@ -116,6 +123,18 @@ public class simulationWindowController {
     @FXML
     public void stopSimulation() {
         animationParts.stopSimulate();
+    }
+    @FXML
+    public void selectGreedy(){
+        AStarselector.setSelected(false);
+        GreedySelector.setSelected(true);
+        PathfindingMode = 1;
+    }
+    @FXML
+    public void selectAstar(){
+        GreedySelector.setSelected(false);
+        AStarselector.setSelected(true);
+        PathfindingMode = 2;
     }
 
 
