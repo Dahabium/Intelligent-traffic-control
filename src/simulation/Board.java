@@ -239,8 +239,8 @@ public class Board extends GridPane {
 
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                double x = j * 51 + 46.5;
-                double y = i * 51 + 126.5;
+                double x = j * SIM_SIZE + 46.5;
+                double y = i * SIM_SIZE + 126.5;
                 double[] xy = new double[4];
                 xy[0] = x;
                 xy[1] = y;
@@ -252,7 +252,7 @@ public class Board extends GridPane {
     }
 
 
-    public double[] getGridXY(double x, double y) {
+    public double[] getGridXY(double x, double y, int CELL_SIZE) {
 
         double[] closest = new double[4];
         double minimum = 9999999;
@@ -260,6 +260,7 @@ public class Board extends GridPane {
         System.out.println("x " + x + " y" + y);
 
         for (int i = 0; i < grid.size(); i++) {
+
             double diff = Math.abs(grid.get(i)[0] - x) + Math.abs(grid.get(i)[1] - y);
 
             if (diff < minimum) {

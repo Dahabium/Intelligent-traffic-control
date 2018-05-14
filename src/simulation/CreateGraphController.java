@@ -18,39 +18,31 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class CreateGraphController  {
+public class CreateGraphController {
 
     @FXML
     public Button backMenuButton, interSectbtn, joinbtn, deletebtn, saveConfigbtn;
-
     @FXML
     private BorderPane createGraphPane;
-
     @FXML
     private ScrollPane scrollPane;
-
     @FXML
     private Group drawSceneElements;
-
     @FXML
     private TextField saveConfigName;
-
     private int control = 0;
     private int indexCount = 0;
-    public Graph graph;
-
-    Board board;
-
-    //adjust the size of the ammount of zoom in the board
-    int CELL_SIZE;
-
     private boolean release = false;
 
+    public Graph graph;
+    Board board;
+    //adjust the size of the ammount of zoom in the board
+    int CELL_SIZE;
 
     public void initialize() {
         //drawSceneElements is going to hold all the board gui components, including the board itself.
 
-        board = new Board(15,15);
+        board = new Board(15, 15);
         CELL_SIZE = 100;
 
         graph = new Graph();
@@ -58,36 +50,38 @@ public class CreateGraphController  {
         for (int i = 0; i < board.getBoardSizeX(); i++) {
             for (int j = 0; j < board.getBoardSizeY(); j++) {
                 Tile tile = new Tile(CELL_SIZE);
-                board.setTileAtCoordinates(tile,i,j);
+                board.setTileAtCoordinates(tile, i, j);
             }
         }
 
         drawSceneElements.getChildren().add(board);
+//        drawSceneElements.getChildren().get().get
 
         scrollPane.setContent(drawSceneElements);
         scrollPane.setOnMouseClicked(mouseHandler);
 
     }
 
-    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
+
+
+    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent mouseEvent) {
 
             if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
-                double[] gridXY = board.getGridXY(mouseEvent.getSceneX(), mouseEvent.getSceneY());
-//TODO FIX THIS!
+                double[] gridXY = board.getGridXY(mouseEvent.getSceneX(), mouseEvent.getSceneY(), CELL_SIZE);
+                //TODO FIX THIS!
 
 //                double gridX = gridXY[0];
 //                double gridY = gridXY[1];
 
-                int gridX = (int)gridXY[2] * 51 + 25;
-                int gridY = (int)gridXY[3] * 51 + 25 + 51;
+                int gridX = (int) gridXY[2] * CELL_SIZE + CELL_SIZE/2;
+                int gridY = (int) gridXY[3] * CELL_SIZE + CELL_SIZE/2;
 
-                int x = (int)gridXY[2];
-                int y = (int)gridXY[3];
-
+                int x = (int) gridXY[2];
+                int y = (int) gridXY[3];
 
 
                 Circle vertex = new Circle(gridX, gridY, 12);
@@ -121,7 +115,7 @@ public class CreateGraphController  {
                                 System.out.println(drawSceneElements.getChildren().get(i));
                                 if (drawSceneElements.getChildren().get(i) instanceof Path) {
 
-                                    if(drawSceneElements.getChildren().get(i).contains(vertex.getCenterX(), vertex.getCenterY()) ){
+                                    if (drawSceneElements.getChildren().get(i).contains(vertex.getCenterX(), vertex.getCenterY())) {
 
                                         drawSceneElements.getChildren().remove(drawSceneElements.getChildren().get(i));
                                         System.out.println(drawSceneElements.getChildren().get(i));
@@ -157,8 +151,7 @@ public class CreateGraphController  {
                             vertex.setStroke(Color.RED);
 
                             release = true;
-                        }
-                        else {
+                        } else {
                             //get the last line object and set the end of this line
                             //highlighting
                             vertex.setStrokeWidth(3.0);
@@ -189,19 +182,19 @@ public class CreateGraphController  {
     };
 
 
-    public void intersectButtonClicked(){
+    public void intersectButtonClicked() {
         control = 1;
     }
 
-    public void joinButtonClicked(){
+    public void joinButtonClicked() {
         control = 2;
     }
 
-    public void deleteButtonClicked(){
+    public void deleteButtonClicked() {
         control = 3;
     }
 
-    public void saveConfigButtonClicked(){
+    public void saveConfigButtonClicked() {
 
         try {
             System.out.println("Exporting the graph");
