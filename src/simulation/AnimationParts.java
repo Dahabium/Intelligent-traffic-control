@@ -11,7 +11,6 @@ public class AnimationParts {
     ArrayList<TrafficLight> trafficLights;
 
     Model model;
-
     Graph graph;
     Board board;
 
@@ -24,7 +23,6 @@ public class AnimationParts {
         this.model = new Model();
         this.graph = graph;
         this.board = board;
-
         this.collisionDetection = new CollisionDetection();
     }
 
@@ -33,7 +31,6 @@ public class AnimationParts {
     public void addCarToAnimation(int start, int end, int pathFindingMode){
 
         if(pathFindingMode == 1){
-
             ArrayList<Integer> IntPath = getRouteGreedy(start,end);
 
             Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), graph);
@@ -43,8 +40,6 @@ public class AnimationParts {
 
             carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
             carElements.add(carAnim);
-
-
         }
 
         if(pathFindingMode == 2){
@@ -57,7 +52,6 @@ public class AnimationParts {
 
             carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
             carElements.add(carAnim);
-
         }
 
     }

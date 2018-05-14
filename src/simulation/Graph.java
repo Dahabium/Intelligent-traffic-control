@@ -83,10 +83,10 @@ public class Graph {
     public int determineType(Node n) {
         System.out.println("# of edges" + this.getAdjecents(n).size());
         if (n.type == 1) return 1;
-        if (n.type == 0 && isBorder(n)) return 0;
+
         else if (n.type == 0 && this.getAdjecents(n).size() == 2) return 2;
         else if (n.type == 0 && this.getAdjecents(n).size() == 3) return 3;
-
+        else if (n.type == 0 && this.getAdjecents(n).size() == 1) return 4;
         return 0;
     }
 
