@@ -239,8 +239,8 @@ public class Board extends GridPane {
 
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                double x = j * SIM_SIZE + 46.5;
-                double y = i * SIM_SIZE + 126.5;
+                double x = j * (SIM_SIZE + 1) + 50;
+                double y = i * (SIM_SIZE + 1) + 100;
                 double[] xy = new double[4];
                 xy[0] = x;
                 xy[1] = y;
