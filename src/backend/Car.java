@@ -1,5 +1,6 @@
 package backend;
 
+import simulation.Edge;
 import simulation.Graph;
 import simulation.Node;
 
@@ -19,6 +20,10 @@ public class Car {
 	private double maxDec;
 	private int exponent;
 	private Road locRoad;
+
+	//todo just doing it with an edge now, in future we will use road
+	private Edge locEdge;
+
 	private double locX;
 	private double locY;
 	private double time;
@@ -185,6 +190,29 @@ public class Car {
 
 	public void setLocRoad(Road locRoad) {
 		this.locRoad = locRoad;
+	}
+
+	public void setLocEdge(Edge edge){
+		this.locEdge = edge;
+	}
+
+	public Edge getLocEdge(){
+		return locEdge;
+	}
+
+	public double getPercentageOnCurrentRoad(){
+		if(locEdge.start.Xpos == locEdge.end.Xpos){
+			//vertical edge
+			return 0;
+		}
+		if(locEdge.start.Ypos == locEdge.end.Ypos){
+			//horizontal edge
+			double z = this.getLocX() - locEdge.end.Xpos ;
+
+			return z;
+		}
+
+		return -100;
 	}
 
 	public double getLocX() {

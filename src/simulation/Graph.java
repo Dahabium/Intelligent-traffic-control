@@ -1,5 +1,6 @@
 package simulation;
 
+import backend.Road;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -10,6 +11,7 @@ import java.util.List;
 
 //for exporting to XML file
 import org.w3c.dom.*;
+
 import java.io.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.Transformer;
@@ -26,7 +28,7 @@ public class Graph {
     ArrayList<Line> lines;
 
     //Constructor with no input parameters.
-    public Graph(){
+    public Graph() {
         this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
 
@@ -34,32 +36,32 @@ public class Graph {
 
     }
 
-    public void addNode(Node node){
+    public void addNode(Node node) {
 
         this.nodes.add(node);
     }
-    public void addNodeV2(int index, double Xpos, double Ypos, int x, int y, int type){
 
-        Node temp = new Node(index,Xpos,Ypos, x, y, type);
+    public void addNodeV2(int index, double Xpos, double Ypos, int x, int y, int type) {
+
+        Node temp = new Node(index, Xpos, Ypos, x, y, type);
 
         this.nodes.add(temp);
 
         System.out.println(this.nodes);
     }
 
-    public void addMultipleNodes(ArrayList<Node> nodes){
+    public void addMultipleNodes(ArrayList<Node> nodes) {
         this.nodes.addAll(nodes);
     }
 
-    public void removeNode(Node node){
+    public void removeNode(Node node) {
         this.nodes.remove(node);
     }
-    public int[] maxXY()
-    {
+
+    public int[] maxXY() {
         int[] max = new int[2];
         max[0] = 0;
         max[1] = 0;
-
 
 
         for (Node n : nodes) {
@@ -69,39 +71,34 @@ public class Graph {
         return max;
     }
 
-    public boolean isBorder(Node n)
-    {
+    public boolean isBorder(Node n) {
         int[] temp = maxXY();
 
-        if(n.x == 0 || n.y == 0) return true;
-        if(n.x == temp[0] || n.y == temp[1]) return true;
+        if (n.x == 0 || n.y == 0) return true;
+        if (n.x == temp[0] || n.y == temp[1]) return true;
 
         return false;
     }
 
-    public int determineType(Node n)
-    {
+    public int determineType(Node n) {
         System.out.println("# of edges" + this.getAdjecents(n).size());
-        if(n.type == 1) return 1;
-        if(n.type == 0 && isBorder(n)) return 0;
-        else if(n.type == 0 && this.getAdjecents(n).size() == 2) return 2;
-        else if(n.type == 0 && this.getAdjecents(n).size() == 3) return 3;
+        if (n.type == 1) return 1;
+        if (n.type == 0 && isBorder(n)) return 0;
+        else if (n.type == 0 && this.getAdjecents(n).size() == 2) return 2;
+        else if (n.type == 0 && this.getAdjecents(n).size() == 3) return 3;
 
         return 0;
     }
 
-    public void setSubIntersections()
-    {
-        for(int i = 0; i<nodes.size(); i++)
-        {
+    public void setSubIntersections() {
+        for (int i = 0; i < nodes.size(); i++) {
             List<Node> adj = getAdjecents(nodes.get(i));
 
-            for (int j = 0; j < adj.size(); j++)
-            {
-                if(adj.get(j).x>nodes.get(i).x) nodes.get(i).right = true;
-                if(adj.get(j).x<nodes.get(i).x) nodes.get(i).left = true;
-                if(adj.get(j).y>nodes.get(i).y) nodes.get(i).down = true;
-                if(adj.get(j).y<nodes.get(i).y) nodes.get(i).up = true;
+            for (int j = 0; j < adj.size(); j++) {
+                if (adj.get(j).x > nodes.get(i).x) nodes.get(i).right = true;
+                if (adj.get(j).x < nodes.get(i).x) nodes.get(i).left = true;
+                if (adj.get(j).y > nodes.get(i).y) nodes.get(i).down = true;
+                if (adj.get(j).y < nodes.get(i).y) nodes.get(i).up = true;
             }
 
             System.out.println("Adjacent nodes: " + nodes.get(i).left + " " + nodes.get(i).up + " " + nodes.get(i).right + " " + nodes.get(i).down);
@@ -110,12 +107,7 @@ public class Graph {
     }
 
 
-
-
-
-
-    public void export(String name) throws ParserConfigurationException, FileNotFoundException, IOException
-    {
+    public void export(String name) throws ParserConfigurationException, FileNotFoundException, IOException {
         try {
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -143,7 +135,6 @@ public class Graph {
                 node.setAttribute("y", String.valueOf(this.nodes.get(i).y));
                 node.setAttribute("type", String.valueOf(determineType(this.nodes.get(i))));
 
-
             }
 
             //Edges group
@@ -154,7 +145,7 @@ public class Graph {
             for (int j = 0; j < this.edges.size(); j++) {
                 Element edge = doc.createElement("Edge");
                 edge.setAttribute("start", String.valueOf(this.edges.get(j).start.index));
-                edge.setAttribute("end",String.valueOf(this.edges.get(j).end.index));
+                edge.setAttribute("end", String.valueOf(this.edges.get(j).end.index));
                 edge.setAttribute("type", String.valueOf(this.edges.get(j).type));
                 edges.appendChild(edge);
             }
@@ -163,7 +154,7 @@ public class Graph {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(name+".xml"));
+            StreamResult result = new StreamResult(new File(name + ".xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
@@ -179,31 +170,35 @@ public class Graph {
         }
 
 
-
     }
 
 
-    public void addEdge(Node start, Node end){
-        edges.add(new Edge(start,end));
+    public void addEdge(Node start, Node end) {
+        edges.add(new Edge(start, end));
 //        System.out.println("Edge added " + start.Xpos + "  " + start.Ypos + "  " + end.Xpos + "  " +end.Ypos);
     }
 
-    public boolean existsEdge(Node start, Node end){
-        Edge temp = new Edge(start,end);
+    public boolean existsEdge(Node start, Node end) {
+        Edge temp = new Edge(start, end);
         boolean out = false;
         for (int i = 0; i < this.edges.size(); i++) {
-            if(this.edges.get(i).start == temp.start && this.edges.get(i).end == temp.end){
+            if (this.edges.get(i).start == temp.start && this.edges.get(i).end == temp.end) {
                 out = true;
             }
         }
         return out;
     }
 
-    public void removeEdge(Edge edge){
+    //return a road to the corresponding edge
+    public Road getRoad(Edge edge) {
+        return edge.getRoad();
+    }
+
+    public void removeEdge(Edge edge) {
         edges.remove(edge);
     }
 
-    public void showGraph(Group group){
+    public void showGraph(Group group) {
 
         //Show the Vertexes in GUI
         for (int i = 0; i < this.nodes.size(); i++) {
@@ -228,7 +223,7 @@ public class Graph {
         }
     }
 
-    public void printAdjecency(){
+    public void printAdjecency() {
 
         System.out.println("Number of nodes " + this.nodes.size());
 
@@ -246,12 +241,12 @@ public class Graph {
 
     }
 
-    public List<Node> getAdjecents(Node node){
+    public List<Node> getAdjecents(Node node) {
 
         List<Node> out = new ArrayList<>();
 
         for (int i = 0; i < this.edges.size(); i++) {
-            if(this.edges.get(i).start == node){
+            if (this.edges.get(i).start == node) {
                 out.add(this.edges.get(i).end);
             }
         }
@@ -259,10 +254,10 @@ public class Graph {
         return out;
     }
 
-    public Node getNodeByIndex(int index){
+    public Node getNodeByIndex(int index) {
 
         for (int i = 0; i < nodes.size(); i++) {
-            if(nodes.get(i).index == index ){
+            if (nodes.get(i).index == index) {
                 return nodes.get(i);
             }
         }
@@ -270,31 +265,31 @@ public class Graph {
     }
 
     public List<Node> getNodes() {
-		return nodes;
-	}
+        return nodes;
+    }
 
-	public void setNodes(List<Node> nodes) {
-		this.nodes = nodes;
-	}
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
+    }
 
-	public List<Edge> getEdges() {
-		return edges;
-	}
+    public List<Edge> getEdges() {
+        return edges;
+    }
 
-	public void setEdges(List<Edge> edges) {
-		this.edges = edges;
-	}
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
+    }
 
-	public ArrayList<Line> getLines() {
-		return lines;
-	}
+    public ArrayList<Line> getLines() {
+        return lines;
+    }
 
-	public void setLines(ArrayList<Line> lines) {
-		this.lines = lines;
-	}
+    public void setLines(ArrayList<Line> lines) {
+        this.lines = lines;
+    }
 
-	public Node convertCircleToNode(Circle circle){
-        Node node = new Node(circle.getCenterX(),circle.getCenterY());
+    public Node convertCircleToNode(Circle circle) {
+        Node node = new Node(circle.getCenterX(), circle.getCenterY());
 
         return node;
     }
@@ -303,27 +298,28 @@ public class Graph {
 
         Line line = new Line();
 
+
         line.setStartX(start.getCenterX());
         line.setStartY(start.getCenterY());
-        System.out.println("added new line start " + start.getCenterX() + "  " + start.getCenterY() );
+        System.out.println("added new line start " + start.getCenterX() + "  " + start.getCenterY());
 
         lines.add(line);
     }
 
     //This method is used to create an edge in both graph class and visual graphics
-    public void addLineEnd(Circle end){
+    public void addLineEnd(Circle end) {
 
-        System.out.println("add line end ");
 
-            lines.get(lines.size() - 1).setEndX(end.getCenterX());
-            lines.get(lines.size() - 1).setEndY(end.getCenterY());
+        lines.get(lines.size() - 1).setEndX(end.getCenterX());
+        lines.get(lines.size() - 1).setEndY(end.getCenterY());
 
+        System.out.println("added new line end " + end.getCenterX() + "  " + end.getCenterY() );
 
     }
 
-    public Node getNodeAtCoord(double x, double y){
+    public Node getNodeAtCoord(double x, double y) {
         for (int i = 0; i < this.nodes.size(); i++) {
-            if(this.nodes.get(i).Xpos == x && this.nodes.get(i).Ypos == y){
+            if (this.nodes.get(i).Xpos == x && this.nodes.get(i).Ypos == y) {
                 return this.nodes.get(i);
             }
         }
@@ -331,9 +327,9 @@ public class Graph {
         return null;
     }
 
-    public Edge getEdge(Node start, Node end){
+    public Edge getEdge(Node start, Node end) {
         for (int i = 0; i < edges.size(); i++) {
-            if(edges.get(i).start == start && edges.get(i).end == end){
+            if (edges.get(i).start == start && edges.get(i).end == end) {
                 return edges.get(i);
             }
         }

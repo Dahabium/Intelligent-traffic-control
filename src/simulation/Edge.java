@@ -12,6 +12,26 @@ public class Edge {
     public Road road;
 
 
+
+
+    public Edge(Node start, Node end){
+        this.start = start;
+        this.end = end;
+
+
+        int deltaX = (int)start.Xpos - (int) end.Xpos;
+        int deltaY = (int)start.Ypos - (int) end.Ypos;
+        int distance = (int) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+
+
+        this.road = new Road(distance, start.intersection, end.intersection, 1, 0, 50, false );
+    }
+
+    public Road getRoad(){
+        return this.road;
+    }
+
+
     public Edge(Node start, Node end, int incomingLanes, int outcominglanes, double weight){
         this.start = start;
         this.end = end;
@@ -23,16 +43,9 @@ public class Edge {
 
     public void createRoad(int distance, Intersection beginning, Intersection end, int lanes, int level, int speedLimit, boolean blocked)
     {
-        this.road = new Road(distance, beginning, end, lanes, level, speedLimit, false );
+        this.road = new Road(distance, beginning, end, 1, 0, 50, false );
+
     }
 
-    public Edge(Node start, Node end){
-        this.start = start;
-        this.end = end;
-    }
-
-    public Road getRoad(){
-        return this.road;
-    }
 
 }

@@ -8,9 +8,9 @@ import javafx.scene.shape.Rectangle;
 
 public class Tile extends StackPane {
 
-    public Tile(){
+    public Tile(int SIZE){
 
-        Rectangle border = new Rectangle(50, 50);
+        Rectangle border = new Rectangle(SIZE, SIZE);
         border.setFill(null);
 
         //Essential to represent the grid

@@ -74,7 +74,7 @@ public class Board extends GridPane {
                 javafx.scene.image.Image bgImage = new javafx.scene.image.Image("background.JPG", SIM_SIZE, SIM_SIZE, false, true);
                 ImageView background = new ImageView(bgImage);
 
-                Tile tempTile = new Tile();
+                Tile tempTile = new Tile(SIM_SIZE);
                 tempTile.getChildren().add(background);
                 setTileAtCoordinates(tempTile, j, i);
 
@@ -85,7 +85,7 @@ public class Board extends GridPane {
         for(int i = 0; i<graph.nodes.size(); i++)
         {
             System.out.println("Nodes X & Y positions respectively are: " + graph.nodes.get(i).x + "x " + graph.nodes.get(i).y + "y ");
-            Tile tile = new Tile();
+            Tile tile = new Tile(SIM_SIZE);
             ImageView imgView;
 
             if(graph.nodes.get(i).type == 0)
@@ -272,15 +272,5 @@ public class Board extends GridPane {
         return closest;
 
     }
-
-
-    public void resetBoard() {
-        for (int i = 0; i < ySize; i++) {
-            for (int j = 0; j < xSize; j++) {
-                board[j][i] = null;
-            }
-        }
-    }
-
 
 }

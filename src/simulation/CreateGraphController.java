@@ -38,7 +38,11 @@ public class CreateGraphController  {
     private int control = 0;
     private int indexCount = 0;
     public Graph graph;
+
     Board board;
+
+    //adjust the size of the ammount of zoom in the board
+    int CELL_SIZE;
 
     private boolean release = false;
 
@@ -47,11 +51,13 @@ public class CreateGraphController  {
         //drawSceneElements is going to hold all the board gui components, including the board itself.
 
         board = new Board(15,15);
+        CELL_SIZE = 100;
+
         graph = new Graph();
 
         for (int i = 0; i < board.getBoardSizeX(); i++) {
             for (int j = 0; j < board.getBoardSizeY(); j++) {
-                Tile tile = new Tile();
+                Tile tile = new Tile(CELL_SIZE);
                 board.setTileAtCoordinates(tile,i,j);
             }
         }
@@ -85,6 +91,7 @@ public class CreateGraphController  {
 
 
                 Circle vertex = new Circle(gridX, gridY, 12);
+                System.out.println("NEW VERT BEEN PLACED " + gridX + "   " + gridY);
 
                 vertex.setFill(Color.BLUE);
                 vertex.setStroke(Color.BLACK);

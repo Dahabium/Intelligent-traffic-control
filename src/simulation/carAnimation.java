@@ -33,6 +33,14 @@ public class carAnimation {
 
         this.car = car;
 
+        car.setLocEdge(graph.getEdge(car.getStart(),car.getEnd()));
+
+        System.out.println("XPOSSS " + graph.getEdge(car.getStart(),car.getEnd()).start.Xpos +
+                "YPOSSS " + graph.getEdge(car.getStart(),car.getEnd()).start.Ypos);
+
+//        System.out.println("amount of distance driven on current road " +
+//                car.getPercentageOnCurrentRoad() );
+
 
         this.IntPath = car.getPath();
 
@@ -100,6 +108,9 @@ public class carAnimation {
 
                 if (lastUpdateTime.get() > 0) {
 
+                    System.out.println("Car position X :" + car.getLocX() +
+                            "  current road start X :" + car.getLocEdge().start.Xpos + " end X : "+
+                    car.getLocEdge().end.Xpos);
 
                     int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);

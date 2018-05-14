@@ -14,6 +14,7 @@ public class CollisionDetection {
         this.cars.add(car);
     }
 
+    //TODO orientation of the rectangular bounding box. at the moment its just a square.
     public boolean collisionDetection() {
 
         if (cars.size() == 1) {
@@ -21,8 +22,6 @@ public class CollisionDetection {
         }
 
         for (int i = 0; i < cars.size(); i++) {
-
-            System.out.println(" car number " + i + " X:" + cars.get(i).getLocX() + "  Y:" + cars.get(i).getLocY());
 
             for (int j = 0; j < cars.size(); j++) {
 

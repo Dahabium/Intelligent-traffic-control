@@ -10,7 +10,6 @@ public class AnimationParts {
     ArrayList<carAnimation> carElements;
     ArrayList<TrafficLight> trafficLights;
 
-    ArrayList<Car> carBackend;
     Model model;
 
     Graph graph;
@@ -28,10 +27,6 @@ public class AnimationParts {
 
         this.collisionDetection = new CollisionDetection();
     }
-
-
-    //in future, change inputs to start node and end node (just to tidy some code)...
-
 
 
     //input a car object, comute the path here.
@@ -64,7 +59,7 @@ public class AnimationParts {
             carElements.add(carAnim);
 
         }
-        
+
     }
 
     public void simulate(){
@@ -72,6 +67,7 @@ public class AnimationParts {
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.start();
         }
+
 
     }
 
@@ -102,4 +98,14 @@ public class AnimationParts {
     public ArrayList<TrafficLight> getTrafficLights(){
         return this.trafficLights;
     }
+
+
+
+
+    //return a list of cars that are driving at a given road
+    public ArrayList<Car> carsOnRoad(Road road){
+        return  null;
+    }
+
+
 }
