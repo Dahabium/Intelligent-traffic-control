@@ -44,7 +44,6 @@ public class AnimationParts {
             carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
             carElements.add(carAnim);
 
-
         }
 
         if(pathFindingMode == 2){

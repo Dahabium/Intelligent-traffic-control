@@ -30,17 +30,9 @@ public class carAnimation {
 
     public carAnimation(Graph graph, Board board, Model model, Car car, CollisionDetection collisionDetection) {
 
-
         this.car = car;
 
         car.setLocEdge(graph.getEdge(car.getStart(),car.getEnd()));
-
-        System.out.println("XPOSSS " + graph.getEdge(car.getStart(),car.getEnd()).start.Xpos +
-                "YPOSSS " + graph.getEdge(car.getStart(),car.getEnd()).start.Ypos);
-
-//        System.out.println("amount of distance driven on current road " +
-//                car.getPercentageOnCurrentRoad() );
-
 
         this.IntPath = car.getPath();
 
@@ -79,10 +71,10 @@ public class carAnimation {
             }
         }
 
-        car.setLocX(simPath.startX - 10);
+        car.setLocX(simPath.startX);
         car.setLocY(simPath.startY);
 
-        imgView.setTranslateX(simPath.startX - 10);
+        imgView.setTranslateX(simPath.startX);
         imgView.setTranslateY(simPath.startY);
 
         //prerotate
@@ -108,9 +100,12 @@ public class carAnimation {
 
                 if (lastUpdateTime.get() > 0) {
 
-                    System.out.println("Car position X :" + car.getLocX() +
-                            "  current road start X :" + car.getLocEdge().start.Xpos + " end X : "+
-                    car.getLocEdge().end.Xpos);
+                    System.out.println("amount of distance driven on current road " +
+                            car.getPercentageOnCurrentRoad() );
+
+//                    System.out.println("Car position X :" + car.getLocX() +
+//                            "  current road start X :" + car.getLocEdge().start.Xpos + " end X : "+
+//                    car.getLocEdge().end.Xpos);
 
                     int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);
