@@ -216,9 +216,9 @@ public class Graph {
         System.out.println("amount of edges " + this.edges.size());
 
         for (int i = 0; i < this.edges.size(); i++) {
-            Arrow arrow = new Arrow(this.edges.get(i).start.Xpos, this.edges.get(i).start.Ypos,
+            Arrow Arrow = new Arrow(this.edges.get(i).start.Xpos, this.edges.get(i).start.Ypos,
                     this.edges.get(i).end.Xpos, this.edges.get(i).end.Ypos);
-            group.getChildren().add(arrow);
+            group.getChildren().add(Arrow);
 
         }
     }
