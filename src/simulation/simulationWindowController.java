@@ -22,7 +22,7 @@ public class simulationWindowController {
     @FXML
     private Group simulationElements;
     @FXML
-    private Button createCarbtn, setCarStartbtn, setCarEndbtn, runSimbtn, stopSimbtn;
+    private Button createCarbtn, setCarStartbtn, setCarEndbtn, runSimbtn, stopSimbtn, debugbtn;
     @FXML
     private Text speedVariable;
     @FXML
@@ -135,6 +135,12 @@ public class simulationWindowController {
         GreedySelector.setSelected(false);
         AStarselector.setSelected(true);
         PathfindingMode = 2;
+    }
+
+    @FXML
+    public void debugbtnaction(){
+//        animationParts.carElements.get()
+        
     }
 
 

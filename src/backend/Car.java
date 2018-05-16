@@ -207,12 +207,14 @@ public class Car {
 		}
 		if(locEdge.start.Ypos == locEdge.end.Ypos){
 			//horizontal edge
-			double distance = locEdge.start.Xpos - locEdge.end.Xpos;
-			double driven = this.getLocX() - locEdge.start.Xpos;
+			double roadDistance = Math.abs(locEdge.start.Xpos - locEdge.end.Xpos);
+			double driven = Math.abs(this.getLocX() - locEdge.start.Xpos);
 
-			double z = driven / distance;
+			double z = driven / roadDistance;
 
-			return z;
+			double roundZ = Math.round(z * 100.0) / 100.0;
+
+			return roundZ;
 		}
 
 		return -100;
