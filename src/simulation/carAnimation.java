@@ -31,15 +31,17 @@ public class carAnimation {
     public carAnimation(Graph graph, Board board, Model model, Car car, CollisionDetection collisionDetection) {
 
         this.car = car;
-
-        car.setLocEdge(graph.getEdge(car.getStart(),car.getEnd()));
-
         this.IntPath = car.getPath();
-
-
         carVelocity = car.getDesVel();
 
         pathIterator = 1;
+
+        System.out.println("INTPATH " + IntPath + " PATHITERATOR " + pathIterator);
+
+        //set the initial road for the car
+        //TODO use roads instead of edges
+        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),graph.getNodeByIndex(IntPath.get(pathIterator))));
+
 
         javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", 25, 13, true, false);
         imgView = new ImageView(img);
@@ -100,12 +102,12 @@ public class carAnimation {
 
                 if (lastUpdateTime.get() > 0) {
 
-                    System.out.println("amount of distance driven on current road " +
-                            car.getPercentageOnCurrentRoad() );
+//                    System.out.println("amount of distance driven on current road " +
+//                            car.getPercentageOnCurrentRoad() );
+//
+//                    car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
+//                            graph.getNodeByIndex(IntPath.get(pathIterator))));
 
-//                    System.out.println("Car position X :" + car.getLocX() +
-//                            "  current road start X :" + car.getLocEdge().start.Xpos + " end X : "+
-//                    car.getLocEdge().end.Xpos);
 
                     int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);
@@ -148,6 +150,11 @@ public class carAnimation {
                     } else {
 
                         if (pathIterator < simPath.path.size() - 1) {
+                            //WHY IT DOESENT WORK HERE????
+
+                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
+                                    graph.getNodeByIndex(IntPath.get(pathIterator))));
+
 
                             imgView.setTranslateX(Math.round(newX));
                             imgView.setTranslateY(Math.round(newY));
@@ -208,6 +215,7 @@ public class carAnimation {
                     if (collisionDetection.collisionDetection()) {
 
                         stopCarAnimation();
+
                         System.out.println("COLLISION");
                     }
 

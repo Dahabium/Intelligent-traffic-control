@@ -90,7 +90,6 @@ public class simulationWindowController {
     @FXML
     public void createCar() {
 
-
         this.animationParts.addCarToAnimation(carStart, carEnd, PathfindingMode);
 
         int lastCar = this.animationParts.carElements.size() - 1;
@@ -139,8 +138,8 @@ public class simulationWindowController {
 
     @FXML
     public void debugbtnaction(){
-//        animationParts.carElements.get()
-        
+        animationParts.printRoadWeights();
+
     }
 
 

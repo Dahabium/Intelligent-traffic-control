@@ -201,12 +201,21 @@ public class Car {
 	}
 
 	public double getPercentageOnCurrentRoad(){
+		//vertical edge
 		if(locEdge.start.Xpos == locEdge.end.Xpos){
-			//vertical edge
-			return 0;
+
+			double roadDistance = Math.abs(locEdge.start.Ypos - locEdge.end.Ypos);
+			double driven = Math.abs(this.getLocY() - locEdge.start.Ypos);
+
+			double z = driven / roadDistance;
+
+			double roundZ = Math.round(z * 100.0) / 100.0;
+
+			return roundZ;
 		}
+
+		//horizontal edge
 		if(locEdge.start.Ypos == locEdge.end.Ypos){
-			//horizontal edge
 			double roadDistance = Math.abs(locEdge.start.Xpos - locEdge.end.Xpos);
 			double driven = Math.abs(this.getLocX() - locEdge.start.Xpos);
 
@@ -217,7 +226,7 @@ public class Car {
 			return roundZ;
 		}
 
-		return -100;
+		return -1000000;
 	}
 
 	public double getLocX() {

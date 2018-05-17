@@ -3,6 +3,9 @@ package simulation;
 import backend.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class AnimationParts {
 
@@ -74,6 +77,34 @@ public class AnimationParts {
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.stop();
         }
+    }
+
+    public void printRoadWeights(){
+
+        FSMTrafficLight traff = new FSMTrafficLight(20,5,10,1);
+        traff.simulateFSM();
+
+        //key is edge.gei(i), value is weight on those edges
+        HashMap<Integer, Integer> hmap = new HashMap<>();
+
+        for (int i = 0; i < graph.edges.size(); i++) {
+            hmap.put(i,0);
+        }
+
+
+        for (int i = 0; i < this.carElements.size(); i++) {
+            for (int j = 0; j < graph.edges.size(); j++) {
+                if (this.carElements.get(i).getBackendCar().getLocEdge().start == graph.edges.get(j).start &&
+                        this.carElements.get(i).getBackendCar().getLocEdge().end == graph.edges.get(j).end) {
+
+
+                    hmap.put(j, hmap.get(j) + 1);
+                }
+            }
+        }
+
+        System.out.println("HASHMAP " + hmap.entrySet());
+
     }
 
 

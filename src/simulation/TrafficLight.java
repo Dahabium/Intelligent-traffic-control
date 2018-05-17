@@ -60,8 +60,8 @@ public class TrafficLight {
 
 
     }
-    //trafficlight.getchildren.get( 1 - red, 2 - yellow, 3 - green, like activestate indexes)
 
+    //trafficlight.getchildren.get( 1 - red, 2 - yellow, 3 - green, like activestate indexes)
 
     public void changeTrafficLightColor(int color){
         if (activeState != color){
