@@ -1,7 +1,5 @@
 package simulation;
 
-import backend.Greedy;
-import backend.Pathfinding;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -11,8 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
-import java.util.ArrayList;
 
 public class simulationWindowController {
 
@@ -73,15 +69,15 @@ public class simulationWindowController {
     }
 
     //TODO move this method to animationParts Class
+
     public void createTrafficLights(){
 
         for (int i = 0; i < graph.edges.size(); i++) {
             animationParts.addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE);
-            System.out.println("NUMBER OD TRAFFIC LIGHTS " + animationParts.getTrafficLights().size());
         }
 
-        for (int i = 0; i < this.animationParts.getTrafficLights().size(); i++) {
-            this.simulationElements.getChildren().add(this.animationParts.getTrafficLights().get(i).getTrafficlight());
+        for (int i = 0; i < this.animationParts.getTrafficLightsV2().size(); i++) {
+            this.simulationElements.getChildren().add(this.animationParts.getTrafficLightsV2().get(i).getTrafficLightGui());
         }
 
     }
@@ -139,6 +135,9 @@ public class simulationWindowController {
     @FXML
     public void debugbtnaction(){
         animationParts.printRoadWeights();
+
+        this.animationParts.trafficLightsV2.get(0).runRed();
+
 
     }
 

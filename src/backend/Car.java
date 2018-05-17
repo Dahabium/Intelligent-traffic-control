@@ -85,6 +85,7 @@ public class Car {
 
 	private Node start;
 	private Node end;
+
 	// departure and arrival locations need to be added
 	// current location aswell
 	

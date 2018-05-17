@@ -13,6 +13,9 @@ public class AnimationParts {
     ArrayList<carAnimation> carElements;
     ArrayList<TrafficLight> trafficLights;
 
+    ArrayList<FSMTrafficLight> trafficLightsV2;
+
+
     Model model;
 
     Graph graph;
@@ -24,6 +27,10 @@ public class AnimationParts {
 
         this.carElements = new ArrayList<>();
         this.trafficLights = new ArrayList<>();
+
+        //test
+        this.trafficLightsV2 = new ArrayList<>();
+
         this.model = new Model();
         this.graph = graph;
         this.board = board;
@@ -81,8 +88,8 @@ public class AnimationParts {
 
     public void printRoadWeights(){
 
-        FSMTrafficLight traff = new FSMTrafficLight(20,5,10,1);
-        traff.simulateFSM();
+
+//        traff.simulateFSM();
 
         //key is edge.gei(i), value is weight on those edges
         HashMap<Integer, Integer> hmap = new HashMap<>();
@@ -120,13 +127,20 @@ public class AnimationParts {
     }
 
     public void addTrafficLight(int XPos, int YPos){
-        TrafficLight test = new TrafficLight(XPos, YPos);
-        this.trafficLights.add(test);
 
+//        TrafficLight test = new TrafficLight(XPos, YPos);
+//        this.trafficLights.add(test);
+
+        FSMTrafficLight test = new FSMTrafficLight(10000,3000,5000,1,XPos,YPos);
+        this.trafficLightsV2.add(test);
     }
 
     public ArrayList<TrafficLight> getTrafficLights(){
         return this.trafficLights;
+    }
+
+    public ArrayList<FSMTrafficLight> getTrafficLightsV2(){
+        return this.trafficLightsV2;
     }
 
 

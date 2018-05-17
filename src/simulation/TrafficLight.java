@@ -92,18 +92,5 @@ public class TrafficLight {
         return this.trafficlight;
     }
 
-//
-//    Color toJFXColor(int color) throws IllegalArgumentException {
-//        switch (color){
-//            case RED:
-//                return Color.RED;
-//            case YELLOW:
-//                return Color.YELLOW;
-//            case GREEN:
-//                return Color.GREEN;
-//            default:
-//                throw new IllegalArgumentException("Color value not recognized. " + color );
-//        }
-//    }
 
 }
