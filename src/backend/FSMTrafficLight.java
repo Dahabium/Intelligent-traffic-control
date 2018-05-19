@@ -123,6 +123,19 @@ public class FSMTrafficLight {
         return currentstate;
     }
 
+    public void setGreeenTime(int greeenTime){
+        this.greeenTime = greeenTime;
+    }
+
+    public void setYellowTime(int yellowTime){
+        this.yellowTime = yellowTime;
+    }
+
+    public void setRedTime(int redTime){
+        this.redTime = redTime;
+    }
+
+
 
     public Group getTrafficLightGui(){
         return this.trafficLightGui.getTrafficlight();

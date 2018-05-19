@@ -1,9 +1,23 @@
 package backend;
 
+import simulation.Graph;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Model {
+
+	public Graph graph;
+
+	public Model(Graph graph){
+		this.graph = graph;
+
+	}
+
+	public void connectFSM(){
+		graph.edges.get(0).getRoad().getTrafficLight().runRed();
+		graph.edges.get(1).getRoad().getTrafficLight().runGreen();
+	}
 
 	
 	public double desiredVelocity(double maxSpeed, int speedLimit, double obeyFactor){

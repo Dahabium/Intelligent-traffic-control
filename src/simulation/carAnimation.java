@@ -100,6 +100,7 @@ public class carAnimation {
             @Override
             public void handle(long now) {
 
+                // insert in the if statement to make the care move only on green : && car.getLocRoad().getTrafficLight().getCurrentstate() == 3
                 if (lastUpdateTime.get() > 0 && car.getLocRoad().getTrafficLight().getCurrentstate() == 3) {
 
 //                    System.out.println("amount of distance driven on current road " +
@@ -107,12 +108,6 @@ public class carAnimation {
 //
 //                    car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
 //                            graph.getNodeByIndex(IntPath.get(pathIterator))));
-
-                    if(car.getLocRoad().getTrafficLight().getCurrentstate() == 3 ){
-
-                        System.out.println("CAN GO " );
-                    }
-
 
                     int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);

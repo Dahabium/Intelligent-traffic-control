@@ -63,7 +63,8 @@ public class simulationWindowController {
 
         animationParts = new AnimationParts(this.graph, this.simulationBoard);
 
-        createTrafficLights();
+        createTrafficLightsManual();
+
 
         speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
@@ -76,7 +77,7 @@ public class simulationWindowController {
 
         //add traffic lights at the end of each edge (ie at the end of each road to trafficlight arraylist.
         for (int i = 0; i < graph.edges.size(); i++) {
-            graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
+            graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
                     5000,3000, 1500,1);
 //            animationParts.addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
 //                    5000,3000, 1500,1);
@@ -88,6 +89,16 @@ public class simulationWindowController {
 //
 //            this.simulationElements.getChildren().add(this.animationParts.getTrafficLightsV2().get(i).getTrafficLightGui());
 //        }
+    }
+
+    public void createTrafficLightsManual(){
+
+        graph.edges.get(0).getRoad().addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 5000,4000,1,1);
+        graph.edges.get(1).getRoad().addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 4000,5000,1,3);
+
+
+        this.simulationElements.getChildren().add(graph.edges.get(0).getRoad().getTrafficLight().getTrafficLightGui());
+        this.simulationElements.getChildren().add(graph.edges.get(1).getRoad().getTrafficLight().getTrafficLightGui());
 
     }
 
@@ -141,9 +152,9 @@ public class simulationWindowController {
 
     @FXML
     public void debugbtnaction(){
-        animationParts.printRoadWeights();
+//        animationParts.printRoadWeights();
 
-        this.graph.edges.get(0).getRoad().getTrafficLight().runRed();
+        this.animationParts.model.connectFSM();
 
     }
 

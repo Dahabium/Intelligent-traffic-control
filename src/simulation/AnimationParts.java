@@ -16,6 +16,7 @@ public class AnimationParts {
     ArrayList<FSMTrafficLight> trafficLightsV2;
 
 
+    //controls the speed changes of each car and traffic light controll.
     Model model;
 
     Graph graph;
@@ -29,11 +30,12 @@ public class AnimationParts {
         this.trafficLights = new ArrayList<>();
 
         //create traffic lights array (backend)
-        this.trafficLightsV2 = new ArrayList<>();
+//        this.trafficLightsV2 = new ArrayList<>();
 
-        this.model = new Model();
         this.graph = graph;
         this.board = board;
+
+        this.model = new Model(graph);
 
         this.collisionDetection = new CollisionDetection();
     }
@@ -53,6 +55,7 @@ public class AnimationParts {
 
             carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
             carElements.add(carAnim);
+
 
         }
 
@@ -85,11 +88,10 @@ public class AnimationParts {
         }
     }
 
-    public void printRoadWeights(){
+    public HashMap<Integer, Integer> printRoadWeights(){
 
-//        traff.simulateFSM();
 
-        //key is edge.gei(i), value is weight on those edges
+        //key is edge.gei(i), value is weight on those edges at current moment
         HashMap<Integer, Integer> hmap = new HashMap<>();
 
         for (int i = 0; i < graph.edges.size(); i++) {
@@ -109,6 +111,8 @@ public class AnimationParts {
         }
 
         System.out.println("HASHMAP " + hmap.entrySet());
+
+        return hmap;
 
     }
 

@@ -55,6 +55,7 @@ public class Road extends Edge{
 	}
 
 	public FSMTrafficLight getTrafficLight(){
+
 		return this.trafficLight;
 	}
 
