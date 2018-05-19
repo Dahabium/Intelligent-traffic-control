@@ -15,8 +15,16 @@ public class Model {
 	}
 
 	public void connectFSM(){
+		//if 2 edges share the same vertex at their ends AND there exists a parrallel edge going out of that edge,
+		// AND they are PARALLEL to each other, then let them share the same traffic light cycle.
+
+		// if 2 edges share the same vertex at their ends AND one of them is perpendicular to another, then the FSM cycle of one edge will change
+		//depending on the other
+
 		graph.edges.get(0).getRoad().getTrafficLight().runRed();
 		graph.edges.get(1).getRoad().getTrafficLight().runGreen();
+
+		//use getroadweights method
 	}
 
 	

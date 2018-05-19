@@ -88,7 +88,7 @@ public class AnimationParts {
         }
     }
 
-    public HashMap<Integer, Integer> printRoadWeights(){
+    public HashMap<Integer, Integer> getRoadWeights(){
 
 
         //key is edge.gei(i), value is weight on those edges at current moment
