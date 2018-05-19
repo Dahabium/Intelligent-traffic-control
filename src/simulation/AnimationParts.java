@@ -28,7 +28,7 @@ public class AnimationParts {
         this.carElements = new ArrayList<>();
         this.trafficLights = new ArrayList<>();
 
-        //test
+        //create traffic lights array (backend)
         this.trafficLightsV2 = new ArrayList<>();
 
         this.model = new Model();
@@ -77,7 +77,6 @@ public class AnimationParts {
             this.carElements.get(i).animationTimer.start();
         }
 
-
     }
 
     public void stopSimulate(){
@@ -87,7 +86,6 @@ public class AnimationParts {
     }
 
     public void printRoadWeights(){
-
 
 //        traff.simulateFSM();
 
@@ -126,14 +124,6 @@ public class AnimationParts {
         return path.Astar(car, graph);
     }
 
-    public void addTrafficLight(int XPos, int YPos){
-
-//        TrafficLight test = new TrafficLight(XPos, YPos);
-//        this.trafficLights.add(test);
-
-        FSMTrafficLight test = new FSMTrafficLight(10000,3000,5000,1,XPos,YPos);
-        this.trafficLightsV2.add(test);
-    }
 
     public ArrayList<TrafficLight> getTrafficLights(){
         return this.trafficLights;

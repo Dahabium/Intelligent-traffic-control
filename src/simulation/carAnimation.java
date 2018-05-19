@@ -100,13 +100,18 @@ public class carAnimation {
             @Override
             public void handle(long now) {
 
-                if (lastUpdateTime.get() > 0) {
+                if (lastUpdateTime.get() > 0 && car.getLocRoad().getTrafficLight().getCurrentstate() == 3) {
 
 //                    System.out.println("amount of distance driven on current road " +
 //                            car.getPercentageOnCurrentRoad() );
 //
 //                    car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
 //                            graph.getNodeByIndex(IntPath.get(pathIterator))));
+
+                    if(car.getLocRoad().getTrafficLight().getCurrentstate() == 3 ){
+
+                        System.out.println("CAN GO " );
+                    }
 
 
                     int xCoord = simPath.path.get(pathIterator).get(0) - 10;

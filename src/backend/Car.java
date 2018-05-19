@@ -186,7 +186,9 @@ public class Car {
 	}
 
 	public Road getLocRoad() {
-		return locRoad;
+
+//		return locRoad;
+		return this.locEdge.road;
 	}
 
 	public void setLocRoad(Road locRoad) {

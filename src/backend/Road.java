@@ -1,16 +1,23 @@
 package backend;
 
-public class Road {
+import simulation.Edge;
+import simulation.Node;
+
+public class Road extends Edge{
 
 	public Intersection beginning;
 	public Intersection end;
+
 	private int lanes;
 	private int speedLimit;
 	private int distance;
 	private boolean blocked;
 	private int level;
+
+	FSMTrafficLight trafficLight;
+
 	
-	public Road(int distance, Intersection beginning, Intersection end) {
+	/*public Road(int distance, Intersection beginning, Intersection end) {
 		this.distance = distance;
 		this.beginning = beginning;
 		this.end = end;
@@ -28,7 +35,7 @@ public class Road {
 		this.speedLimit = 80;
 		this.blocked = false;
 		this.level = level;
-	}
+	}*/
 	
 	public Road(int distance, Intersection beginning, Intersection end, int lanes, int level, int speedLimit, boolean blocked) {
 		this.distance = distance;
@@ -38,7 +45,20 @@ public class Road {
 		this.speedLimit = speedLimit;
 		this.blocked = blocked;
 		this.level = level;
+
 	}
+
+	public void addTrafficLight(int XPos, int YPos, int redtime, int greentime, int yellowtime, int currentstate){
+
+		this.trafficLight = new FSMTrafficLight(redtime,greentime,yellowtime,currentstate,XPos,YPos);
+
+	}
+
+	public FSMTrafficLight getTrafficLight(){
+		return this.trafficLight;
+	}
+
+
 
 	public Intersection getBeginning() {
 		return beginning;

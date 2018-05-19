@@ -1,20 +1,24 @@
 package simulation;
 
+import backend.FSMTrafficLight;
 import backend.Intersection;
 import backend.Road;
 
 public class Edge {
 
     public Node start, end;
+    public int type;
 
-    public int incomingLanes,outcominglanes, type = 0;
-    public double weight;
+
     public Road road;
 
-
-
+    //default constructor ¯\_(ツ)_/¯ dont know much why needed
+    public Edge(){
+        super();
+    }
 
     public Edge(Node start, Node end){
+
         this.start = start;
         this.end = end;
 
@@ -24,7 +28,9 @@ public class Edge {
         int distance = (int) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
 
 
-        this.road = new Road(distance, start.intersection, end.intersection, 1, 0, 50, false );
+        createRoad(distance, start.intersection, end.intersection,1, 0, 50, false);
+
+
     }
 
     public Road getRoad(){
@@ -32,18 +38,18 @@ public class Edge {
     }
 
 
-    public Edge(Node start, Node end, int incomingLanes, int outcominglanes, double weight){
-        this.start = start;
-        this.end = end;
-        this.weight = weight;
-        this.incomingLanes = incomingLanes;
-        this.outcominglanes = outcominglanes;
-        createRoad(1000, start.intersection, end.intersection, 1, 0, 50, false);
-    }
+//    public Edge(Node start, Node end, int incomingLanes, int outcominglanes, double weight){
+//        this.start = start;
+//        this.end = end;
+//        this.weight = weight;
+//        this.incomingLanes = incomingLanes;
+//        this.outcominglanes = outcominglanes;
+//        createRoad(1000, start.intersection, end.intersection, 1, 0, 50, false);
+//    }
 
     public void createRoad(int distance, Intersection beginning, Intersection end, int lanes, int level, int speedLimit, boolean blocked)
     {
-        this.road = new Road(distance, beginning, end, 1, 0, 50, false );
+        this.road = new Road(distance, beginning, end, lanes, level, speedLimit, blocked );
 
     }
 

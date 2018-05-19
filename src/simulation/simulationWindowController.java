@@ -25,6 +25,8 @@ public class simulationWindowController {
     private TextField StartInput, EndInput;
     @FXML
     private CheckBox GreedySelector, AStarselector;
+
+
     private Graph graph;
     private String filename;
 
@@ -72,13 +74,20 @@ public class simulationWindowController {
 
     public void createTrafficLights(){
 
+        //add traffic lights at the end of each edge (ie at the end of each road to trafficlight arraylist.
         for (int i = 0; i < graph.edges.size(); i++) {
-            animationParts.addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE);
+            graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
+                    5000,3000, 1500,1);
+//            animationParts.addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
+//                    5000,3000, 1500,1);
+            this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
         }
 
-        for (int i = 0; i < this.animationParts.getTrafficLightsV2().size(); i++) {
-            this.simulationElements.getChildren().add(this.animationParts.getTrafficLightsV2().get(i).getTrafficLightGui());
-        }
+        //get the trafficlight arraylist and add all the elements in GUI
+//        for (int i = 0; i < this.animationParts.getTrafficLightsV2().size(); i++) {
+//
+//            this.simulationElements.getChildren().add(this.animationParts.getTrafficLightsV2().get(i).getTrafficLightGui());
+//        }
 
     }
 
@@ -111,8 +120,6 @@ public class simulationWindowController {
     @FXML
     public void runSimulation() {
         animationParts.simulate();
-
-        animationParts.getTrafficLights().get(0).changeTrafficLightColor(3);
     }
 
     @FXML
@@ -136,8 +143,7 @@ public class simulationWindowController {
     public void debugbtnaction(){
         animationParts.printRoadWeights();
 
-        this.animationParts.trafficLightsV2.get(0).runRed();
-
+        this.graph.edges.get(0).getRoad().getTrafficLight().runRed();
 
     }
 

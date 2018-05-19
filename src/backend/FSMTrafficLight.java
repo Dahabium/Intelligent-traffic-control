@@ -19,22 +19,14 @@ public class FSMTrafficLight {
     public int redTime, yellowTime, greeenTime;
 
     //1 - red, 2 - yellow, 3- green
+
+    //1 > 3 > 2 > 1 > 3 > 2
     // Red > Green > Yellow > Red > Green > Yellow > ...
 
     public int currentstate;
 
 
-    public FSMTrafficLight(int redTime, int yellowTime, int greeenTime, int currentstate) {
-
-        this.redTime = redTime;
-        this.yellowTime = yellowTime;
-        this.greeenTime = greeenTime;
-
-        this.currentstate = currentstate;
-
-    }
-
-    public FSMTrafficLight(int redTime, int yellowTime, int greeenTime, int currentstate, int XPos, int YPos) {
+    public FSMTrafficLight(int redTime, int greeenTime, int yellowTime, int currentstate, int XPos, int YPos) {
 
         this.trafficLightGui = new TrafficLight(XPos,YPos);
 
@@ -46,9 +38,9 @@ public class FSMTrafficLight {
 
     }
 
+
     public void runRed() {
 
-        System.out.println("RED START");
         this.trafficLightGui.changeTrafficLightColor(RED);
 
         final Timer timer = new Timer();
@@ -57,12 +49,11 @@ public class FSMTrafficLight {
             @Override
             public void run() {
                 if (currentstate == RED) {
-                    System.out.println("RUNNING");
-                } else {
 
                     timer.cancel();
                     timer.purge();
-                    System.out.println("RED DONE");
+
+                    currentstate = GREEN;
 
                     runGreen();
 
@@ -72,30 +63,23 @@ public class FSMTrafficLight {
 
         timer.schedule(task, redTime);
 
-        //change state to green
-        currentstate = GREEN;
-
     }
 
     public void runGreen() {
 
-        System.out.println("Green RUN");
         this.trafficLightGui.changeTrafficLightColor(GREEN);
 
-
         final Timer timer = new Timer();
-
         final TimerTask task = new TimerTask() {
 
             @Override
             public void run() {
                 if (currentstate == GREEN) {
-                    System.out.println("RUNNING");
-                } else {
 
                     timer.cancel();
                     timer.purge();
-                    System.out.println("Green DONE");
+
+                    currentstate = YELLOW;
 
                     runYellow();
 
@@ -105,17 +89,11 @@ public class FSMTrafficLight {
 
         timer.schedule(task, greeenTime);
 
-
-        //change to yellow
-        currentstate = YELLOW;
-
-
     }
 
 
     public void runYellow() {
 
-        System.out.println("YELLOW RUN");
         this.trafficLightGui.changeTrafficLightColor(YELLOW);
 
         final Timer timer = new Timer();
@@ -125,12 +103,11 @@ public class FSMTrafficLight {
             @Override
             public void run() {
                 if (currentstate == YELLOW) {
-                    System.out.println("RUNNING");
-                } else {
 
                     timer.cancel();
                     timer.purge();
-                    System.out.println("Yellow DONE");
+
+                    currentstate = RED;
 
                     runRed();
 
@@ -139,9 +116,6 @@ public class FSMTrafficLight {
         };
 
         timer.schedule(task, yellowTime);
-
-        //turn back to red
-        currentstate = RED;
 
     }
 
