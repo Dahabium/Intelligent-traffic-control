@@ -93,7 +93,7 @@ public class simulationWindowController {
 
     public void createTrafficLightsManual(){
 
-        graph.edges.get(0).getRoad().addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 5000,4000,1000,1);
+        graph.edges.get(0).getRoad().addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 500000000,4000,1000,1);
         graph.edges.get(1).getRoad().addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 5000,4000,1000,3);
 
 

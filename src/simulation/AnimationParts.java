@@ -11,6 +11,7 @@ public class AnimationParts {
 
 
     ArrayList<carAnimation> carElements;
+
     ArrayList<TrafficLight> trafficLights;
 
     ArrayList<FSMTrafficLight> trafficLightsV2;

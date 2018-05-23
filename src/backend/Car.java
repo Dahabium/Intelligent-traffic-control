@@ -59,6 +59,7 @@ public class Car {
         this.end = end;
 //        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
+//    public Car()
 
     public ArrayList<Integer> getPath(){
     	return this.path;
@@ -189,6 +190,7 @@ public class Car {
 
 //		return locRoad;
 		return this.locEdge.road;
+
 	}
 
 	public void setLocRoad(Road locRoad) {
@@ -226,7 +228,7 @@ public class Car {
 
 			double roundZ = Math.round(z * 100.0) / 100.0;
 
-			return roundZ;
+			return roundZ * 100;
 		}
 
 		return -1000000;

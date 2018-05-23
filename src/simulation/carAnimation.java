@@ -101,11 +101,15 @@ public class carAnimation {
             public void handle(long now) {
 
                 // insert in the if statement to make the care move only on green : && car.getLocRoad().getTrafficLight().getCurrentstate() == 3
-                if (lastUpdateTime.get() > 0 && car.getLocRoad().getTrafficLight().getCurrentstate() == 3) {
+                if (lastUpdateTime.get() > 0) {
 
-//                    System.out.println("amount of distance driven on current road " +
-//                            car.getPercentageOnCurrentRoad() );
-//
+
+                    //if we are at the end of the road (percentage of current road > 70 %) and its a red traffic light -> stop.
+                    if( car.getLocRoad().getTrafficLight().getCurrentstate() == 1 && car.getPercentageOnCurrentRoad() > 70){
+                        //decelerate untill full stop
+                        car.setVel(0);
+                    }
+
 //                    car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
 //                            graph.getNodeByIndex(IntPath.get(pathIterator))));
 
@@ -209,7 +213,25 @@ public class carAnimation {
 
 
                     double dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
-                    car.setVel((car.getVel() + (model.acceleration(car, dist, 15) * 0.016)));
+
+                    //return the velocity of the car in the beggining (return car object)
+                    //if there is a car on current road && the percentageOnRoad is larger than the current one => return the car in the front, get its velocity.
+
+
+//                    double carFrontVelocity = 15;
+
+                    double carFrontVelocity = 0;
+
+                    if(collisionDetection.returnCarInFront(car) == null){
+                        carFrontVelocity = 15;
+                        System.out.println(car + " DEFAULT VELOCITY");
+                    }
+                    else{
+                        carFrontVelocity = collisionDetection.returnCarInFront(car).getVel();
+                        System.out.println(car + " car in front velocity " + carFrontVelocity);
+                    }
+
+                    car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
 
                     //try to detect a collision here
                     if (collisionDetection.collisionDetection()) {
@@ -234,6 +256,7 @@ public class carAnimation {
         System.out.println("CAR ANIMATION STOPPED!");
         car.setVel(0);
         animationTimer.stop();
+
     }
 
     private int checkDirection(int oldX, int oldY, int newX, int newY) {

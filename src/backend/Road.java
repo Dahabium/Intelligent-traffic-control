@@ -3,6 +3,8 @@ package backend;
 import simulation.Edge;
 import simulation.Node;
 
+import java.util.ArrayList;
+
 public class Road extends Edge{
 
 	public Intersection beginning;
@@ -53,6 +55,10 @@ public class Road extends Edge{
 		this.trafficLight = new FSMTrafficLight(redtime,greentime,yellowtime,currentstate,XPos,YPos);
 
 	}
+
+//	public Car getCarInFront(){
+//		fori
+//	}
 
 	public FSMTrafficLight getTrafficLight(){
 
