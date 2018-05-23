@@ -211,14 +211,20 @@ public class carAnimation {
 
                     }
 
+                    double dist = -10;
+                    if(collisionDetection.returnCarInFront(car) != null){
+                        //calculate the distance with the car in the front .
+                        System.out.println("Car in Front X:" + collisionDetection.returnCarInFront(car).getLocX() + "  Y :" + collisionDetection.returnCarInFront(car).getLocY());
+                        dist = (Math.sqrt(Math.pow((imgView.getTranslateX() - collisionDetection.returnCarInFront(car).getLocX()), 2) + (Math.pow(imgView.getTranslateY() - collisionDetection.returnCarInFront(car).getLocY(), 2))))-25 - 10;
+                    }
+                    else {
+                        //else check the distance in the front node (...)
 
-                    double dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+                        dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+                        System.out.println("NO CARS ");
+                    }
 
-                    //return the velocity of the car in the beggining (return car object)
-                    //if there is a car on current road && the percentageOnRoad is larger than the current one => return the car in the front, get its velocity.
-
-
-//                    double carFrontVelocity = 15;
+                    System.out.println("Dist " + dist);
 
                     double carFrontVelocity = 0;
 
@@ -228,6 +234,10 @@ public class carAnimation {
                     }
                     else{
                         carFrontVelocity = collisionDetection.returnCarInFront(car).getVel();
+                        if( carFrontVelocity < 0.1){
+                            carFrontVelocity = 0;
+                        }
+
                         System.out.println(car + " car in front velocity " + carFrontVelocity);
                     }
 
