@@ -18,6 +18,8 @@ public class Road extends Edge{
 
 	FSMTrafficLight trafficLight;
 
+	private boolean existsTrafficLight = false;
+
 	
 	/*public Road(int distance, Intersection beginning, Intersection end) {
 		this.distance = distance;
@@ -53,6 +55,7 @@ public class Road extends Edge{
 	public void addTrafficLight(int XPos, int YPos, int redtime, int greentime, int yellowtime, int currentstate){
 
 		this.trafficLight = new FSMTrafficLight(redtime,greentime,yellowtime,currentstate,XPos,YPos);
+		existsTrafficLight = true;
 
 	}
 
@@ -65,6 +68,9 @@ public class Road extends Edge{
 		return this.trafficLight;
 	}
 
+	public boolean existsTrafficLight(){
+		return existsTrafficLight;
+	}
 
 
 	public Intersection getBeginning() {

@@ -73,9 +73,6 @@ public class CollisionDetection {
             return cars.get(returnIndex);
         }
 
-
-//        System.out.println("RETURNING NULL in ReturnCarInFront");
-//        return null;
     }
 
 

@@ -93,9 +93,10 @@ public class simulationWindowController {
 
     public void createTrafficLightsManual(){
 
-        graph.edges.get(0).getRoad().addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 7000,6000,1000,1);
-        graph.edges.get(1).getRoad().addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 7000,6000,1000,3);
+        graph.edges.get(0).getRoad().addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 15000,6000,1000,1);
+        graph.edges.get(1).getRoad().addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 1000000,6000,1000,3);
 
+        //add shadow cars....
 
         this.simulationElements.getChildren().add(graph.edges.get(0).getRoad().getTrafficLight().getTrafficLightGui());
         this.simulationElements.getChildren().add(graph.edges.get(1).getRoad().getTrafficLight().getTrafficLightGui());
