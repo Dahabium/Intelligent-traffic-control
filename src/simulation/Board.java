@@ -104,11 +104,8 @@ public class Board extends GridPane {
 
             if(graph.nodes.get(i).type == 0)
             {
-<<<<<<< HEAD
-                javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.png",  SIM_SIZE, SIM_SIZE,true,false);
-=======
-                javafx.scene.image.Image img = new javafx.scene.image.Image("Intersection.png",  SIM_SIZE, SIM_SIZE,true,false);
->>>>>>> Rik
+     javafx.scene.image.Image img = new javafx.scene.image.Image("Intersection.png",  SIM_SIZE, SIM_SIZE,true,false);
+
                 imgView = new ImageView(img);
                 tile.getChildren().add(imgView);
             }
@@ -204,11 +201,9 @@ public class Board extends GridPane {
                     int edgeX = startX + (endX - startX)/2;
                     int edgeY = startY + (endY - startY)/2;
                     int distance = Math.abs(endX-startX);
-<<<<<<< HEAD
-                    javafx.scene.image.Image img = new javafx.scene.image.Image("road.png", SIM_SIZE, SIM_SIZE, true, false);
-=======
+
                     javafx.scene.image.Image img = new javafx.scene.image.Image("Road.png", SIM_SIZE, SIM_SIZE, true, false);
->>>>>>> Rik
+
 
 
                     if( endX - startX < 0)
@@ -240,11 +235,9 @@ public class Board extends GridPane {
                     int edgeX = startX + (endX - startX)/2;
                     int edgeY = startY + (endY-startY)/2;
 
-<<<<<<< HEAD
-                    javafx.scene.image.Image img = new javafx.scene.image.Image("road.png", SIM_SIZE, SIM_SIZE, true, false);
-=======
+
                     javafx.scene.image.Image img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
->>>>>>> Rik
+
 
 
                     //checks how far apart the nodes are

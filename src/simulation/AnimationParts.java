@@ -34,12 +34,10 @@ public class AnimationParts {
 
         this.graph = graph;
         this.board = board;
-<<<<<<< HEAD
 
         this.model = new Model(graph);
 
-=======
->>>>>>> Rik
+
         this.collisionDetection = new CollisionDetection();
     }
 
