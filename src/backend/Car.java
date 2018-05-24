@@ -216,7 +216,7 @@ public class Car {
 
 			double roundZ = Math.round(z * 100.0) / 100.0;
 
-			return roundZ;
+			return roundZ * 100;
 		}
 
 		//horizontal edge

@@ -154,21 +154,16 @@ public class carAnimation {
                             imgView.setTranslateX(Math.round(newX));
                             imgView.setTranslateY(Math.round(newY));
 
-                            if(IntPath.size()-1 == pathIterator){
-                                System.out.println("last point .. ");
-                            }
-                            else{
-                                car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
-                                        graph.getNodeByIndex(IntPath.get(pathIterator))));
-
-                            }
-
 
                             int oldDir = simPath.directions.get(pathIterator - 1);
 
                             pathIterator++;
 
                             int newDir = simPath.directions.get(pathIterator - 1);
+
+                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
+                                    graph.getNodeByIndex(IntPath.get(pathIterator))));
+
 
                             System.out.println("Intpath " + IntPath + "  SimPath " + simPath.directions + "  pathiterator "+ pathIterator );
 
@@ -237,10 +232,11 @@ public class carAnimation {
 
                     else {
                         //else check the distance in the front node (...)
-                        System.out.println("percentage on curr road " + car.getPercentageOnCurrentRoad());
+                        System.out.println(" percentage on curr road " + car.getPercentageOnCurrentRoad() + "  " + collisionDetection.returnCarInFront(car) );
 
-                        if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().getTrafficLight().getCurrentstate() != 3 ) || (car.getLocRoad().existsTrafficLight() == false)) && collisionDetection.returnCarInFront(car) == null){
-                            System.out.println("EXECUTED !!! ");
+                        if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().existsTrafficLight() == false) || (car.getLocRoad().getTrafficLight().getCurrentstate() != 3 )) && collisionDetection.returnCarInFront(car) == null){
+
+                            System.out.println("dist " + dist);
 
                             dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
                             carFrontVelocity = 0;
@@ -249,7 +245,6 @@ public class carAnimation {
 
                     }
 
-                    System.out.println( "  currentstate " + model.graph.edges.get(0).getRoad().getTrafficLight().getCurrentstate());
 
                     //"Dist " + dist + "  CarFrontVelocity " + "  local edge : " + car.getLocEdge() + "   " +  carFrontVelocity +
 
@@ -263,7 +258,6 @@ public class carAnimation {
                         System.out.println("COLLISION");
                     }
 
-                    
 
                 }
 
