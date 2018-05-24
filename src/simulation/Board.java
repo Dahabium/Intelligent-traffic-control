@@ -35,7 +35,7 @@ public class Board extends GridPane {
 
     public void addIntersectionGUI(int x, int y, int squareSize){
 
-        javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.JPG",  squareSize, squareSize,true,false);
+        javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.png",  squareSize, squareSize,true,false);
         ImageView imgView = new ImageView(img);
 
         this.getTileAtCoordinates(x,y).getChildren().add(imgView);
@@ -90,7 +90,7 @@ public class Board extends GridPane {
 
             if(graph.nodes.get(i).type == 0)
             {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.JPG",  SIM_SIZE, SIM_SIZE,true,false);
+                javafx.scene.image.Image img = new javafx.scene.image.Image("intersection.png",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
                 tile.getChildren().add(imgView);
             }
@@ -127,19 +127,23 @@ public class Board extends GridPane {
 
             if(graph.nodes.get(i).type == 3)
             {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("Ttype.png",  SIM_SIZE, SIM_SIZE,true,false);
+                javafx.scene.image.Image img = new javafx.scene.image.Image("Tsection.png",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
                 if(!graph.nodes.get(i).left)
                 {
-                    imgView.setRotate(180);
+                    imgView.setRotate(270);
                 }
                 if(!graph.nodes.get(i).down)
                 {
-                    imgView.setRotate(90);
+                    imgView.setRotate(180);
                 }
                 if(!graph.nodes.get(i).up)
                 {
-                    imgView.setRotate(270);
+                    imgView.setRotate(360);
+                }
+                if(!graph.nodes.get(i).right)
+                {
+                    imgView.setRotate(90);
                 }
 
                 tile.getChildren().add(imgView);
@@ -168,7 +172,7 @@ public class Board extends GridPane {
                     int edgeX = startX + (endX - startX)/2;
                     int edgeY = startY + (endY - startY)/2;
                     int distance = Math.abs(endX-startX);
-                    javafx.scene.image.Image img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE*0.145, true, false);
+                    javafx.scene.image.Image img = new javafx.scene.image.Image("road.png", SIM_SIZE, SIM_SIZE, true, false);
 
 
                     if( endX - startX < 0)
@@ -200,7 +204,7 @@ public class Board extends GridPane {
                     int edgeX = startX + (endX - startX)/2;
                     int edgeY = startY + (endY-startY)/2;
 
-                    javafx.scene.image.Image img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE*0.145, true, false);
+                    javafx.scene.image.Image img = new javafx.scene.image.Image("road.png", SIM_SIZE, SIM_SIZE, true, false);
 
 
                     //checks how far apart the nodes are
@@ -214,7 +218,6 @@ public class Board extends GridPane {
                             board[edgeX][endY+j].getChildren().add(imgView);
                         }
                     }
-
                     else if(endY - startY > 0)
                     {
 
