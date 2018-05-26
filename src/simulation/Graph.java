@@ -202,14 +202,12 @@ public class Graph {
 
         //Show the Vertexes in GUI
         for (int i = 0; i < this.nodes.size(); i++) {
-
             Circle vertex = new Circle(this.nodes.get(i).Xpos, this.nodes.get(i).Ypos, 12);
             vertex.setFill(Color.BLUE);
             vertex.setStroke(Color.BLACK);
 
 
             group.getChildren().add(vertex);
-
         }
 
         //Show the edges between vertexes in GUI
