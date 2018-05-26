@@ -63,7 +63,9 @@ public class simulationWindowController {
 
         animationParts = new AnimationParts(this.graph, this.simulationBoard);
 
-        createTrafficLightsManual();
+//        createTrafficLightsManual();
+
+        createTrafficLights();
 
 
         speedVariable.setText("0 km/h");
@@ -75,20 +77,44 @@ public class simulationWindowController {
 
     public void createTrafficLights(){
 
-        //add traffic lights at the end of each edge (ie at the end of each road to trafficlight arraylist.
+        //cases: T- Section, or normal Cross-Intersection
+
+//        if there is a parrallel road ( ie same direction after intersection
+
         for (int i = 0; i < graph.edges.size(); i++) {
-            graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
-                    5000,3000, 1500,1);
-//            animationParts.addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE,
-//                    5000,3000, 1500,1);
-            this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
+            for (int j = 0; j < graph.edges.size(); j++) {
+
+                if(graph.edges.get(i).end == graph.edges.get(j).start && graph.edges.get(i).direction == graph.edges.get(j).direction && graph.getNumberOfIncomingRoads(graph.edges.get(i).end) > 1){
+
+                    if(graph.edges.get(i).direction == 6){
+                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE - 70,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE + 70,
+                                5000,3000, 1500,1);
+                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
+                    }
+                    if(graph.edges.get(i).direction == 4){
+                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE + 130,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE - 50,
+                                5000,3000, 1500,1);
+                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
+                    }
+                    if(graph.edges.get(i).direction == 8){
+
+                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE + 70,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE + 130,
+                                5000,3000, 1500,1);
+                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
+                    }
+                    if(graph.edges.get(i).direction == 2){
+                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE - 130,
+                                5000,3000, 1500,1);
+                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
+
+                    }
+
+                }
+            }
         }
 
-        //get the trafficlight arraylist and add all the elements in GUI
-//        for (int i = 0; i < this.animationParts.getTrafficLightsV2().size(); i++) {
-//
-//            this.simulationElements.getChildren().add(this.animationParts.getTrafficLightsV2().get(i).getTrafficLightGui());
-//        }
+
+
     }
 
     public void createTrafficLightsManual(){
@@ -100,6 +126,10 @@ public class simulationWindowController {
 
         this.simulationElements.getChildren().add(graph.edges.get(0).getRoad().getTrafficLight().getTrafficLightGui());
         this.simulationElements.getChildren().add(graph.edges.get(1).getRoad().getTrafficLight().getTrafficLightGui());
+
+        for (int i = 0; i < graph.edges.size(); i++) {
+            System.out.println("Edge number " + i + "  direction is  " + graph.edges.get(i).direction);
+        }
 
     }
 

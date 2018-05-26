@@ -16,6 +16,7 @@ public class Road extends Edge{
 	private boolean blocked;
 	private int level;
 
+
 	FSMTrafficLight trafficLight;
 
 	private boolean existsTrafficLight = false;
@@ -59,9 +60,7 @@ public class Road extends Edge{
 
 	}
 
-//	public Car getCarInFront(){
-//		fori
-//	}
+
 
 	public FSMTrafficLight getTrafficLight(){
 
@@ -128,6 +127,7 @@ public class Road extends Edge{
 	public void setLevel(int level) {
 		this.level = level;
 	}
+
 
 	
 }

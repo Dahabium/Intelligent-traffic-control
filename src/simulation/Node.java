@@ -14,7 +14,6 @@ public class Node {
 	boolean left, up, right, down;
 
 
-
 	public Node(String name, int Xpos, int Ypos){
         this.name = name;
         this.Xpos = Xpos;
@@ -110,4 +109,7 @@ public class Node {
 	public int getIndex(){
     	return  index;
 	}
+
+
+
 }
