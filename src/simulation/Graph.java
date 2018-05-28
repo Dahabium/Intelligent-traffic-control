@@ -239,6 +239,34 @@ public class Graph {
 
     }
 
+    public int getNumberOfSameLanes(Edge edge){
+        int number = 0;
+
+        for (int i = 0; i < this.edges.size(); i++) {
+            if(this.edges.get(i).start == edge.start && this.edges.get(i).end == edge.end){
+                number ++;
+            }
+        }
+
+        return number;
+    }
+
+    //given a node, return the ammount of incoming edges
+    public int getNumberOfIncomingRoads(Node node) {
+        int count = 0;
+
+        for (int i = 0; i < this.edges.size(); i++) {
+
+                if (this.edges.get(i).end == node && getNumberOfSameLanes(this.edges.get(i)) < 2) {
+                    count++;
+                }
+
+        }
+
+        return count;
+
+    }
+
     public List<Node> getAdjecents(Node node) {
 
         List<Node> out = new ArrayList<>();
@@ -311,7 +339,7 @@ public class Graph {
         lines.get(lines.size() - 1).setEndX(end.getCenterX());
         lines.get(lines.size() - 1).setEndY(end.getCenterY());
 
-        System.out.println("added new line end " + end.getCenterX() + "  " + end.getCenterY() );
+        System.out.println("added new line end " + end.getCenterX() + "  " + end.getCenterY());
 
     }
 

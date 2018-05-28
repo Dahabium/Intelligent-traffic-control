@@ -9,6 +9,8 @@ public class Edge {
     public Node start, end;
     public int type;
 
+    public int direction;
+
 
     public Road road;
 
@@ -29,6 +31,7 @@ public class Edge {
 
 
         createRoad(distance, start.intersection, end.intersection,1, 0, 50, false);
+        this.direction = checkDirection();
 
 
     }
@@ -51,6 +54,31 @@ public class Edge {
     {
         this.road = new Road(distance, beginning, end, lanes, level, speedLimit, blocked );
 
+    }
+
+    public int checkDirection(){
+        if (this.getStartNode().x < this.getEndNode().x && this.getStartNode().y == this.getEndNode().y){
+            return 6;
+        }
+        if(this.getStartNode().x > this.getEndNode().x && this.getStartNode().y == this.getEndNode().y){
+            return 4;
+        }
+        if(this.getStartNode().x == this.getEndNode().x && this.getStartNode().y > this.getEndNode().y){
+            return 8;
+        }
+        if(this.getStartNode().x == this.getEndNode().x && this.getStartNode().y < this.getEndNode().y){
+            return 2;
+        }
+
+        return -1;
+    }
+
+    public Node getStartNode(){
+        return this.start;
+    }
+
+    public Node getEndNode(){
+        return this.end;
     }
 
 

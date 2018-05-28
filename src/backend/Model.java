@@ -22,7 +22,7 @@ public class Model {
 		//depending on the other
 
 		graph.edges.get(0).getRoad().getTrafficLight().runRed();
-		graph.edges.get(1).getRoad().getTrafficLight().runGreen();
+		graph.edges.get(2).getRoad().getTrafficLight().runGreen();
 
 		//use getroadweights method
 	}
