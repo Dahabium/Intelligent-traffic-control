@@ -17,6 +17,8 @@ public class Road {
 
 	FSMTrafficLight trafficLight;
 
+	//might be an array of trafficlights - here we keep whate
+	public Road roadWithSameFSM;
 
 	private int level;
 	private int speedLimit;
@@ -56,6 +58,13 @@ public class Road {
 	}
 
 
+	public void setRoadWithSameFSM(Road otherRoad){
+		roadWithSameFSM = otherRoad;
+	}
+
+	public Road getRoadWithSameFSM(){
+		return this.roadWithSameFSM;
+	}
 
 	public FSMTrafficLight getTrafficLight(){
 

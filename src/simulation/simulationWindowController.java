@@ -69,6 +69,7 @@ public class simulationWindowController {
         createTrafficLights();
 
 
+
         speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
 
@@ -115,10 +116,15 @@ public class simulationWindowController {
 
         }
 
+
+        this.animationParts.model.connectFSM();
+
         for (int i = 0; i < animationParts.getRoads().size(); i++) {
 
-            if(animationParts.getRoads().get(i).existsTrafficLight() == true){
-                System.out.println("Created traffic light at " + animationParts.getRoads().get(i).start.index +"  " + animationParts.getRoads().get(i).end.index);
+            if(animationParts.getRoads().get(i).existsTrafficLight() == true && animationParts.getRoads().get(i).roadWithSameFSM != null){
+
+                System.out.println("Traffic light at road " + animationParts.getRoads().get(i).start.index +"  " + animationParts.getRoads().get(i).end.index + "  " +
+                "Share the same sequence as road " + animationParts.getRoads().get(i).roadWithSameFSM.start.index + "  " + animationParts.getRoads().get(i).roadWithSameFSM.end.index);
             }
         }
 
@@ -190,7 +196,7 @@ public class simulationWindowController {
     public void debugbtnaction() {
 //        animationParts.printRoadWeights();
 
-        this.animationParts.model.connectFSM();
+
 //        this.animationParts.model.startCycle();
 //
 //        this.animationParts.model.map.roads.get(0).getTrafficLight().runGreen();

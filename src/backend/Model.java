@@ -34,23 +34,26 @@ public class Model {
 				//if 2 roads share the same vertex at their ends AND there exists a parrallel edge going out of that edge,
 				// AND they are PARALLEL to each other, then let them share the same traffic light cycle.
 
-				if(map.roads.get(i).existsTrafficLight() == true && map.roads.get(j).existsTrafficLight() == true &&
+				if( i != j && map.roads.get(i).existsTrafficLight() == true && map.roads.get(j).existsTrafficLight() == true &&
 						map.roads.get(i).end == map.roads.get(j).end
 						&& map.exsistParallelOutgoingRoad(map.roads.get(i).getDirection(),map.roads.get(i).end) != null
 						&& map.exsistParallelOutgoingRoad(map.roads.get(j).getDirection(),map.roads.get(j).end) != null
-						){
+						&& map.RoadsFacingEachOther(map.roads.get(i),map.roads.get(j)) ){
 
 					map.roads.get(i).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
 					map.roads.get(j).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
 
-					map.roads.get(i).getTrafficLight().runRed();
-					map.roads.get(j).getTrafficLight().runRed();
-
+					map.roads.get(i).setRoadWithSameFSM(map.roads.get(j));
+					map.roads.get(j).setRoadWithSameFSM(map.roads.get(i));
+					
 				}
 			}
 		}
 
-		//use getroadweights method
+//		for (int i = 0; i < graph.nodes.size(); i++) {
+//
+//		}
+
 	}
 
 	

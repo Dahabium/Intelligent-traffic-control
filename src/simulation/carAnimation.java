@@ -232,7 +232,7 @@ public class carAnimation {
                         if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().existsTrafficLight() == false) || (car.getLocRoad().getTrafficLight().getCurrentstate() != 3 )) ){
 
 
-                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) ;
+                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) -50 ;
                             carFrontVelocity = 0;
 
                         }

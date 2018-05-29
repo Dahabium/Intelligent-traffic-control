@@ -84,5 +84,22 @@ public class Map {
         return null;
     }
 
+    public boolean RoadsFacingEachOther(Road a, Road b){
+        if(a.getDirection() == 6 && b.getDirection() == 4){
+            return true;
+        }
+        else if(a.getDirection() == 4 && b.getDirection() == 6){
+            return true;
+        }
+        else if(a.getDirection() == 8 && b.getDirection() == 2){
+            return true;
+        }
+        else if(a.getDirection() == 2 && b.getDirection() == 8){
+            return true;
+        }
+
+        else return false;
+    }
+
 
 }
