@@ -93,43 +93,22 @@ public class Board extends GridPane {
             ImageView imgView;
 
             //intersections that have only one edge will show as a road!! (type 4)
-            if(roads == 4)
+
+
+            if(roads == 4 || roads == 0)
             {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("Road.png",  SIM_SIZE, SIM_SIZE,true,false);
+                javafx.scene.image.Image img = new javafx.scene.image.Image("Intersection.png", SIM_SIZE, SIM_SIZE, true, false);
+
                 imgView = new ImageView(img);
                 tile.getChildren().add(imgView);
-
-                if(node.down || node.up)
-                {
-                    imgView.setRotate(90);
-                }
             }
 
-            if(roads == 0)
-            {
-            javafx.scene.image.Image img = new javafx.scene.image.Image("Intersection.png", SIM_SIZE, SIM_SIZE, true, false);
-
-            imgView = new ImageView(img);
-            tile.getChildren().add(imgView);
-            }
-
-            if(roads == 1)
-            {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("one.png",  SIM_SIZE, SIM_SIZE,true,false);
-                imgView = new ImageView(img);
-                if(node.up) imgView.setRotate(270);
-                if(node.down) imgView.setRotate(90);
-                if(node.left) imgView.setRotate(180);
-                if(node.right) imgView.setRotate(270);
-                tile.getChildren().add(imgView);
-            }
-
-            if(roads == 2)
+            if(roads == 2 || roads == 1)
             {
                 javafx.scene.image.Image img = new javafx.scene.image.Image("Road.png",  SIM_SIZE, SIM_SIZE,true,false);
                 imgView = new ImageView(img);
 
-                if(node.up && node.down)
+                if((node.up && !node.down) || (node.down && !node.up) || (node.up && node.down))
                 {
                     imgView.setRotate(90);
                 }
@@ -158,6 +137,7 @@ public class Board extends GridPane {
                     imgView = new ImageView(img);
                     imgView.setRotate(360);
                 }
+
                 tile.getChildren().add(imgView);
             }
 

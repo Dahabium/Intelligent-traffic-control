@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CollisionDetection {
 
-    private ArrayList<Car> cars;
+    public ArrayList<Car> cars;
 
     public CollisionDetection() {
         this.cars = new ArrayList<>();
