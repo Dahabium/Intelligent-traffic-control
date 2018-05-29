@@ -1,5 +1,8 @@
 package simulation;
 
+import backend.Car;
+import backend.CollisionDetection;
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -8,7 +11,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.animation.AnimationTimer;
 
 public class simulationWindowController {
 
@@ -25,11 +30,12 @@ public class simulationWindowController {
     private TextField StartInput, EndInput;
     @FXML
     private CheckBox GreedySelector, AStarselector;
-
-
+    private Car currentCar;
+    private double speed;
+    private AnimationTimer animationTimer;
     private Graph graph;
     private String filename;
-
+    private CollisionDetection cd;
     private int PathfindingMode;
 
     private AnimationParts animationParts;
@@ -68,8 +74,41 @@ public class simulationWindowController {
         createTrafficLights();
 
 
-        speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
+
+        cd = new CollisionDetection();
+
+        animationTimer = new AnimationTimer() {
+
+
+            @Override
+            public void handle(long now) {
+
+                double speed = currentCar.getVel();
+                speedVariable.setText(speed + " km/h");
+            }
+
+
+        };
+
+
+    }
+
+    public Car getCurrentCar(MouseEvent e, CollisionDetection collisionDetection)
+    {
+        Car car = null;
+        for(Car c : collisionDetection.cars)
+        {
+            if(c.getLocY() - 10 < e.getSceneY() && e.getSceneY()<c.getLocY()+10 && c.getLocX() - 10 < e.getSceneX() && e.getSceneX()<c.getLocX()+10) car = c;
+        }
+
+
+        return car;
+    }
+
+    public void handle(MouseEvent mouseEvent) {
+
+        currentCar = getCurrentCar(mouseEvent, cd);
 
     }
 
