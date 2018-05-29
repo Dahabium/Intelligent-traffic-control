@@ -5,59 +5,54 @@ import simulation.Node;
 
 import java.util.ArrayList;
 
-public class Road extends Edge{
+public class Road {
 
-	public Intersection beginning;
-	public Intersection end;
+//	public Intersection beginning;
+//	public Intersection end;
 
-	private int lanes;
-	private int speedLimit;
-	private int distance;
-	private boolean blocked;
-	private int level;
+	public Node start;
+	public Node end;
 
+	public ArrayList<Edge> lanes;
 
 	FSMTrafficLight trafficLight;
 
+
+	private int level;
+	private int speedLimit;
+	private int distance;
+	private int direction;
+	private boolean blocked;
+
 	private boolean existsTrafficLight = false;
 
-	
-	/*public Road(int distance, Intersection beginning, Intersection end) {
-		this.distance = distance;
-		this.beginning = beginning;
-		this.end = end;
-		this.lanes = 1;
-		this.speedLimit = 80;
-		this.blocked = false;
-		this.level = 1;
-	}
-	
-	public Road(int distance, Intersection beginning, Intersection end, int level) {
-		this.distance = distance;
-		this.beginning = beginning;
-		this.end = end;
-		this.lanes = 1;
-		this.speedLimit = 80;
-		this.blocked = false;
-		this.level = level;
-	}*/
-	
-	public Road(int distance, Intersection beginning, Intersection end, int lanes, int level, int speedLimit, boolean blocked) {
-		this.distance = distance;
-		this.beginning = beginning;
-		this.end = end;
-		this.lanes = lanes;
-		this.speedLimit = speedLimit;
-		this.blocked = blocked;
-		this.level = level;
+
+	public Road(ArrayList<Edge> edges){
+		this.lanes = edges;
+
+		//just take edge number 0 as refernece
+		this.start = edges.get(0).start;
+		this.end = edges.get(0).end;
+		this.direction = edges.get(0).direction;
+
+		int deltaX = (int)start.Xpos - (int) end.Xpos;
+		int deltaY = (int)start.Ypos - (int) end.Ypos;
+
+		this.distance = (int) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+
 
 	}
+
 
 	public void addTrafficLight(int XPos, int YPos, int redtime, int greentime, int yellowtime, int currentstate){
 
 		this.trafficLight = new FSMTrafficLight(redtime,greentime,yellowtime,currentstate,XPos,YPos);
 		existsTrafficLight = true;
 
+	}
+
+	public void addLane(Edge edge){
+		this.lanes.add(edge);
 	}
 
 
@@ -68,31 +63,20 @@ public class Road extends Edge{
 	}
 
 	public boolean existsTrafficLight(){
+
 		return existsTrafficLight;
 	}
 
 
-	public Intersection getBeginning() {
-		return beginning;
-	}
-
-	public void setBeginning(Intersection beginning) {
-		this.beginning = beginning;
-	}
-
-	public Intersection getEnd() {
-		return end;
-	}
-
-	public void setEnd(Intersection end) {
-		this.end = end;
-	}
-
-	public int getLanes() {
+	public ArrayList<Edge> getLanes() {
 		return lanes;
 	}
 
-	public void setLanes(int lanes) {
+	public int getDirection(){
+		return this.direction;
+	}
+
+	public void setLanes(ArrayList<Edge> lanes) {
 		this.lanes = lanes;
 	}
 

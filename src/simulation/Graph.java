@@ -33,7 +33,6 @@ public class Graph {
         this.edges = new ArrayList<>();
 
         lines = new ArrayList<>();
-
     }
 
     public void addNode(Node node) {
@@ -190,9 +189,9 @@ public class Graph {
     }
 
     //return a road to the corresponding edge
-    public Road getRoad(Edge edge) {
-        return edge.getRoad();
-    }
+//    public Road getRoad(Edge edge) {
+//
+//    }
 
     public void removeEdge(Edge edge) {
         edges.remove(edge);

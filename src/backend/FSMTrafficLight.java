@@ -135,6 +135,12 @@ public class FSMTrafficLight {
         this.redTime = redTime;
     }
 
+    public void setTimingSequences(int redTime,int greenTime, int yellowTime){
+        this.redTime = redTime;
+        this.greeenTime = greenTime;
+        this.yellowTime = yellowTime;
+    }
+
 
 
     public Group getTrafficLightGui(){

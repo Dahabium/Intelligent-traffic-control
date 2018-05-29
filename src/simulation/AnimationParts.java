@@ -29,14 +29,10 @@ public class AnimationParts {
         this.carElements = new ArrayList<>();
         this.trafficLights = new ArrayList<>();
 
-        //create traffic lights array (backend)
-//        this.trafficLightsV2 = new ArrayList<>();
-
         this.graph = graph;
         this.board = board;
 
         this.model = new Model(graph);
-
 
         this.collisionDetection = new CollisionDetection();
     }
@@ -48,7 +44,7 @@ public class AnimationParts {
         if(pathFindingMode == 1){
             ArrayList<Integer> IntPath = getRouteGreedy(start,end);
 
-            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), graph);
+            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), this.model.map);
             car.setPath(IntPath);
 
             collisionDetection.addCar(car);
@@ -58,7 +54,7 @@ public class AnimationParts {
         }
 
         if(pathFindingMode == 2){
-            Car car = new Car(graph.getNodeByIndex(start), graph.getNodeByIndex(end), graph);
+            Car car = new Car(graph.getNodeByIndex(start), graph.getNodeByIndex(end), this.model.map);
 
             ArrayList<Integer> IntPath = getRouteAStar(car);
             car.setPath(IntPath);
@@ -142,5 +138,9 @@ public class AnimationParts {
         return  null;
     }
 
+    //return the arraylist of roads from map
+    public ArrayList<Road> getRoads(){
+        return this.model.map.roads;
+    }
 
 }
