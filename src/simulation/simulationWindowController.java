@@ -36,11 +36,13 @@ public class simulationWindowController {
     private Graph graph;
     private String filename;
 
-    private TrafficLightController trafficLightController;
+
+    private MainController mainController;
 
     private int PathfindingMode;
 
     private AnimationParts animationParts;
+
 
     private int carStart;
     private int carEnd;
@@ -77,7 +79,7 @@ public class simulationWindowController {
         roadStatusUpdater(1000);
 
 
-        this.trafficLightController = new TrafficLightController(this.animationParts.model.map,this.animationParts.model,graph.nodes.get(1),5000,10000);
+        this.mainController = new MainController(this.animationParts, 10000);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -90,7 +92,7 @@ public class simulationWindowController {
     @FXML
     public void debugbtnaction() {
 
-        trafficLightController.updateCycle();
+        this.mainController.getTLCcontroller().updateCycle();
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -118,9 +120,9 @@ public class simulationWindowController {
             @Override
             public void run() {
                 System.out.println("Cycle Runned in simWinControl");
-                trafficLightController.updateCycle();
+                mainController.getTLCcontroller().updateCycle();
             }
-        }, 0, (int)(trafficLightController.getGTime()*2)+4000);
+        }, 0, (int)(mainController.getTLCcontroller().getGTime()*2)+4000);
     }
 
 
@@ -162,11 +164,8 @@ public class simulationWindowController {
 
                 }
 
-
             }
-
         }
-
 
         this.animationParts.model.connectFSM();
 

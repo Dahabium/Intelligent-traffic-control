@@ -8,6 +8,7 @@ public class Model {
     public Map map;
 
 
+
     public Model(Graph graph) {
 
         this.graph = graph;
