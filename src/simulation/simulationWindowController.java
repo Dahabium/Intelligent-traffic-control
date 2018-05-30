@@ -1,5 +1,6 @@
 package simulation;
 
+import backend.Model;
 import backend.Car;
 import backend.CollisionDetection;
 import javafx.animation.AnimationTimer;
@@ -65,7 +66,7 @@ public class simulationWindowController {
 
         //===============================ANIMATION==========================
 
-        //create the parent class for animation of cars and traffic lights
+        //create the parent class for animation of all cars and traffic lights
 
         animationParts = new AnimationParts(this.graph, this.simulationBoard);
 
@@ -74,6 +75,8 @@ public class simulationWindowController {
         createTrafficLights();
 
 
+
+        speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
 
         cd = new CollisionDetection();
@@ -94,81 +97,73 @@ public class simulationWindowController {
 
     }
 
-    public Car getCurrentCar(MouseEvent e, CollisionDetection collisionDetection)
-    {
-        Car car = null;
-        for(Car c : collisionDetection.cars)
-        {
-            if(c.getLocY() - 10 < e.getSceneY() && e.getSceneY()<c.getLocY()+10 && c.getLocX() - 10 < e.getSceneX() && e.getSceneX()<c.getLocX()+10) car = c;
+
+    public void createTrafficLights() {
+
+        //cases: T- Section, Cross-Intersection
+
+//        if there is a parrallel road ( ie same direction after intersection
+        for (int i = 0; i < animationParts.getRoads().size(); i++) {
+
+            //check if more than one road is directed towards an intersection => create traffic lights at the end
+            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() > 2) {
+
+                if (animationParts.getRoads().get(i).getDirection() == 6) {
+
+                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE - 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 70,
+                            5000, 3000, 1500, 1);
+                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                }
+
+                else if (animationParts.getRoads().get(i).getDirection() == 4) {
+                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 130, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 50,
+                            5000, 3000, 1500, 1);
+                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                }
+                else if  (animationParts.getRoads().get(i).getDirection() == 8) {
+
+                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
+                            5000, 3000, 1500, 1);
+                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                }
+                else if (animationParts.getRoads().get(i).getDirection() == 2) {
+                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
+                            5000, 3000, 1500, 1);
+                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+
+                }
+
+
+            }
+
         }
 
 
-        return car;
-    }
+        this.animationParts.model.connectFSM();
 
-    public void handle(MouseEvent mouseEvent) {
+        for (int i = 0; i < animationParts.model.map.intersectionFSMS.size(); i++) {
 
-        currentCar = getCurrentCar(mouseEvent, cd);
+            System.out.println("shit " + animationParts.model.map.intersectionFSMS.get(i).getAllFSMRoads().size());
 
-    }
+            if(animationParts.model.map.intersectionFSMS.get(i).getAllFSMRoads().size() == 4){
 
-    //TODO move this method to animationParts Class
-
-    public void createTrafficLights(){
-
-        //cases: T- Section, or normal Cross-Intersection
-
-//        if there is a parrallel road ( ie same direction after intersection
-
-        for (int i = 0; i < graph.edges.size(); i++) {
-            for (int j = 0; j < graph.edges.size(); j++) {
-
-                if(graph.edges.get(i).end == graph.edges.get(j).start && graph.edges.get(i).direction == graph.edges.get(j).direction && graph.getNumberOfIncomingRoads(graph.edges.get(i).end) > 1){
-
-                    if(graph.edges.get(i).direction == 6){
-                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE - 70,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE + 70,
-                                5000,3000, 1500,1);
-                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
-                    }
-                    if(graph.edges.get(i).direction == 4){
-                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE + 130,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE - 50,
-                                5000,3000, 1500,1);
-                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
-                    }
-                    if(graph.edges.get(i).direction == 8){
-
-                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE + 70,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE + 130,
-                                5000,3000, 1500,1);
-                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
-                    }
-                    if(graph.edges.get(i).direction == 2){
-                        graph.edges.get(i).getRoad().addTrafficLight(graph.edges.get(i).end.x*simulationBoard.SIM_SIZE ,graph.edges.get(i).end.y*simulationBoard.SIM_SIZE - 130,
-                                5000,3000, 1500,1);
-                        this.simulationElements.getChildren().add(graph.edges.get(i).getRoad().getTrafficLight().getTrafficLightGui());
-
-                    }
-
-                }
+//                System.out.println("Traffic light at road " + animationParts.getRoads().get(i).start.index +"  " + animationParts.getRoads().get(i).end.index + "  " +
+//                "Share the same sequence as road " + animationParts.getRoads().get(i).roadWithSameFSM.start.index + "  " + animationParts.getRoads().get(i).roadWithSameFSM.end.index);
+//                System.out.println("yas");
             }
         }
 
-
-
     }
 
-    public void createTrafficLightsManual(){
+    public void createTrafficLightsManual() {
 
-        graph.edges.get(0).getRoad().addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 15000,6000,1000,1);
-        graph.edges.get(1).getRoad().addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 1000000,6000,1000,3);
+        animationParts.model.map.roads.get(0).addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 15000, 6000, 1000, 1);
+//        model.map.roads.get(1).addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 1000000,6000,1000,3);
 
         //add shadow cars....
 
-        this.simulationElements.getChildren().add(graph.edges.get(0).getRoad().getTrafficLight().getTrafficLightGui());
-        this.simulationElements.getChildren().add(graph.edges.get(1).getRoad().getTrafficLight().getTrafficLightGui());
-
-        for (int i = 0; i < graph.edges.size(); i++) {
-            System.out.println("Edge number " + i + "  direction is  " + graph.edges.get(i).direction);
-        }
+        this.simulationElements.getChildren().add(animationParts.model.map.roads.get(0).getTrafficLight().getTrafficLightGui());
+//        this.simulationElements.getChildren().add(model.map.roads.get(1).getTrafficLight().getTrafficLightGui());
 
     }
 
@@ -207,27 +202,31 @@ public class simulationWindowController {
     public void stopSimulation() {
         animationParts.stopSimulate();
     }
+
     @FXML
-    public void selectGreedy(){
+    public void selectGreedy() {
         AStarselector.setSelected(false);
         GreedySelector.setSelected(true);
         PathfindingMode = 1;
     }
+
     @FXML
-    public void selectAstar(){
+    public void selectAstar() {
         GreedySelector.setSelected(false);
         AStarselector.setSelected(true);
         PathfindingMode = 2;
     }
 
     @FXML
-    public void debugbtnaction(){
+    public void debugbtnaction() {
 //        animationParts.printRoadWeights();
 
-        this.animationParts.model.connectFSM();
+
+//        this.animationParts.model.startCycle();
+//
+//        this.animationParts.model.map.roads.get(0).getTrafficLight().runGreen();
 
     }
-
 
 
     //doesent work, the initilize method always triggers first.

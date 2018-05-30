@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 public class FSMTrafficLight {
 
+
     public TrafficLight trafficLightGui;
 
     public final int RED = 1;
@@ -40,6 +41,8 @@ public class FSMTrafficLight {
 
 
     public void runRed() {
+        //check...
+        currentstate = RED;
 
         this.trafficLightGui.changeTrafficLightColor(RED);
 
@@ -66,6 +69,8 @@ public class FSMTrafficLight {
     }
 
     public void runGreen() {
+        //check...
+        currentstate = GREEN;
 
         this.trafficLightGui.changeTrafficLightColor(GREEN);
 
@@ -135,7 +140,16 @@ public class FSMTrafficLight {
         this.redTime = redTime;
     }
 
+    public void setTimingSequences(int redTime,int greenTime, int yellowTime){
+        this.redTime = redTime;
+        this.greeenTime = greenTime;
+        this.yellowTime = yellowTime;
+    }
 
+
+    public void setCurrentstate(int newstate){
+        this.currentstate = newstate;
+    }
 
     public Group getTrafficLightGui(){
         return this.trafficLightGui.getTrafficlight();

@@ -19,10 +19,12 @@ public class Car {
 	private double desDec;
 	private double maxDec;
 	private int exponent;
-	private Road locRoad;
 
 	//todo just doing it with an edge now, in future we will use road
 	private Edge locEdge;
+	private Road locRoad;
+
+	private Map map;
 
 	private double locX;
 	private double locY;
@@ -41,7 +43,7 @@ public class Car {
 	private ArrayList<Integer> path;
 
 	//TODO fix the startroadend thing (why do we need it?)
-    public Car(Node start, Node end, Graph graph){
+    public Car(Node start, Node end, Map map){
         this.desVel = 80;
         this.maxVel = 100;
         this.minimumSpacing = 0;
@@ -57,6 +59,8 @@ public class Car {
         this.obeyFactor = 1;
         this.start = start;
         this.end = end;
+        this.map = map;
+
 //        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
 //    public Car()
@@ -188,8 +192,7 @@ public class Car {
 
 	public Road getLocRoad() {
 
-//		return locRoad;
-		return this.locEdge.road;
+		return getCorrespondingRoad(this.locEdge);
 
 	}
 
@@ -198,7 +201,10 @@ public class Car {
 	}
 
 	public void setLocEdge(Edge edge){
+
 		this.locEdge = edge;
+		this.locRoad = getCorrespondingRoad(edge);
+
 	}
 
 	public Edge getLocEdge(){
@@ -282,5 +288,15 @@ public class Car {
 		this.distTran = distTran;
 	}
 
-	
+
+	public Road getCorrespondingRoad(Edge edge) {
+
+		for (int i = 0; i < this.map.roads.size(); i++) {
+			if(edge.start == map.roads.get(i).start && edge.end == map.roads.get(i).end){
+				return map.roads.get(i);
+			}
+		}
+
+		return null;
+	}
 }

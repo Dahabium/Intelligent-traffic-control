@@ -105,10 +105,6 @@ public class carAnimation {
                 if (lastUpdateTime.get() > 0) {
 
 
-
-//                    car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
-//                            graph.getNodeByIndex(IntPath.get(pathIterator))));
-
                     int xCoord = simPath.path.get(pathIterator).get(0) - 10;
                     int yCoord = simPath.path.get(pathIterator).get(1);
 
@@ -218,7 +214,6 @@ public class carAnimation {
                     if(collisionDetection.returnCarInFront(car) != null){
                         //calculate the distance between current car and the car in the front .
 
-//                        System.out.println("Car in Front X:" + collisionDetection.returnCarInFront(car).getLocX() + "  Y :" + collisionDetection.returnCarInFront(car).getLocY());
 
                         dist = (Math.sqrt(Math.pow((imgView.getTranslateX() - collisionDetection.returnCarInFront(car).getLocX()), 2) + (Math.pow(imgView.getTranslateY() - collisionDetection.returnCarInFront(car).getLocY(), 2))))-25 - 10;
 
@@ -233,13 +228,12 @@ public class carAnimation {
 
                     else {
                         //else check the distance in the front node (...)
-                        System.out.println(" percentage on curr road " + car.getPercentageOnCurrentRoad() + "  " + collisionDetection.returnCarInFront(car) );
+                        System.out.println("Percentage driven on current road " + car.getPercentageOnCurrentRoad() + "  local edge "+ car.getLocEdge() );
 
-                        if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().existsTrafficLight() == false) || (car.getLocRoad().getTrafficLight().getCurrentstate() != 3 )) && collisionDetection.returnCarInFront(car) == null){
+                        if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().existsTrafficLight() == false) || (car.getLocRoad().getTrafficLight().getCurrentstate() != 3 )) ){
 
-                            System.out.println("dist " + dist);
 
-                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
+                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) -50 ;
                             carFrontVelocity = 0;
 
                         }
