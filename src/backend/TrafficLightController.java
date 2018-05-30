@@ -106,9 +106,6 @@ public class TrafficLightController {
 //        delay - delay in milliseconds before task is to be executed.
 //        period - time in milliseconds between successive task executions.
 
-
-
-
     }
 
     // in this method we should calculate the queues on every road at the intersection
