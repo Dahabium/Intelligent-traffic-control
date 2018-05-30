@@ -77,6 +77,11 @@ public class Map {
         return out;
     }
 
+    public void runAllConnectedFSMS(){
+        for (int i = 0; i < this.intersectionFSMS.size() ; i++) {
+            this.intersectionFSMS.get(i).runIntersectionFSMS();
+        }
+    }
     public Road exsistParallelOutgoingRoad(int direction, Node node){
 
         for (int i = 0; i < roads.size(); i++) {

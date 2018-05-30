@@ -1,9 +1,7 @@
 package simulation;
 
 import backend.Model;
-import backend.Car;
-import backend.CollisionDetection;
-import javafx.animation.AnimationTimer;
+import backend.TrafficLightController;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -39,7 +37,9 @@ public class simulationWindowController {
     private AnimationTimer animationTimer;
     private Graph graph;
     private String filename;
-    private CollisionDetection cd;
+
+    private TrafficLightController test;
+
     private int PathfindingMode;
 
     private AnimationParts animationParts;
@@ -78,7 +78,18 @@ public class simulationWindowController {
         createTrafficLights();
         roadStatusUpdater();
 
+        updateCycleSander();
 
+        this.test = new TrafficLightController(this.animationParts.model.map,this.animationParts.model,graph.nodes.get(1),5000,8000);
+
+
+        this.animationParts.model.map.runAllConnectedFSMS();
+
+
+//        roadStatusUpdater();
+
+
+        speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
 
         cd = new CollisionDetection();
@@ -99,6 +110,9 @@ public class simulationWindowController {
 
     }
 
+
+    //A class for positioning the traffic lights.
+    //we connect them by using connectFSM method
 
     public void createTrafficLights() {
 
@@ -143,17 +157,6 @@ public class simulationWindowController {
 
         this.animationParts.model.connectFSM();
 
-        for (int i = 0; i < animationParts.model.map.intersectionFSMS.size(); i++) {
-
-            System.out.println("shit " + animationParts.model.map.intersectionFSMS.get(i).getAllFSMRoads().size());
-
-            if(animationParts.model.map.intersectionFSMS.get(i).getAllFSMRoads().size() == 4){
-
-//                System.out.println("Traffic light at road " + animationParts.getRoads().get(i).start.index +"  " + animationParts.getRoads().get(i).end.index + "  " +
-//                "Share the same sequence as road " + animationParts.getRoads().get(i).roadWithSameFSM.start.index + "  " + animationParts.getRoads().get(i).roadWithSameFSM.end.index);
-//                System.out.println("yas");
-            }
-        }
 
     }
 
@@ -221,16 +224,16 @@ public class simulationWindowController {
 
     @FXML
     public void debugbtnaction() {
-//        animationParts.printRoadWeights();
+
+        test.updateCycle();
 
 
-//        this.animationParts.model.startCycle();
-//
-//        this.animationParts.model.map.roads.get(0).getTrafficLight().runGreen();
 
-        //get at last 70 percent
+        this.animationParts.model.map.runAllConnectedFSMS();
 
 
+
+        System.out.println("SIZZZEEEE " + this.animationParts.model.map.intersectionFSMS.size());
 
     }
 
@@ -246,6 +249,16 @@ public class simulationWindowController {
             }
         }, 0, 1000);
 
+    }
+
+    public void updateCycleSander(){
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                test.updateCycle();
+            }
+        }, 0, 35000);
     }
 
     public void roadWeightUpdate(){
