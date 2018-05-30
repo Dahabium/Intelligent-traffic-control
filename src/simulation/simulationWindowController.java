@@ -79,7 +79,6 @@ public class simulationWindowController {
         roadStatusUpdater();
 
 
-        speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
 
         cd = new CollisionDetection();
