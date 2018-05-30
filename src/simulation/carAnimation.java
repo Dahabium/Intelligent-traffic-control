@@ -222,18 +222,20 @@ public class carAnimation {
                             carFrontVelocity = 0;
                         }
 
-                        System.out.println(car + " car in front velocity " + carFrontVelocity);
+//                        System.out.println(car + " car in front velocity " + carFrontVelocity);
                     }
 
                     else {
                         //else check the distance in the front node (...)
-                        System.out.println("Percentage driven on current road " + car.getPercentageOnCurrentRoad() + "  local edge "+ car.getLocEdge() );
+//                        System.out.println("Percentage driven on current road " + car.getPercentageOnCurrentRoad() + "  local edge "+ car.getLocEdge() );
 
                         if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().existsTrafficLight() == false) || (car.getLocRoad().getTrafficLight().getCurrentstate() != 3 )) ){
 
 
-                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) -50 ;
+                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)))  ;
                             carFrontVelocity = 0;
+
+
 
                         }
 
