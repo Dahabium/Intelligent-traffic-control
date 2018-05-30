@@ -16,6 +16,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.animation.AnimationTimer;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class simulationWindowController {
 
     Board simulationBoard;
@@ -73,7 +76,7 @@ public class simulationWindowController {
 //        createTrafficLightsManual();
 
         createTrafficLights();
-
+        roadStatusUpdater();
 
 
         speedVariable.setText("0 km/h");
@@ -225,6 +228,29 @@ public class simulationWindowController {
 //        this.animationParts.model.startCycle();
 //
 //        this.animationParts.model.map.roads.get(0).getTrafficLight().runGreen();
+
+        //get at last 70 percent
+
+
+
+    }
+
+
+
+    public void roadStatusUpdater(){
+
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                roadWeightUpdate();
+            }
+        }, 0, 1000);
+
+    }
+
+    public void roadWeightUpdate(){
+        this.animationParts.getRoadWeights(30);
 
     }
 
