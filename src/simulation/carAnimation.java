@@ -8,6 +8,7 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.image.ImageView;
 
+
 import java.util.ArrayList;
 
 //separate animation class for each car.
@@ -251,6 +252,8 @@ public class carAnimation {
 
 
                 }
+
+
 
                 lastUpdateTime.set(now);
 

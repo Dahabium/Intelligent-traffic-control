@@ -9,7 +9,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.animation.AnimationTimer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,8 +30,9 @@ public class simulationWindowController {
     private TextField StartInput, EndInput;
     @FXML
     private CheckBox GreedySelector, AStarselector;
-
-
+    private Car currentCar;
+    private double speed;
+    private AnimationTimer animationTimer;
     private Graph graph;
     private String filename;
 
@@ -92,6 +95,22 @@ public class simulationWindowController {
         this.mainController.getTLCcontroller().updateCycle();
 
         this.animationParts.model.map.runAllConnectedFSMS();
+
+        cd = new CollisionDetection();
+
+        animationTimer = new AnimationTimer() {
+
+
+            @Override
+            public void handle(long now) {
+
+                double speed = currentCar.getVel();
+                speedVariable.setText(speed + " km/h");
+            }
+
+
+        };
+
 
     }
 
