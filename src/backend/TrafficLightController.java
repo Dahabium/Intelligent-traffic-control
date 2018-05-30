@@ -13,6 +13,7 @@ import java.util.TimerTask;
 public class TrafficLightController {
 
     private double g;
+    private double gTime;
     private int rangeFactor;
     private Map map;
     private Model model;
@@ -20,44 +21,58 @@ public class TrafficLightController {
     private ArrayList<Integer> bestQueueDiff;
     private Node intersection;
     private int cycleCounter;
+    private int rangeCounter;
 
-    public TrafficLightController(Map map, Model model, Node node, int rangeFactor, int greenTime) {
+    public TrafficLightController(Map map, Model model, Node node, int rangeFactor, double greenTime) {
         this.map = map;
         this.model = model;
         this.rangeFactor = rangeFactor;
         this.intersection = node;
         cycleCounter = 0;
         g = greenTime;
-        bestQueueDiff = new ArrayList<Integer>();
+        gTime = 10000;
+        bestQueueDiff = new ArrayList<>();
+        rangeCounter = -5;
+
+//        bestQueueDiff.add(0);
+//        bestQueueDiff.add(0);
+//        bestQueueDiff.add(0);
+//        bestQueueDiff.add(0);
     }
 
     public void updateCycle() {
-
+        System.out.println("Updatecycle Method exec");
+        gTime = g;
         //random
-        double gDiff = ((rangeFactor * 2) * Math.random()) - rangeFactor;
+        double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
         // fixed
-        //double gDiff =
+        System.out.println("G before " + g);
+       // double gDiff = rangeCounter*1000;
+        System.out.println("G Diff " + gDiff);
+        rangeCounter++;
 
         // update green time
-        g = g + gDiff;
-        System.out.println("G + G this " + g);
+        gTime = gTime + gDiff;
+        System.out.println("G + G this " + gTime);
 
         //calculate the queue before the cycle
         ArrayList<Integer> qBefore = caLculateQueue(intersection);
 
         //run cycle here
 
-        this.model.map.intersectionFSMS.get(0).setHorizontalRed((int) g, false);
+        this.model.map.intersectionFSMS.get(0).setHorizontalRed((int) gTime, false);
+        this.model.map.intersectionFSMS.get(0).runIntersectionFSMS();
+
 //        this.model.map.intersectionFSMS.get(1).setHorizontalRed((int)g, false);
 
-        int z = -1;
-
         System.out.println("DELAY START ");
+
         final Timer timer = new Timer();
         final TimerTask task = new TimerTask() {
 
             @Override
             public void run() {
+                System.out.println("IN The Delay ");
 
                 //calculate the queue after the cycle
                 ArrayList<Integer> qAfter = caLculateQueue(intersection);
@@ -66,25 +81,32 @@ public class TrafficLightController {
                 //store cycle reference
                 qDiff.add(cycleCounter);
                 cycleCounter++;
-
-                //calculate the difference in the queues
-                for (int i = 1; i < qAfter.size(); i++) {
-                    qDiff.add(qAfter.get(i) - qBefore.get(i));
+                if (qAfter.size()!= 0||qBefore.size()!=0){
+                    //calculate the difference in the queues
+                    for (int i = 1; i < qAfter.size(); i++) {
+                        qDiff.add(qAfter.get(i) - qBefore.get(i));
+                    }
                 }
 
-                //check if new cycle is more optimal than current
-                optimumChooser(qDiff);
-
-
-                timer.cancel();
-                timer.purge();
+                if (qDiff.size() != 1) {
+                    //check if new cycle is more optimal than current
+                    optimumChooser(qDiff);
+                }
 
 
             }
         };
 
-        timer.schedule(task, (int) g * 2 + 4000);
+        timer.schedule(task, (int) gTime * 2 + 4000);
+
         System.out.println("AFTER DELAY");
+
+
+
+//        delay - delay in milliseconds before task is to be executed.
+//        period - time in milliseconds between successive task executions.
+
+
 
 
     }
@@ -108,17 +130,20 @@ public class TrafficLightController {
 
     public void optimumChooser(ArrayList<Integer> contestant) {
 
-        int chooser = 0;
+        double chooser = 0;
+        System.out.println("Contestant " );
+        if(contestant.size()!= 1 ||bestQueueDiff.size()!= 1){
+            for (int i = 0; i < contestant.size()-1; i++) {
+                chooser = chooser + (contestant.get(i+1) - bestQueueDiff.get(i+1));
+            }
 
-        for (int i = 1; i < contestant.size() - 1; i++) {
-            chooser = chooser + (contestant.get(i) - bestQueueDiff.get(i));
+            if (chooser > 0) {
+                bestQueueDiff = contestant;
+                bestQ = contestant.get(0);
+
+            }
         }
 
-        if (chooser > 0) {
-            bestQueueDiff = contestant;
-            bestQ = contestant.get(0);
-
-        }
     }
 
     public int getRangeFactor() {
@@ -127,5 +152,9 @@ public class TrafficLightController {
 
     public void setRangeFactor(int i) {
         rangeFactor = i;
+    }
+
+    public double getGTime() {
+        return gTime;
     }
 }

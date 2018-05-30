@@ -1,6 +1,5 @@
 package simulation;
 
-import backend.Model;
 import backend.TrafficLightController;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -23,9 +22,8 @@ public class simulationWindowController {
     @FXML
     private Group simulationElements;
     @FXML
-    private Button createCarbtn, setCarStartbtn, setCarEndbtn, runSimbtn, stopSimbtn, debugbtn;
-    @FXML
-    private Text speedVariable;
+    private Button createCarbtn, setCarStartbtn, setCarEndbtn, runSimbtn, stopSimbtn, debugbtn, launchCars;
+
     @FXML
     private TextField StartInput, EndInput;
     @FXML
@@ -35,7 +33,7 @@ public class simulationWindowController {
     private Graph graph;
     private String filename;
 
-    private TrafficLightController test;
+    private TrafficLightController trafficLightController;
 
     private int PathfindingMode;
 
@@ -67,39 +65,54 @@ public class simulationWindowController {
         //===============================ANIMATION==========================
 
         //create the parent class for animation of all cars and traffic lights
-
         animationParts = new AnimationParts(this.graph, this.simulationBoard);
 
-//        createTrafficLightsManual();
-
+        //create and connect traffic lights (add to gui + backend)
         createTrafficLights();
-        roadStatusUpdater();
 
-        updateCycleSander();
+        //refresh the value of cars on each road after specified time
+        roadStatusUpdater(1000);
 
-        this.test = new TrafficLightController(this.animationParts.model.map,this.animationParts.model,graph.nodes.get(1),5000,8000);
 
+        this.trafficLightController = new TrafficLightController(this.animationParts.model.map,this.animationParts.model,graph.nodes.get(1),5000,10000);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
+        updateCycleSander();
 
-//        roadStatusUpdater();
-
-
-        speedVariable.setText("0 km/h");
         simulationScrollpane.setContent(simulationElements);
 
     }
 
+    @FXML
+    public void debugbtnaction() {
 
-    //A class for positioning the traffic lights.
-    //we connect them by using connectFSM method
+        trafficLightController.updateCycle();
+
+        this.animationParts.model.map.runAllConnectedFSMS();
+
+    }
+
+    public void updateCycleSander(){
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Cycle Runned in simWinControl");
+                trafficLightController.updateCycle();
+            }
+        }, 0, (int)(trafficLightController.getGTime()*2)+4000);
+    }
+
+
+    //This class creates the traffic lights and adds them to gui,
+    // then we connect the traffic lights FSM cycles via connectFSM() method called in animationParts class
 
     public void createTrafficLights() {
 
         //cases: T- Section, Cross-Intersection
 
-//        if there is a parrallel road ( ie same direction after intersection
+
         for (int i = 0; i < animationParts.getRoads().size(); i++) {
 
             //check if more than one road is directed towards an intersection => create traffic lights at the end
@@ -141,6 +154,7 @@ public class simulationWindowController {
 
     }
 
+
     public void createTrafficLightsManual() {
 
         animationParts.model.map.roads.get(0).addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 15000, 6000, 1000, 1);
@@ -152,7 +166,6 @@ public class simulationWindowController {
 //        this.simulationElements.getChildren().add(model.map.roads.get(1).getTrafficLight().getTrafficLightGui());
 
     }
-
 
     @FXML
     public void createCar() {
@@ -180,6 +193,45 @@ public class simulationWindowController {
     }
 
     @FXML
+    public void launchCarsSim(){
+//        for (int i = 0; i < animationParts.model.map.roads.size(); i++) {
+//            if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() <= 1){
+//
+//
+//                if(animationParts.getRoads().get(i).end.index == )
+//                this.animationParts.addCarToAnimation(animationParts.getRoads().get(i).end.index, animationParts.getRoads().get(i).,
+//                        PathfindingMode);
+//
+//                int lastCar = this.animationParts.carElements.size() - 1;
+//
+//                this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+//
+//            }
+//        }
+
+        this.animationParts.addCarToAnimation(graph.nodes.get(0).index, graph.nodes.get(2).index, PathfindingMode);
+        int lastCar = this.animationParts.carElements.size() - 1;
+        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+
+        this.animationParts.addCarToAnimation(graph.nodes.get(2).index, graph.nodes.get(0).index, PathfindingMode);
+        lastCar = this.animationParts.carElements.size() - 1;
+        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+
+        this.animationParts.addCarToAnimation(graph.nodes.get(3).index, graph.nodes.get(4).index, PathfindingMode);
+        lastCar = this.animationParts.carElements.size() - 1;
+        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+
+        this.animationParts.addCarToAnimation(graph.nodes.get(4).index, graph.nodes.get(3).index, PathfindingMode);
+        lastCar = this.animationParts.carElements.size() - 1;
+        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+
+        animationParts.simulate();
+
+
+    }
+
+
+    @FXML
     public void runSimulation() {
         animationParts.simulate();
     }
@@ -203,24 +255,9 @@ public class simulationWindowController {
         PathfindingMode = 2;
     }
 
-    @FXML
-    public void debugbtnaction() {
-
-        test.updateCycle();
 
 
-
-        this.animationParts.model.map.runAllConnectedFSMS();
-
-
-
-        System.out.println("SIZZZEEEE " + this.animationParts.model.map.intersectionFSMS.size());
-
-    }
-
-
-
-    public void roadStatusUpdater(){
+    public void roadStatusUpdater(int period){
 
         Timer t = new Timer();
         t.schedule(new TimerTask() {
@@ -228,19 +265,10 @@ public class simulationWindowController {
             public void run() {
                 roadWeightUpdate();
             }
-        }, 0, 1000);
+        }, 0, period);
 
     }
 
-    public void updateCycleSander(){
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                test.updateCycle();
-            }
-        }, 0, 35000);
-    }
 
     public void roadWeightUpdate(){
         this.animationParts.getRoadWeights(30);

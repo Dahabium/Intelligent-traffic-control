@@ -18,10 +18,8 @@ public class Model {
     public void connectFSM() {
 
         int DefaultRedTime = 15000;
-        int DefaultRedTime2 = 8000;
 
         int DefaultGreenTime = 8000;
-        int DefaultGreenTime2 = 10000;
 
         int DefaultYellowTime = 2000;
 
@@ -57,7 +55,7 @@ public class Model {
 
                 if (map.getIncomingRoads(graph.nodes.get(i)).size() == 4) {
 
-                    System.out.println("YES THERE IS AN INTERSECTION with 4 incoming roads : " + map.getIncomingRoads(graph.nodes.get(i)));
+                    System.out.println("Intersection with 4 incoming roads : " + map.getIncomingRoads(graph.nodes.get(i)));
 
                     intersectionFSMS test2 = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
 
@@ -65,6 +63,12 @@ public class Model {
 
                     map.intersectionFSMS.add(test2);
                 }
+
+//                if(map.getIncomingRoads(graph.nodes.get(i)).size() == 3){
+//
+//                    intersectionFSMS test3 = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
+//
+//                }
         }
 
 		/*for (int i = 0; i < graph.nodes.size(); i++) {
