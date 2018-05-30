@@ -119,12 +119,15 @@ public class simulationWindowController {
 
         this.animationParts.model.connectFSM();
 
-        for (int i = 0; i < animationParts.getRoads().size(); i++) {
+        for (int i = 0; i < animationParts.model.map.intersectionFSMS.size(); i++) {
 
-            if(animationParts.getRoads().get(i).existsTrafficLight() == true && animationParts.getRoads().get(i).roadWithSameFSM != null){
+            System.out.println("shit " + animationParts.model.map.intersectionFSMS.get(i).getAllFSMRoads().size());
 
-                System.out.println("Traffic light at road " + animationParts.getRoads().get(i).start.index +"  " + animationParts.getRoads().get(i).end.index + "  " +
-                "Share the same sequence as road " + animationParts.getRoads().get(i).roadWithSameFSM.start.index + "  " + animationParts.getRoads().get(i).roadWithSameFSM.end.index);
+            if(animationParts.model.map.intersectionFSMS.get(i).getAllFSMRoads().size() == 4){
+
+//                System.out.println("Traffic light at road " + animationParts.getRoads().get(i).start.index +"  " + animationParts.getRoads().get(i).end.index + "  " +
+//                "Share the same sequence as road " + animationParts.getRoads().get(i).roadWithSameFSM.start.index + "  " + animationParts.getRoads().get(i).roadWithSameFSM.end.index);
+//                System.out.println("yas");
             }
         }
 

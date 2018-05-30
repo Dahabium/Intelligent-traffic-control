@@ -2,9 +2,6 @@ package backend;
 
 import simulation.Graph;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 public class Model {
 
 	public Graph graph;
@@ -21,16 +18,17 @@ public class Model {
 	public void connectFSM(){
 
 		int DefaultRedTime = 10000;
-		int DefaultGreenTime = 7000;
+		int DefaultRedTime2 = 8000;
+
+		int DefaultGreenTime = 8000;
+		int DefaultGreenTime2 = 10000;
+
 		int DefaultYellowTime = 2000;
 
-		// if 2 edges share the same vertex at their ends AND one of them is perpendicular to another, then the FSM cycle of one edge will change
-		//depending on the other
 
 		for (int i = 0; i < map.roads.size(); i++) {
 			for (int j = 0; j < map.roads.size(); j++) {
 
-				//if the 2 roads already have a traffic light placed AND they share the same endpoint AND they have outgoing Parallel edges
 				//if 2 roads share the same vertex at their ends AND there exists a parrallel edge going out of that edge,
 				// AND they are PARALLEL to each other, then let them share the same traffic light cycle.
 
@@ -40,19 +38,94 @@ public class Model {
 						&& map.exsistParallelOutgoingRoad(map.roads.get(j).getDirection(),map.roads.get(j).end) != null
 						&& map.RoadsFacingEachOther(map.roads.get(i),map.roads.get(j)) ){
 
-					map.roads.get(i).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
-					map.roads.get(j).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
+				 		map.roads.get(i).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
+					    map.roads.get(j).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
 
 					map.roads.get(i).setRoadWithSameFSM(map.roads.get(j));
 					map.roads.get(j).setRoadWithSameFSM(map.roads.get(i));
-					
+
+
+					intersectionFSMS test = new intersectionFSMS(map.roads.get(i).end,map);
+
+					test.connect2HorizontalRoads(map.roads.get(i),map.roads.get(j));
+//					test.connect2VerticalRoads(map.roads.get(i),map.roads.get(j));
+
+					System.out.println("elements in test " + test.horizontal1 +"  " + test.horizontal2+ "  " + test.vertical1 + "  "+ test.vertical2);
+					map.intersectionFSMS.add(test);
+
+
 				}
+				// if 2 edges share the same vertex at their ends AND one of them is perpendicular to another, then the FSM cycle of one edge will change
+				//depending on the other
+
 			}
 		}
 
 //		for (int i = 0; i < graph.nodes.size(); i++) {
+//			for (int j = 0; j < map.getIncomingRoads(graph.nodes.get(i)).size(); j++) {
+//				if(map.getIncomingRoads(graph.nodes.get(i)).size() == 4){
 //
+//
+//					intersectionFSMS test = new intersectionFSMS(map.roads.get(i).end,map);
+//
+//					if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 4 ||
+//							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 6	){
+//						test.connect2HorizontalRoads(map.roads.get(i),map.roads.get(j));
+//
+//					}
+//
+//					else if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 2 ||
+//							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 8	){
+//						System.out.println("okkkk222");
+//						test.connect2VerticalRoads(map.roads.get(i),map.roads.get(j));
+//					}
+//
+//					System.out.println("test has " + test.getAllFSMRoads());
+//
+//					map.intersectionFSMS.add(test);
+//				}
+//			}
 //		}
+
+		/*for (int i = 0; i < graph.nodes.size(); i++) {
+			for (int j = 0; j < map.getIncomingRoads(graph.nodes.get(i)).size(); j++) {
+
+				if(map.getIncomingRoads(graph.nodes.get(i)).size() == 4){
+
+					if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 4 ||
+							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 6	){
+
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreeenTime(DefaultGreenTime);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreeenTime(DefaultGreenTime);
+
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setRedTime(DefaultRedTime);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setRedTime(DefaultRedTime);
+
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().runRed();
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().runRed();
+
+					}
+
+					else if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 8 ||
+							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 2){
+
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreeenTime(DefaultGreenTime2);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreeenTime(DefaultGreenTime2);
+
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setRedTime(DefaultRedTime2);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setRedTime(DefaultRedTime2);
+
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().runGreen();
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().runGreen();
+
+
+					}
+
+
+				}
+
+			}
+		}*/
 
 	}
 

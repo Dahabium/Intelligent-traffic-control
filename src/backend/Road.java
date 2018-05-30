@@ -19,6 +19,7 @@ public class Road {
 
 	//might be an array of trafficlights - here we keep whate
 	public Road roadWithSameFSM;
+	public ArrayList<Car> carsAtEndOfRoad;
 
 	private int level;
 	private int speedLimit;
@@ -28,7 +29,6 @@ public class Road {
 
 	private boolean existsTrafficLight = false;
 
-
 	public Road(ArrayList<Edge> edges){
 		this.lanes = edges;
 
@@ -37,11 +37,12 @@ public class Road {
 		this.end = edges.get(0).end;
 		this.direction = edges.get(0).direction;
 
+		this.carsAtEndOfRoad = new ArrayList<>();
+
 		int deltaX = (int)start.Xpos - (int) end.Xpos;
 		int deltaY = (int)start.Ypos - (int) end.Ypos;
 
 		this.distance = (int) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-
 
 	}
 
@@ -76,6 +77,13 @@ public class Road {
 		return existsTrafficLight;
 	}
 
+	public void addCarToEndOfRoad(Car car){
+
+		if(! carsAtEndOfRoad.contains(car)){
+			carsAtEndOfRoad.add(car);
+		}
+
+	}
 
 	public ArrayList<Edge> getLanes() {
 		return lanes;

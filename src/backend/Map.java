@@ -12,12 +12,16 @@ public class Map {
     private Graph graph;
     public ArrayList<Road> roads;
 
+    public ArrayList<intersectionFSMS> intersectionFSMS;
+
 
     public Map(Graph graph){
 
         this.graph = graph;
 
         this.roads = new ArrayList<>();
+        this.intersectionFSMS = new ArrayList<>();
+
         createRoads();
 
     }

@@ -41,6 +41,8 @@ public class FSMTrafficLight {
 
 
     public void runRed() {
+        //check...
+        currentstate = RED;
 
         this.trafficLightGui.changeTrafficLightColor(RED);
 
@@ -67,6 +69,8 @@ public class FSMTrafficLight {
     }
 
     public void runGreen() {
+        //check...
+        currentstate = GREEN;
 
         this.trafficLightGui.changeTrafficLightColor(GREEN);
 
@@ -143,6 +147,9 @@ public class FSMTrafficLight {
     }
 
 
+    public void setCurrentstate(int newstate){
+        this.currentstate = newstate;
+    }
 
     public Group getTrafficLightGui(){
         return this.trafficLightGui.getTrafficlight();
