@@ -112,13 +112,6 @@ public class AnimationParts {
         }
 
 
-        //test
-        for (int i = 0; i < model.map.roads.size(); i++) {
-            System.out.println("Cars at end of road " + i + " is " + model.map.roads.get(i).carsAtEndOfRoad);
-        }
-
-
-
         return hmap;
 
     }
