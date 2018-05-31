@@ -17,28 +17,36 @@ public class MainController {
     private Model model;
     private double greenTime;
 
+    public int mode;
     private AnimationParts animationParts;
 
-    public MainController(AnimationParts animationParts, int greenTime){
+    public MainController(AnimationParts animationParts, int greenTime, int mode) {
 
         this.animationParts = animationParts;
         this.map = animationParts.model.map;
         this.model = animationParts.model;
         this.greenTime = greenTime;
 
-        this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model,
-                this.animationParts.model.graph.nodes.get(1),5000,10000);
+        this.mode = mode;
 
-        this.greedyController = new GreedyController(this.animationParts.model.map,this.animationParts.model,this.animationParts.model.graph.nodes.get(1),
-                this.greenTime, this);
+        if (mode == 1) {
+            this.greedyController = new GreedyController(this.animationParts.model.map, this.animationParts.model, this.animationParts.model.graph.nodes.get(1),
+                    this.greenTime, this);
+        }
+
+        if (mode == 2) {
+            this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model,
+                    this.animationParts.model.graph.nodes.get(1), 5000, 10000);
+
+        }
 
     }
 
-    public AnimationParts getAnimationParts(){
+    public AnimationParts getAnimationParts() {
         return this.animationParts;
     }
 
-    public TrafficLightController getTLCcontroller(){
+    public TrafficLightController getTLCcontroller() {
         return this.trafficLightController;
     }
 

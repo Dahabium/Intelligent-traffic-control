@@ -19,7 +19,7 @@ public class TrafficLightController {
     private Model model;
     private int bestQ;
     private ArrayList<Integer> bestQueueDiff;
-    private Node intersection;
+    public Node intersection;
     private int cycleCounter;
     private int rangeCounter;
 
