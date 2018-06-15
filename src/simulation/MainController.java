@@ -50,5 +50,8 @@ public class MainController {
         return this.trafficLightController;
     }
 
+    public GreedyController getGreedyController(){
+        return this.greedyController;
+    }
 
 }

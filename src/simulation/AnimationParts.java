@@ -24,7 +24,7 @@ public class AnimationParts {
 
     CollisionDetection collisionDetection;
 
-    public AnimationParts(Graph graph, Board board){
+    public AnimationParts(Graph graph, Board board) {
 
         this.carElements = new ArrayList<>();
         this.trafficLights = new ArrayList<>();
@@ -39,21 +39,21 @@ public class AnimationParts {
 
 
     //input a car object, comute the path here.
-    public void addCarToAnimation(int start, int end, int pathFindingMode){
+    public void addCarToAnimation(int start, int end, int pathFindingMode) {
 
-        if(pathFindingMode == 1){
-            ArrayList<Integer> IntPath = getRouteGreedy(start,end);
+        if (pathFindingMode == 1) {
+            ArrayList<Integer> IntPath = getRouteGreedy(start, end);
 
             Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), this.model.map);
             car.setPath(IntPath);
 
             collisionDetection.addCar(car);
 
-            carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
+            carAnimation carAnim = new carAnimation(this.graph, this.board, this.model, car, collisionDetection);
             carElements.add(carAnim);
         }
 
-        if(pathFindingMode == 2){
+        if (pathFindingMode == 2) {
             Car car = new Car(graph.getNodeByIndex(start), graph.getNodeByIndex(end), this.model.map);
 
             ArrayList<Integer> IntPath = getRouteAStar(car);
@@ -61,13 +61,13 @@ public class AnimationParts {
 
             collisionDetection.addCar(car);
 
-            carAnimation carAnim = new carAnimation(this.graph, this.board,this.model, car, collisionDetection);
+            carAnimation carAnim = new carAnimation(this.graph, this.board, this.model, car, collisionDetection);
             carElements.add(carAnim);
         }
 
     }
 
-    public void simulate(){
+    public void simulate() {
 
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.start();
@@ -75,13 +75,50 @@ public class AnimationParts {
 
     }
 
-    public void stopSimulate(){
+    public void stopSimulate() {
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.stop();
         }
     }
 
-    public HashMap<Integer, Integer> getRoadWeights(int percentage){
+    public int getWeightOnGivenRoad(Road road, int percentage) {
+
+        int temp = 0;
+        for (int i = 0; i < this.carElements.size(); i++) {
+
+            if (this.carElements.get(i).getBackendCar().getLocRoad().start == road.start &&
+                    this.carElements.get(i).getBackendCar().getLocRoad().end == road.end &&
+                    this.carElements.get(i).getBackendCar().getPercentageOnCurrentRoad() >= percentage) {
+
+                temp++;
+
+            }
+        }
+
+        return temp;
+    }
+
+    //startSegment and endSegment are start and end of road percentage segment
+    public int getWeightOnGivenRoadSegment(Road road, int startSegment, int endSegment){
+
+        int temp = 0;
+        for (int i = 0; i < this.carElements.size(); i++) {
+
+            if (this.carElements.get(i).getBackendCar().getLocRoad().start == road.start &&
+                    this.carElements.get(i).getBackendCar().getLocRoad().end == road.end &&
+
+                    this.carElements.get(i).getBackendCar().getPercentageOnCurrentRoad() >= startSegment &&
+                    this.carElements.get(i).getBackendCar().getPercentageOnCurrentRoad() <= endSegment) {
+
+                temp++;
+
+            }
+        }
+
+        return temp;
+    }
+
+    public HashMap<Integer, Integer> getRoadWeights(int percentage) {
 
         // Create a hashmap and add the amount of cars to the corresponding index of the road + add the weight to the road itself to a variable
 
@@ -89,7 +126,7 @@ public class AnimationParts {
         HashMap<Integer, Integer> hmap = new HashMap<>();
 
         for (int i = 0; i < model.map.roads.size(); i++) {
-            hmap.put(i,0);
+            hmap.put(i, 0);
 
             model.map.roads.get(i).carsAtEndOfRoad = 0;
         }
@@ -111,42 +148,39 @@ public class AnimationParts {
             }
         }
 
-
         return hmap;
 
     }
 
 
-    public ArrayList<Integer> getRouteGreedy(int start, int end){
-        Greedy greedy = new Greedy(graph.getNodeByIndex(start),graph.getNodeByIndex(end),graph);
+    public ArrayList<Integer> getRouteGreedy(int start, int end) {
+        Greedy greedy = new Greedy(graph.getNodeByIndex(start), graph.getNodeByIndex(end), graph);
 
         return greedy.getIntPath();
     }
 
-    public ArrayList<Integer> getRouteAStar(Car car){
+    public ArrayList<Integer> getRouteAStar(Car car) {
         Pathfinding path = new Pathfinding(graph);
         return path.Astar(car, graph);
     }
 
 
-    public ArrayList<TrafficLight> getTrafficLights(){
+    public ArrayList<TrafficLight> getTrafficLights() {
         return this.trafficLights;
     }
 
-    public ArrayList<FSMTrafficLight> getTrafficLightsV2(){
+    public ArrayList<FSMTrafficLight> getTrafficLightsV2() {
         return this.trafficLightsV2;
     }
 
 
-
-
     //return a list of cars that are driving at a given road
-    public ArrayList<Car> carsOnRoad(Road road){
-        return  null;
+    public ArrayList<Car> carsOnRoad(Road road) {
+        return null;
     }
 
     //return the arraylist of roads from map
-    public ArrayList<Road> getRoads(){
+    public ArrayList<Road> getRoads() {
         return this.model.map.roads;
     }
 

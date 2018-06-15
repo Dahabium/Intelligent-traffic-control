@@ -79,9 +79,10 @@ public class Map {
 
     public void runAllConnectedFSMS(){
         for (int i = 0; i < this.intersectionFSMS.size() ; i++) {
-            this.intersectionFSMS.get(i).runIntersectionFSMS();
+            this.intersectionFSMS.get(i).runFSM_Horizontal_Red();
         }
     }
+
     public Road exsistParallelOutgoingRoad(int direction, Node node){
 
         for (int i = 0; i < roads.size(); i++) {

@@ -37,7 +37,31 @@ public class CollisionDetection {
         }
 
         return false;
+    }
 
+    public boolean MarginCollisionDetection(){
+
+        if (cars.size() == 1) {
+            return false;
+        }
+
+        for (int i = 0; i < cars.size(); i++) {
+
+            for (int j = 0; j < cars.size(); j++) {
+
+                if(cars.get(i).getLocX() <= cars.get(j).getLocX() + 40 &&
+                        cars.get(i).getLocX() + 40 >= cars.get(j).getLocX() &&
+                        cars.get(i).getLocY() <= cars.get(j).getLocY() + 40 &&
+                        cars.get(i).getLocY() + 40 >= cars.get(j).getLocY() &&
+                        cars.get(i) != cars.get(j)){
+                    System.out.println("MARGINNNN");
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
     }
 
 
@@ -45,6 +69,7 @@ public class CollisionDetection {
     //if there is a car on current road && the percentageOnRoad is larger than the current one => return the car in the front, get its velocity.
 
     public Car returnCarInFront(Car currentCar){
+
         int returnIndex = 10000000;
         double distanceDiff = 1000000000;
 

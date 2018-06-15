@@ -80,8 +80,8 @@ public class Model {
 					if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 4 ||
 							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 6	){
 
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreeenTime(DefaultGreenTime);
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreeenTime(DefaultGreenTime);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreenTime(DefaultGreenTime);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreenTime(DefaultGreenTime);
 
 						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setRedTime(DefaultRedTime);
 						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setRedTime(DefaultRedTime);
@@ -94,8 +94,8 @@ public class Model {
 					else if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 8 ||
 							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 2){
 
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreeenTime(DefaultGreenTime2);
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreeenTime(DefaultGreenTime2);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreenTime(DefaultGreenTime2);
+						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreenTime(DefaultGreenTime2);
 
 						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setRedTime(DefaultRedTime2);
 						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setRedTime(DefaultRedTime2);

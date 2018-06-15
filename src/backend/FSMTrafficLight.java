@@ -17,7 +17,7 @@ public class FSMTrafficLight {
     public final int GREEN = 3;
 
 
-    public int redTime, yellowTime, greeenTime;
+    public int redTime, yellowTime, greenTime;
 
     //1 - red, 2 - yellow, 3- green
 
@@ -27,13 +27,13 @@ public class FSMTrafficLight {
     public int currentstate;
 
 
-    public FSMTrafficLight(int redTime, int greeenTime, int yellowTime, int currentstate, int XPos, int YPos) {
+    public FSMTrafficLight(int redTime, int greenTime, int yellowTime, int currentstate, int XPos, int YPos) {
 
         this.trafficLightGui = new TrafficLight(XPos,YPos);
 
         this.redTime = redTime;
         this.yellowTime = yellowTime;
-        this.greeenTime = greeenTime;
+        this.greenTime = greenTime;
 
         this.currentstate = currentstate;
 
@@ -64,6 +64,7 @@ public class FSMTrafficLight {
             }
         };
 
+
         timer.schedule(task, redTime);
 
     }
@@ -74,13 +75,13 @@ public class FSMTrafficLight {
 
         this.trafficLightGui.changeTrafficLightColor(GREEN);
 
+
         final Timer timer = new Timer();
         final TimerTask task = new TimerTask() {
 
             @Override
             public void run() {
                 if (currentstate == GREEN) {
-
                     timer.cancel();
                     timer.purge();
 
@@ -92,7 +93,7 @@ public class FSMTrafficLight {
             }
         };
 
-        timer.schedule(task, greeenTime);
+        timer.schedule(task, greenTime);
 
     }
 
@@ -102,6 +103,7 @@ public class FSMTrafficLight {
         this.trafficLightGui.changeTrafficLightColor(YELLOW);
 
         final Timer timer = new Timer();
+
 
         final TimerTask task = new TimerTask() {
 
@@ -128,8 +130,8 @@ public class FSMTrafficLight {
         return currentstate;
     }
 
-    public void setGreeenTime(int greeenTime){
-        this.greeenTime = greeenTime;
+    public void setGreenTime(int greeenTime){
+        this.greenTime = greeenTime;
     }
 
     public void setYellowTime(int yellowTime){
@@ -142,7 +144,7 @@ public class FSMTrafficLight {
 
     public void setTimingSequences(int redTime,int greenTime, int yellowTime){
         this.redTime = redTime;
-        this.greeenTime = greenTime;
+        this.greenTime = greenTime;
         this.yellowTime = yellowTime;
     }
 

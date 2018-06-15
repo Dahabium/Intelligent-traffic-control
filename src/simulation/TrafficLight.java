@@ -11,6 +11,7 @@ public class TrafficLight {
     public final int YELLOW = 2;
     public final int GREEN = 3;
 
+    SpecialCircle red,yellow,green;
 
     //1 - red, 2 - yellow, 3- green
 
@@ -37,55 +38,118 @@ public class TrafficLight {
         rectangle.setStroke(Color.BLACK);
 
 
-        Circle red = new Circle(12);
-        red.setCenterX(15);
-        red.setCenterY(17);
-        Circle yellow = new Circle(12);
-        yellow.setCenterX(15);
-        yellow.setCenterY(43);
-        Circle green = new Circle(12);
-        green.setCenterX(15);
-        green.setCenterY(69);
+
+        this.red = new SpecialCircle(RED, 15,17);
+        this.yellow = new SpecialCircle(YELLOW,15,43);
+        this.green = new SpecialCircle(GREEN,15,69);
 
 
-        red.setStroke(Color.BLACK);
-        red.setFill(Color.GRAY);
-        yellow.setStroke(Color.BLACK);
-        yellow.setFill(Color.GRAY);
-        green.setStroke(Color.BLACK);
-        green.setFill(Color.GRAY);
+//        red.setStroke(Color.BLACK);
+//        red.setFill(Color.GRAY);
+//        yellow.setStroke(Color.BLACK);
+//        yellow.setFill(Color.GRAY);
+//        green.setStroke(Color.BLACK);
+//        green.setFill(Color.GRAY);
 
         trafficlight.getChildren().add(rectangle);
-        trafficlight.getChildren().addAll(red,yellow,green);
 
+        trafficlight.getChildren().add(red.circle);
+        trafficlight.getChildren().add(yellow.circle);
+        trafficlight.getChildren().add(green.circle);
 
     }
 
     //trafficlight.getchildren.get( 1 - red, 2 - yellow, 3 - green, like activestate indexes)
 
+//    public void changeTrafficLightColor(int color){
+//        if (activeState != color){
+//            activeState = color;
+//
+//            for (int i = 0; i < trafficlight.getChildren().size(); i++) {
+//                if(trafficlight.getChildren().get(i) instanceof Circle){
+//                    ((Circle) trafficlight.getChildren().get(i)).setFill(Color.GRAY);
+//                }
+//            }
+//
+//            if(color == 1 && trafficlight.getChildren().get(1) instanceof Circle){
+//                ((Circle) trafficlight.getChildren().get(1)).setFill(Color.RED);
+//                ((Circle) trafficlight.getChildren().get(2)).setFill(Color.GRAY);
+//                ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GRAY);
+//
+//            }
+//            if (color == 2 &&  trafficlight.getChildren().get(2) instanceof Circle){
+//
+//                ((Circle) trafficlight.getChildren().get(2)).setFill(Color.YELLOW);
+//                ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GRAY);
+//                ((Circle) trafficlight.getChildren().get(1)).setFill(Color.GRAY);
+//            }
+//            if(color == 3 &&  trafficlight.getChildren().get(3) instanceof Circle){
+//                ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GREEN);
+//                ((Circle) trafficlight.getChildren().get(1)).setFill(Color.GRAY);
+//                ((Circle) trafficlight.getChildren().get(2)).setFill(Color.GRAY);
+//
+//            }
+//
+//        }
+//    }
+
+
     public void changeTrafficLightColor(int color){
+
         if (activeState != color){
             activeState = color;
 
-            for (int i = 0; i < trafficlight.getChildren().size(); i++) {
-                if(trafficlight.getChildren().get(i) instanceof Circle){
-                    ((Circle) trafficlight.getChildren().get(i)).setFill(Color.GRAY);
+//            this.red.greyOut();
+//            this.yellow.greyOut();
+//            this.green.greyOut();
 
-                }
-            }
 
-            if(color == 1 && trafficlight.getChildren().get(1) instanceof Circle){
-                ((Circle) trafficlight.getChildren().get(1)).setFill(Color.RED);
+            if(color == 1){
+                this.red.circle.setFill(Color.RED);
+                this.yellow.circle.setFill(Color.GRAY);
+                this.green.circle.setFill(Color.GRAY);
+
             }
-            if (color == 2 &&  trafficlight.getChildren().get(2) instanceof Circle){
-                ((Circle) trafficlight.getChildren().get(2)).setFill(Color.YELLOW);
+            if (color == 2){
+
+                this.yellow.circle.setFill(Color.YELLOW);
+                this.red.circle.setFill(Color.GRAY);
+                this.green.circle.setFill(Color.GRAY);
             }
-            if(color == 3 &&  trafficlight.getChildren().get(3) instanceof Circle){
-                ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GREEN);
+            if(color == 3 ){
+
+                this.green.circle.setFill(Color.GREEN);
+                this.red.circle.setFill(Color.GRAY);
+                this.yellow.circle.setFill(Color.GRAY);
 
             }
 
         }
+    }
+
+    public void Graying(int color){
+
+        if(color == 0){
+            ((Circle) trafficlight.getChildren().get(1)).setFill(Color.GRAY);
+            ((Circle) trafficlight.getChildren().get(2)).setFill(Color.GRAY);
+            ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GRAY);
+        }
+        if(color == 1 && trafficlight.getChildren().get(1) instanceof Circle){
+            ((Circle) trafficlight.getChildren().get(2)).setFill(Color.GRAY);
+            ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GRAY);
+
+        }
+        if (color == 2 &&  trafficlight.getChildren().get(2) instanceof Circle){
+
+            ((Circle) trafficlight.getChildren().get(3)).setFill(Color.GRAY);
+            ((Circle) trafficlight.getChildren().get(1)).setFill(Color.GRAY);
+        }
+        if(color == 3 &&  trafficlight.getChildren().get(3) instanceof Circle){
+            ((Circle) trafficlight.getChildren().get(1)).setFill(Color.GRAY);
+            ((Circle) trafficlight.getChildren().get(2)).setFill(Color.GRAY);
+
+        }
+
     }
 
     public Group getTrafficlight(){

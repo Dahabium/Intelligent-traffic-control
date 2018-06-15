@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.image.ImageView;
 
 
+import java.awt.*;
 import java.util.ArrayList;
 
 //separate animation class for each car.
@@ -41,7 +42,7 @@ public class carAnimation {
 
         //set the initial road for the car
         //TODO use roads instead of edges
-        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),graph.getNodeByIndex(IntPath.get(pathIterator))));
+        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))));
 
 
         javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", 25, 13, true, false);
@@ -93,7 +94,7 @@ public class carAnimation {
             imgView.setRotate(90);
         }
 
-        System.out.println("CAR POSITION BEFORE ANIMATION START    X: " + car.getLocX() + "  Y:" + car.getLocY() );
+        System.out.println("CAR POSITION BEFORE ANIMATION START    X: " + car.getLocX() + "  Y:" + car.getLocY());
 
         animationTimer = new AnimationTimer() {
 
@@ -110,13 +111,16 @@ public class carAnimation {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double delta = elapsedSeconds * car.getVel();
+                    final double delta = elapsedSeconds * car.getVel() * 2;
 
 
                     final double oldX = imgView.getTranslateX();
                     final double oldY = imgView.getTranslateY();
                     double newX = oldX + delta;
                     double newY = oldY + delta;
+
+                    double dist = 100000;
+                    double carFrontVelocity = 0;
 
                     if (simPath.directions.get(pathIterator - 1) == 4) {
                         newX = oldX - delta;
@@ -158,11 +162,11 @@ public class carAnimation {
 
                             int newDir = simPath.directions.get(pathIterator - 1);
 
-                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator-1)),
+                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)),
                                     graph.getNodeByIndex(IntPath.get(pathIterator))));
 
 
-                            System.out.println("Intpath " + IntPath + "  SimPath " + simPath.directions + "  pathiterator "+ pathIterator );
+                            System.out.println("Intpath " + IntPath + "  SimPath " + simPath.directions + "  pathiterator " + pathIterator);
 
                             if (oldDir == 6) {
                                 if (newDir == 8) {
@@ -202,38 +206,73 @@ public class carAnimation {
                             System.out.println(simPath.directions);
 
                         } else {
+
                             stop();
+
                         }
 
                     }
 
-                    double dist = 100000;
-                    double carFrontVelocity = 0;
 
                     //if there is a car in the front, on current road
-                    if(collisionDetection.returnCarInFront(car) != null){
+                    if (collisionDetection.returnCarInFront(car) != null) {
                         //calculate the distance between current car and the car in the front .
 
-                        dist = (Math.sqrt(Math.pow((imgView.getTranslateX() - collisionDetection.returnCarInFront(car).getLocX()), 2) + (Math.pow(imgView.getTranslateY() - collisionDetection.returnCarInFront(car).getLocY(), 2))))- 25 - 10;
+                        dist = (Math.sqrt(Math.pow((imgView.getTranslateX() - collisionDetection.returnCarInFront(car).getLocX()), 2) + (Math.pow(imgView.getTranslateY() - collisionDetection.returnCarInFront(car).getLocY(), 2)))) - 25 - 10;
 
                         carFrontVelocity = collisionDetection.returnCarInFront(car).getVel();
                         //round a small number
-                        if( carFrontVelocity < 0.1){
+                        if (carFrontVelocity < 0.1) {
                             carFrontVelocity = 0;
                         }
 
-                    }
-
-                    else {
+                    } else {
                         //else check the distance in the front node (...)
 
-                        if(car.getPercentageOnCurrentRoad() > 30 && ((car.getLocRoad().existsTrafficLight() == false) || (car.getLocRoad().getTrafficLight().getCurrentstate() != 3 )) && collisionDetection.returnCarInFront(car) == null){
+                        System.out.println("There exists a traffic light on current road : " + car.getLocRoad().existsTrafficLight());
+                        if (car.getPercentageOnCurrentRoad() > 30 && collisionDetection.returnCarInFront(car) == null) {
 
+                            if(car.getLocRoad().existsTrafficLight() == false){
+                                //do nothing
+                            }
+                            else if(car.getLocRoad().getTrafficLight().getCurrentstate() != 3 ){
 
-                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
-                            carFrontVelocity = 0;
+                                dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
+                                carFrontVelocity = 0;
+
+                            }
 
                         }
+
+
+
+                        //decelerate before doing a turn
+                        if (car.getPercentageOnCurrentRoad() > 60 && (pathIterator < simPath.path.size() - 1) &&
+                                nextActionIsTurn(simPath.directions.get(pathIterator - 1), simPath.directions.get(pathIterator))) {
+
+                            if (car.getVel() > 10) {
+
+                                car.setVel(car.getVel() - 0.1);
+
+                            }
+                        }
+
+                        //rough draft of side collision detection.... its carried by the collisionDetection class without IDM.
+                        //just by increasing the margins of normal collisiondetection.
+                        if (collisionDetection.MarginCollisionDetection()) {
+
+                            if (car.getVel() > 0) {
+
+                                car.setVel(car.getVel() - 0.1);
+                            }
+                        }
+
+                        //stop the car properly before the goal
+                        if(pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70){
+                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) ;
+
+                        }
+
 
                     }
 
@@ -254,7 +293,6 @@ public class carAnimation {
                 }
 
 
-
                 lastUpdateTime.set(now);
 
             }
@@ -263,6 +301,47 @@ public class carAnimation {
 
 
     }
+
+    public boolean nextActionIsTurn(int oldDir, int newDir) {
+
+        if (oldDir == 6) {
+            if (newDir == 8) {
+                return true;
+            }
+            if (newDir == 2) {
+                return true;
+            }
+        }
+        if (oldDir == 4) {
+            if (newDir == 8) {
+                return true;
+            }
+            if (newDir == 2) {
+                return true;
+            }
+        }
+
+        if (oldDir == 2) {
+            if (newDir == 4) {
+                return true;
+            }
+            if (newDir == 6) {
+                return true;
+            }
+        }
+        if (oldDir == 8) {
+            if (newDir == 4) {
+                return true;
+            }
+            if (newDir == 6) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+
     //TODO Fix this. (when hitting a stop button this doesent stop the car
     public void stopCarAnimation() {
         System.out.println("CAR ANIMATION STOPPED!");

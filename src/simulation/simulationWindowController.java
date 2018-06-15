@@ -78,7 +78,7 @@ public class simulationWindowController {
 
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 2);
+        this.mainController = new MainController(this.animationParts, 10000, 1);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -94,10 +94,11 @@ public class simulationWindowController {
     @FXML
     public void debugbtnaction() {
 
-        this.mainController.getTLCcontroller().updateCycle();
+//        this.mainController.getTLCcontroller().updateCycle();
+//
+//        this.animationParts.model.map.runAllConnectedFSMS();
 
-        this.animationParts.model.map.runAllConnectedFSMS();
-
+        this.animationParts.model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
     }
 
     public void updateCycleSander(){
@@ -217,17 +218,17 @@ public class simulationWindowController {
         int lastCar = this.animationParts.carElements.size() - 1;
         this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
 
-        this.animationParts.addCarToAnimation(graph.nodes.get(2).index, graph.nodes.get(0).index, PathfindingMode);
-        lastCar = this.animationParts.carElements.size() - 1;
-        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+//        this.animationParts.addCarToAnimation(graph.nodes.get(2).index, graph.nodes.get(0).index, PathfindingMode);
+//        lastCar = this.animationParts.carElements.size() - 1;
+//        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
 
         this.animationParts.addCarToAnimation(graph.nodes.get(3).index, graph.nodes.get(4).index, PathfindingMode);
         lastCar = this.animationParts.carElements.size() - 1;
         this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
-
-        this.animationParts.addCarToAnimation(graph.nodes.get(4).index, graph.nodes.get(3).index, PathfindingMode);
-        lastCar = this.animationParts.carElements.size() - 1;
-        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+//
+//        this.animationParts.addCarToAnimation(graph.nodes.get(4).index, graph.nodes.get(3).index, PathfindingMode);
+//        lastCar = this.animationParts.carElements.size() - 1;
+//        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
 
         animationParts.simulate();
 

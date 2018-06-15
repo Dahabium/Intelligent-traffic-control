@@ -5,7 +5,6 @@ import backend.Model;
 import backend.Road;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,6 +22,9 @@ public class GreedyController {
     int horizontalWeight;
     int verticalWeight;
 
+    int fullcycleTime = 28000;
+
+    //list of roads that are confronting the intersection. (share same endpoint at intersection)
     ArrayList<Road> roadArrayList;
 
 
@@ -40,6 +42,54 @@ public class GreedyController {
 
         this.roadArrayList = model.map.getIncomingRoads(this.intersection);
         greedyTimer();
+        updateFSMtimer();
+    }
+
+    private void manageTrafficLightSequences() {
+
+        //vertical - more time
+        if (verticalWeight > horizontalWeight) {
+            //compare nubers??
+            System.out.println("vertical more! ");
+            int difference = verticalWeight - horizontalWeight;
+
+            //red + green for new one
+//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenVertical(difference*1000);
+//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).lessGreenHorizontal(difference*1000);
+            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenLessRedVertical(difference * 1000);
+
+            fullcycleTime = fullcycleTime + difference * 1000;
+            horizontalWeight = -1;
+            verticalWeight = 0;
+
+        }
+
+        //horizontal - more time
+        if (verticalWeight < horizontalWeight) {
+            System.out.println("horizontal more! ");
+            //compare nubers??
+            int difference = horizontalWeight - verticalWeight;
+
+//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenHorizontal(difference*1000);
+//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).lessGreenVertical(difference*1000);
+            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenLessRedHorizontal(difference * 1000);
+
+
+            fullcycleTime = fullcycleTime + difference * 1000;
+            horizontalWeight = -1;
+            verticalWeight = 0;
+
+        }
+
+        if (horizontalWeight == verticalWeight) {
+            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).setHorizontalRed(12000, false);
+            fullcycleTime = 28000;
+            System.out.println("Deafault set!");
+        } else {
+            horizontalWeight = 0;
+            verticalWeight = 0;
+        }
+
     }
 
     private void greedyTimer() {
@@ -48,112 +98,178 @@ public class GreedyController {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-
                 GreedyCheckIntersection();
+
+                ///!!!!!!!!!!!!!!!
+//                GreedyCheckSensors();
+
+                System.out.println("Horizontal : Green time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(0).getTrafficLight().greenTime +
+                        "  Red time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(0).getTrafficLight().redTime);
+
+                System.out.println("Vertical : Green time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(2).getTrafficLight().greenTime +
+                        "  Red time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(2).getTrafficLight().redTime);
 
             }
         }, 0, 1000);
 
     }
 
+    private void updateFSMtimer() {
 
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                manageTrafficLightSequences();
+            }
+        }, 0, fullcycleTime);
+
+
+    }
+
+    private void GreedyCheckSensors(){
+
+        int temp0 = this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(0), 50);
+        int temp1 = this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(1), 50);
+        int temp2 = this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(2), 50);
+        int temp3 = this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(3), 50);
+
+        boolean otherRoadsEmpty = true;
+
+//        for (int i = 0; i < roadArrayList.size(); i++) {
+//
+//            if (this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(i), 50) > 0){
+//
+//                for (int j = 0; j < roadArrayList.size(); j++) {
+//
+//                    if(i != j && this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(j),50) > 0){
+//                        otherRoadsEmpty = false;
+//                    }
+//                }
+//
+//                if (otherRoadsEmpty){
+//                    this.parentController.getAnimationParts().model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
+//                }
+//            }
+//        }
+
+
+        if(temp0 > 0 || temp1 > 0){
+            this.parentController.getAnimationParts().model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
+        }
+        else if (temp2 > 0 || temp3 > 0){
+            this.parentController.getAnimationParts().model.map.intersectionFSMS.get(0).runFSM_Horizontal_Red();
+        }
+
+
+    }
     private void GreedyCheckIntersection() {
 
+        int temp = 0;
+        int temp1 = 0;
+        int temp2 = 0;
+        int temp3 = 0;
 
-        horizontalWeight = 0;
-        verticalWeight = 0;
-
-        System.out.println(roadArrayList);
         for (int i = 0; i < roadArrayList.size(); i++) {
 
-//            System.out.println("roadArrayList. start : " + roadArrayList.get(i).start  +" end " +  roadArrayList.get(i).end);
-            if (this.parentController.getAnimationParts().getRoadWeights(30).get(i) > 0) {
-
-                System.out.println("there is a car that passed 30 percent of road. Start : " + this.parentController.getAnimationParts().getRoads().get(i).start.index + " End : " + this.parentController.getAnimationParts().getRoads().get(i).end.index);
-
-                if (this.parentController.getAnimationParts().getRoads().get(i).getDirection() == 6) {
+            if (this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(i), 30) > 0) {
 
 
-                    horizontalWeight = this.parentController.getAnimationParts().getRoadWeights(30).get(i);
+                if (this.roadArrayList.get(i).getDirection() == 6) {
+
+                    temp = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 30, 50) +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 50, 70) * 2 +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 70, 100) * 3;
+
 
                     for (int j = 0; j < roadArrayList.size(); j++) {
-                        if (i != j && this.parentController.getAnimationParts().getRoads().get(j).getDirection() == 4 &&
-                                this.parentController.getAnimationParts().getRoads().get(j).end == this.parentController.getAnimationParts().getRoads().get(i).end) {
+
+                        if (i != j && roadArrayList.get(j).getDirection() == 4 &&
+                                roadArrayList.get(j).end == roadArrayList.get(i).end) {
 
 
-                            horizontalWeight = this.parentController.getAnimationParts().getRoadWeights(30).get(j) + this.parentController.getAnimationParts().getRoadWeights(30).get(i);
+                            temp1 = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 30, 50) +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 50, 70) * 2 +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 70, 100) * 3;
 
-
-                            System.out.println("Horizontal " + horizontalWeight);
-                        }
-
-                    }
-
-                } else if (this.parentController.getAnimationParts().getRoads().get(i).getDirection() != 6 &&
-                        this.parentController.getAnimationParts().getRoads().get(i).getDirection() != 4) {
-
-
-                    System.out.println("vertical entr");
-
-                    verticalWeight = this.parentController.getAnimationParts().getRoadWeights(30).get(i);
-
-                    for (int j = 0; j < roadArrayList.size(); j++) {
-                        if (i != j && this.parentController.getAnimationParts().getRoads().get(i).getDirection() == 2) {
-
-                            //this.parentController.getAnimationParts().getRoadWeights(30).get(j)
-                            System.out.println("Vertical  two " + verticalWeight);
-
-                            verticalWeight = this.parentController.getAnimationParts().getRoadWeights(30).get(i);
-
-                            System.out.println("Vertical " + verticalWeight);
 
                         }
 
                     }
+                    horizontalWeight = temp + temp1;
+                    System.out.println("Horizontal weight " + horizontalWeight);
 
+                } else if (this.roadArrayList.get(i).getDirection() == 4) {
+
+                    temp = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 30, 50) +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 50, 70) * 2 +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 70, 100) * 3;
+
+
+                    for (int j = 0; j < roadArrayList.size(); j++) {
+
+                        if (i != j && roadArrayList.get(j).getDirection() == 6 &&
+                                roadArrayList.get(j).end == roadArrayList.get(i).end) {
+
+                            temp1 = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 30, 50) +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 50, 70) * 2 +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 70, 100) * 3;
+
+                        }
+
+                    }
+
+                    horizontalWeight = temp + temp1;
+                    System.out.println("Horizontal weight " + horizontalWeight);
+
+                } else if (this.roadArrayList.get(i).getDirection() == 2) {
+
+                    temp2 = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 30, 50) +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 50, 70) * 2 +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 70, 100) * 3;
+
+
+                    for (int j = 0; j < roadArrayList.size(); j++) {
+
+                        if (i != j && roadArrayList.get(j).getDirection() == 8 &&
+                                roadArrayList.get(j).end == roadArrayList.get(i).end) {
+
+                            temp3 = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 30, 50) +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 50, 70) * 2 +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 70, 100) * 3;
+
+                        }
+
+                    }
+                    verticalWeight = temp2 + temp3;
+                    System.out.println("Vertical weight " + verticalWeight);
+
+                } else if (this.roadArrayList.get(i).getDirection() == 8) {
+
+                    temp2 = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 30, 50) +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 50, 70) * 2 +
+                            this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(i), 70, 100) * 3;
+
+                    for (int j = 0; j < roadArrayList.size(); j++) {
+
+                        if (i != j && roadArrayList.get(j).getDirection() == 2 &&
+                                roadArrayList.get(j).end == roadArrayList.get(i).end) {
+
+                            temp3 = this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 30, 50) +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 50, 70) * 2 +
+                                    this.parentController.getAnimationParts().getWeightOnGivenRoadSegment(roadArrayList.get(j), 70, 100) * 3;
+
+                        }
+
+                    }
+                    verticalWeight = temp2 + temp3;
+                    System.out.println("Vertical weight " + verticalWeight);
 
                 }
 
             }
         }
 
-
     }
-
-    public HashMap<Integer, Integer> getRoadWeights(int percentage) {
-
-        // Create a hashmap and add the amount of cars to the corresponding index of the road + add the weight to the road itself to a variable
-
-        //key is edge.gei(i), value is weight on those edges at current moment
-        HashMap<Integer, Integer> hmap = new HashMap<>();
-
-        for (int i = 0; i < model.map.roads.size(); i++) {
-            hmap.put(i, 0);
-
-            model.map.roads.get(i).carsAtEndOfRoad = 0;
-        }
-
-
-        for (int i = 0; i < model.map.roads.size(); i++) {
-            for (int j = 0; j < model.map.roads.size(); j++) {
-
-                if (this.parentController.getAnimationParts().carElements.get(i).getBackendCar().getLocRoad().start == model.map.roads.get(j).start &&
-                        this.parentController.getAnimationParts().carElements.get(i).getBackendCar().getLocRoad().end == model.map.roads.get(j).end &&
-                        this.parentController.getAnimationParts().carElements.get(i).getBackendCar().getPercentageOnCurrentRoad() >= percentage) {
-
-                    hmap.put(j, hmap.get(j) + 1);
-
-                    // add it to the reoads as well
-                    model.map.roads.get(j).carsAtEndOfRoad = hmap.get(j);
-
-                }
-            }
-        }
-
-
-        return hmap;
-
-    }
-
 
 }
