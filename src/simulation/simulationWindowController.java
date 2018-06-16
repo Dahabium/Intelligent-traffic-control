@@ -123,8 +123,9 @@ public class simulationWindowController {
 
         for (int i = 0; i < animationParts.getRoads().size(); i++) {
 
+            //Cross-intersection...
             //check if more than one road is directed towards an intersection => create traffic lights at the end
-            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() > 2) {
+            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 4) {
 
                 if (animationParts.getRoads().get(i).getDirection() == 6) {
 
@@ -150,6 +151,9 @@ public class simulationWindowController {
                     this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
 
                 }
+            }
+            
+            if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 3){
 
             }
         }
@@ -163,12 +167,7 @@ public class simulationWindowController {
     public void createTrafficLightsManual() {
 
         animationParts.model.map.roads.get(0).addTrafficLight(graph.edges.get(0).end.x * 100 - 50, graph.edges.get(0).end.y * 100 + 50, 15000, 6000, 1000, 1);
-//        model.map.roads.get(1).addTrafficLight(graph.edges.get(1).end.x * 100 , graph.edges.get(1).end.y * 100 - 70, 1000000,6000,1000,3);
-
-        //add shadow cars....
-
         this.simulationElements.getChildren().add(animationParts.model.map.roads.get(0).getTrafficLight().getTrafficLightGui());
-//        this.simulationElements.getChildren().add(model.map.roads.get(1).getTrafficLight().getTrafficLightGui());
 
     }
 
@@ -199,6 +198,8 @@ public class simulationWindowController {
 
     @FXML
     public void launchCarsSim(){
+
+
 //        for (int i = 0; i < animationParts.model.map.roads.size(); i++) {
 //            if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() <= 1){
 //
@@ -222,7 +223,7 @@ public class simulationWindowController {
 //        lastCar = this.animationParts.carElements.size() - 1;
 //        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
 
-        this.animationParts.addCarToAnimation(graph.nodes.get(3).index, graph.nodes.get(4).index, PathfindingMode);
+        this.animationParts.addCarToAnimation(graph.nodes.get(3).index, graph.nodes.get(2).index, PathfindingMode);
         lastCar = this.animationParts.carElements.size() - 1;
         this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
 //

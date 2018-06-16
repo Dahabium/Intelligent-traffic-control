@@ -43,7 +43,6 @@ public class Model {
                     map.roads.get(i).setRoadWithSameFSM(map.roads.get(j));
                     map.roads.get(j).setRoadWithSameFSM(map.roads.get(i));
 
-
                 }
                 // if 2 edges share the same vertex at their ends AND one of them is perpendicular to another, then the FSM cycle of one edge will change
                 //depending on the other

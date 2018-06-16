@@ -1,5 +1,7 @@
 package backend;
 
+import sun.awt.geom.AreaOp;
+
 import java.util.ArrayList;
 
 public class CollisionDetection {
@@ -25,13 +27,13 @@ public class CollisionDetection {
 
             for (int j = 0; j < cars.size(); j++) {
 
-                 if(cars.get(i).getLocX() <= cars.get(j).getLocX() + 25 &&
-                    cars.get(i).getLocX() + 25 >= cars.get(j).getLocX() &&
-                    cars.get(i).getLocY() <= cars.get(j).getLocY() + 25 &&
-                    cars.get(i).getLocY() + 25 >= cars.get(j).getLocY() &&
-                         cars.get(i) != cars.get(j)){
+                if (cars.get(i).getLocX() <= cars.get(j).getLocX() + 25 &&
+                        cars.get(i).getLocX() + 25 >= cars.get(j).getLocX() &&
+                        cars.get(i).getLocY() <= cars.get(j).getLocY() + 25 &&
+                        cars.get(i).getLocY() + 25 >= cars.get(j).getLocY() &&
+                        cars.get(i) != cars.get(j)) {
                     return true;
-                 }
+                }
             }
 
         }
@@ -39,7 +41,7 @@ public class CollisionDetection {
         return false;
     }
 
-    public boolean MarginCollisionDetection(){
+    public boolean frontCarCollisionDetection(Car car) {
 
         if (cars.size() == 1) {
             return false;
@@ -47,16 +49,26 @@ public class CollisionDetection {
 
         for (int i = 0; i < cars.size(); i++) {
 
-            for (int j = 0; j < cars.size(); j++) {
+            if(     cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 6 &&
+                    car.getLocX() + 90 >= cars.get(i).getLocX() && car.getLocX() + 25 <= cars.get(i).getLocX() &&
+                    car.getLocY() + 15 >= cars.get(i).getLocY() && car.getLocY() - 15 <= cars.get(i).getLocY() ) {
+                return true;
 
-                if(cars.get(i).getLocX() <= cars.get(j).getLocX() + 40 &&
-                        cars.get(i).getLocX() + 40 >= cars.get(j).getLocX() &&
-                        cars.get(i).getLocY() <= cars.get(j).getLocY() + 40 &&
-                        cars.get(i).getLocY() + 40 >= cars.get(j).getLocY() &&
-                        cars.get(i) != cars.get(j)){
-                    System.out.println("MARGINNNN");
-                    return true;
-                }
+            }
+            else if(cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 4 &&
+                    car.getLocX() - 90 <= cars.get(i).getLocX() && car.getLocX() - 25 >= cars.get(i).getLocX() &&
+                    car.getLocY() + 15 >= cars.get(i).getLocY() && car.getLocY() - 15 <= cars.get(i).getLocY() ) {
+                return true;
+            }
+            else if(cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 8 &&
+                    car.getLocY() - 90 <= cars.get(i).getLocY() && car.getLocY() - 25 >= cars.get(i).getLocY() &&
+                    car.getLocX() + 15 >= cars.get(i).getLocX() && car.getLocX() - 15 <= cars.get(i).getLocX() ) {
+                return true;
+            }
+            else if(cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 2 &&
+                    car.getLocY() + 90 >= cars.get(i).getLocY() && car.getLocY() + 25 <= cars.get(i).getLocY() &&
+                    car.getLocX() + 15 >= cars.get(i).getLocX() && car.getLocX() - 15 <= cars.get(i).getLocX() ) {
+                return true;
             }
 
         }
@@ -68,19 +80,19 @@ public class CollisionDetection {
     //return the velocity of the car that is in front of the current car (return that car object)
     //if there is a car on current road && the percentageOnRoad is larger than the current one => return the car in the front, get its velocity.
 
-    public Car returnCarInFront(Car currentCar){
+    public Car returnCarInFront(Car currentCar) {
 
         int returnIndex = 10000000;
         double distanceDiff = 1000000000;
 
         for (int i = 0; i < cars.size(); i++) {
-            if(cars.get(i) != currentCar){
-                if(currentCar.getLocEdge().start == cars.get(i).getLocEdge().start && currentCar.getLocEdge().end == cars.get(i).getLocEdge().end
-                        && currentCar.getPercentageOnCurrentRoad() < cars.get(i).getPercentageOnCurrentRoad()){
+            if (cars.get(i) != currentCar) {
+                if (currentCar.getLocEdge().start == cars.get(i).getLocEdge().start && currentCar.getLocEdge().end == cars.get(i).getLocEdge().end
+                        && currentCar.getPercentageOnCurrentRoad() < cars.get(i).getPercentageOnCurrentRoad()) {
 
-                    double tempDistDiff =  cars.get(i).getPercentageOnCurrentRoad() - currentCar.getPercentageOnCurrentRoad();
+                    double tempDistDiff = cars.get(i).getPercentageOnCurrentRoad() - currentCar.getPercentageOnCurrentRoad();
 
-                    if(distanceDiff > tempDistDiff ){
+                    if (distanceDiff > tempDistDiff) {
                         distanceDiff = tempDistDiff;
                         returnIndex = i;
                     }
@@ -90,10 +102,9 @@ public class CollisionDetection {
             }
         }
 
-        if( returnIndex == 10000000){
+        if (returnIndex == 10000000) {
             return null;
-        }
-        else {
+        } else {
 
             return cars.get(returnIndex);
         }

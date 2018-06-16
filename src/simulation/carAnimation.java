@@ -3,13 +3,12 @@ package simulation;
 import backend.Car;
 import backend.CollisionDetection;
 import backend.Model;
-import javafx.animation.AnimationTimer;
+import javafx.animation.*;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.image.ImageView;
 
 
-import java.awt.*;
 import java.util.ArrayList;
 
 //separate animation class for each car.
@@ -170,7 +169,29 @@ public class carAnimation {
 
                             if (oldDir == 6) {
                                 if (newDir == 8) {
+//                                    final Rotate rotationTransform = new Rotate(0, imgView.getX(), imgView.getY());
+//                                    imgView.getTransforms().add(rotationTransform);
+//
+//                                    final Timeline rotationAnimation = new Timeline();
+//                                    rotationAnimation.getKeyFrames()
+//                                            .add(
+//                                                    new KeyFrame(
+//                                                            Duration.seconds(0.5),
+//                                                            new KeyValue(
+//                                                                    rotationTransform.angleProperty(),
+//                                                                    -90
+//                                                            )
+//                                                    )
+//                                            );
+//                                    rotationAnimation.setCycleCount(1);
+//                                    rotationAnimation.play();
+
+
                                     imgView.setRotate(270);
+//                                    while(currentRotation != 270){
+//                                        imgView.setRotate(currentRotation - 10);
+//
+//                                    }
                                 }
                                 if (newDir == 2) {
                                     imgView.setRotate(90);
@@ -228,12 +249,10 @@ public class carAnimation {
 
                     } else {
                         //else check the distance in the front node (...)
-
-                        System.out.println("There exists a traffic light on current road : " + car.getLocRoad().existsTrafficLight());
                         if (car.getPercentageOnCurrentRoad() > 30 && collisionDetection.returnCarInFront(car) == null) {
 
                             if(car.getLocRoad().existsTrafficLight() == false){
-                                //do nothing
+                                //continue going full speed
                             }
                             else if(car.getLocRoad().getTrafficLight().getCurrentstate() != 3 ){
 
@@ -246,7 +265,7 @@ public class carAnimation {
 
 
 
-                        //decelerate before doing a turn
+                        //decelerate before doing a turn untill "10 meters per second" .
                         if (car.getPercentageOnCurrentRoad() > 60 && (pathIterator < simPath.path.size() - 1) &&
                                 nextActionIsTurn(simPath.directions.get(pathIterator - 1), simPath.directions.get(pathIterator))) {
 
@@ -259,13 +278,16 @@ public class carAnimation {
 
                         //rough draft of side collision detection.... its carried by the collisionDetection class without IDM.
                         //just by increasing the margins of normal collisiondetection.
-                        if (collisionDetection.MarginCollisionDetection()) {
+                        if (collisionDetection.frontCarCollisionDetection(car)) {
+
+                            System.out.println("side collision" + car + "car in front? : " + collisionDetection.returnCarInFront(car));
 
                             if (car.getVel() > 0) {
 
-                                car.setVel(car.getVel() - 0.1);
+                                car.setVel(car.getVel() - 0.2);
                             }
                         }
+//                        System.out.println("X " + car.getLocX() + "  Y: "+ car.getLocY());
 
                         //stop the car properly before the goal
                         if(pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70){
