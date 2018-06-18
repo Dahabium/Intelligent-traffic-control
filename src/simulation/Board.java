@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class Board extends GridPane {
 
     int SIM_SIZE = 100;
@@ -278,50 +280,114 @@ public class Board extends GridPane {
     {
         int gridX = (from.x + to.x)/2;
         int gridY = (from.y + to.y)/2;
+
+        int xRoads = Math.abs(to.x-from.x)-1;
+        int yRoads = Math.abs(to.y-from.y)-1;
         javafx.scene.image.Image img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
-
-        if(amount == 1)
+        for(int i = 0; i<xRoads ; i++)
         {
-            img = new javafx.scene.image.Image("one.png", SIM_SIZE, SIM_SIZE, true, false);
 
+            if(amount == 1)
+            {
+                img = new javafx.scene.image.Image("one.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount == 2)
+            {
+                img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount == 3)
+            {
+                img = new javafx.scene.image.Image("three.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount == 4)
+            {
+                img = new javafx.scene.image.Image("four.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount >= 5)
+            {
+                img = new javafx.scene.image.Image("five.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+
+            ImageView imgView = new ImageView(img);
+
+            if(from.y != to.y)
+            {
+                imgView.setRotate(90);
+                if(amount == 1 && graph.getAdjecents(from).contains(to) && from.y>to.y) imgView.setRotate(180);
+                if(amount == 1 && graph.getAdjecents(to).contains(from) && from.y<to.y) imgView.setRotate(180);
+            }
+
+            else
+            {
+                if(amount == 1 && graph.getAdjecents(from).contains(to) && from.x>to.x) imgView.setRotate(180);
+                if(amount == 1 && graph.getAdjecents(to).contains(from) && from.x<to.x) imgView.setRotate(180);
+            }
+
+
+            board[gridX+i][gridY].getChildren().add(imgView);
         }
-        else if(amount == 2)
+
+        for(int i = 0; i<yRoads ; i++)
         {
-            img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
 
+            if(amount == 1)
+            {
+                img = new javafx.scene.image.Image("one.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount == 2)
+            {
+                img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount == 3)
+            {
+                img = new javafx.scene.image.Image("three.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount == 4)
+            {
+                img = new javafx.scene.image.Image("four.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+            else if(amount >= 5)
+            {
+                img = new javafx.scene.image.Image("five.png", SIM_SIZE, SIM_SIZE, true, false);
+
+            }
+
+            ImageView imgView = new ImageView(img);
+
+            if(from.y != to.y)
+            {
+                imgView.setRotate(90);
+                if(amount == 1 && graph.getAdjecents(from).contains(to) && from.y>to.y) imgView.setRotate(180);
+                if(amount == 1 && graph.getAdjecents(to).contains(from) && from.y<to.y) imgView.setRotate(180);
+            }
+
+            else
+            {
+                if(amount == 1 && graph.getAdjecents(from).contains(to) && from.x>to.x) imgView.setRotate(180);
+                if(amount == 1 && graph.getAdjecents(to).contains(from) && from.x<to.x) imgView.setRotate(180);
+            }
+
+
+            board[gridX][gridY+i].getChildren().add(imgView);
         }
-        else if(amount == 3)
-        {
-            img = new javafx.scene.image.Image("three.png", SIM_SIZE, SIM_SIZE, true, false);
 
-        }
-        else if(amount == 4)
-        {
-            img = new javafx.scene.image.Image("four.png", SIM_SIZE, SIM_SIZE, true, false);
 
-        }
-        else if(amount >= 5)
-        {
-            img = new javafx.scene.image.Image("five.png", SIM_SIZE, SIM_SIZE, true, false);
 
-        }
 
-        ImageView imgView = new ImageView(img);
 
-        if(from.y != to.y)
-        {
-            imgView.setRotate(90);
-            if(amount == 1 && graph.getAdjecents(from).contains(to) && from.y>to.y) imgView.setRotate(180);
-            if(amount == 1 && graph.getAdjecents(to).contains(from) && from.y<to.y) imgView.setRotate(180);
-        }
 
-        else
-        {
-            if(amount == 1 && graph.getAdjecents(from).contains(to) && from.x>to.x) imgView.setRotate(180);
-            if(amount == 1 && graph.getAdjecents(to).contains(from) && from.x<to.x) imgView.setRotate(180);
-        }
 
-        board[gridX][gridY].getChildren().add(imgView);
+
+
     }
 
     public int getAmountOfLanes(Node n, Node m)
@@ -397,7 +463,7 @@ public class Board extends GridPane {
 
         for (int i = 0; i < grid.size(); i++) {
 
-            double diff = Math.abs(grid.get(i)[0] - x) + Math.abs(grid.get(i)[1] - y);
+            double diff = abs(grid.get(i)[0] - x) + abs(grid.get(i)[1] - y);
 
             if (diff < minimum) {
                 minimum = diff;

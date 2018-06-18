@@ -191,6 +191,7 @@ public class simulationWindowController {
     @FXML
     public void createCar() {
 
+        System.out.println("Car created");
         this.animationParts.addCarToAnimation(carStart, carEnd, PathfindingMode);
 
         int lastCar = this.animationParts.carElements.size() - 1;
