@@ -24,7 +24,7 @@ public class CollisionDetection {
 
 
     //TODO orientation of the rectangular bounding box. at the moment its just a square.
-    public boolean collisionDetection() {
+    public boolean collisionDetection(int dir) {
 
         if (cars.size() == 1) {
             return false;
@@ -34,18 +34,29 @@ public class CollisionDetection {
 
             for (int j = 0; j < cars.size(); j++) {
 
-                if (cars.get(i).getLocX() <= cars.get(j).getLocX() + 25 &&
+                if((dir == 6 || dir == 4) && cars.get(i).getLocX() <= cars.get(j).getLocX() + 25 &&
                         cars.get(i).getLocX() + 25 >= cars.get(j).getLocX() &&
-                        cars.get(i).getLocY() <= cars.get(j).getLocY() + 25 &&
-                        cars.get(i).getLocY() + 25 >= cars.get(j).getLocY() &&
-                        cars.get(i) != cars.get(j)) {
+                        cars.get(i).getLocY() <= cars.get(j).getLocY() + 10 &&
+                        cars.get(i).getLocY() + 10 >= cars.get(j).getLocY() &&
+                        cars.get(i) != cars.get(j)){
                     return true;
                 }
+
+                if((dir == 2 || dir == 8) && cars.get(i).getLocX() <= cars.get(j).getLocX() + 10 &&
+                        cars.get(i).getLocX() + 10 >= cars.get(j).getLocX() &&
+                        cars.get(i).getLocY() <= cars.get(j).getLocY() + 25 &&
+                        cars.get(i).getLocY() + 25 >= cars.get(j).getLocY() &&
+                        cars.get(i) != cars.get(j)){
+                    return true;
+                }
+
+
             }
 
         }
 
         return false;
+
     }
 
     public boolean frontCarCollisionDetection(Car car) {
