@@ -1,6 +1,7 @@
 package backend;
 
 import simulation.Graph;
+import sun.security.timestamp.TSRequest;
 
 public class Model {
 
@@ -55,61 +56,18 @@ public class Model {
 
                 if (map.getIncomingRoads(graph.nodes.get(i)).size() == 4) {
 
-                    System.out.println("Intersection with 4 incoming roads : " + map.getIncomingRoads(graph.nodes.get(i)));
-
-                    intersectionFSMS test2 = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
-
-                    System.out.println("test has " + test2.horizontal1 + "  " + test2.horizontal2 + "  " + test2.vertical1 + "  " + test2.vertical2);
-
-                    map.intersectionFSMS.add(test2);
+                    intersectionFSMS crossSection = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
+                    map.intersectionFSMS.add(crossSection);
                 }
 
-//                if(map.getIncomingRoads(graph.nodes.get(i)).size() == 3){
-//
-//                    intersectionFSMS test3 = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
-//
-//                }
+
+                if(map.getIncomingRoads(graph.nodes.get(i)).size() == 3){
+
+                    intersectionFSMS TSection = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
+                    map.intersectionFSMS.add(TSection);
+
+                }
         }
-
-		/*for (int i = 0; i < graph.nodes.size(); i++) {
-            for (int j = 0; j < map.getIncomingRoads(graph.nodes.get(i)).size(); j++) {
-
-				if(map.getIncomingRoads(graph.nodes.get(i)).size() == 4){
-
-					if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 4 ||
-							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 6	){
-
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreenTime(DefaultGreenTime);
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreenTime(DefaultGreenTime);
-
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setRedTime(DefaultRedTime);
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setRedTime(DefaultRedTime);
-
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().runRed();
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().runRed();
-
-					}
-
-					else if(map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 8 ||
-							map.getIncomingRoads(graph.nodes.get(i)).get(j).getDirection() == 2){
-
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setGreenTime(DefaultGreenTime2);
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setGreenTime(DefaultGreenTime2);
-
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().setRedTime(DefaultRedTime2);
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().setRedTime(DefaultRedTime2);
-
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).getTrafficLight().runGreen();
-						map.getIncomingRoads(graph.nodes.get(i)).get(j).roadWithSameFSM.getTrafficLight().runGreen();
-
-
-					}
-
-
-				}
-
-			}
-		}*/
 
     }
 

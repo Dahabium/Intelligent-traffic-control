@@ -40,7 +40,7 @@ public class XMLLoader {
         DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = dBuilder.parse(fxmlFile);
 
-        System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+//        System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
         NodeList nList = doc.getElementsByTagName("Node");
 

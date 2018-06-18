@@ -53,10 +53,11 @@ public class GreedyController {
             System.out.println("vertical more! ");
             int difference = verticalWeight - horizontalWeight;
 
-            //red + green for new one
-//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenVertical(difference*1000);
-//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).lessGreenHorizontal(difference*1000);
-            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenLessRedVertical(difference * 1000);
+            //TODO TEST DIFFERENT COMBOS
+//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenVertical(difference*1000);
+//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).lessGreenHorizontal(difference*1000);
+
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenLessRedVertical(difference * 1000);
 
             fullcycleTime = fullcycleTime + difference * 1000;
             horizontalWeight = -1;
@@ -70,9 +71,10 @@ public class GreedyController {
             //compare nubers??
             int difference = horizontalWeight - verticalWeight;
 
-//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenHorizontal(difference*1000);
-//            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).lessGreenVertical(difference*1000);
-            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).moreGreenLessRedHorizontal(difference * 1000);
+            //TODO TEST DIFFERENT COMBOS
+//           parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenHorizontal(difference*1000);
+//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).lessGreenVertical(difference*1000);
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenLessRedHorizontal(difference * 1000);
 
 
             fullcycleTime = fullcycleTime + difference * 1000;
@@ -82,7 +84,7 @@ public class GreedyController {
         }
 
         if (horizontalWeight == verticalWeight) {
-            parentController.getAnimationParts().model.map.intersectionFSMS.get(0).setHorizontalRed(12000, false);
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).setHorizontalRed(12000, false);
             fullcycleTime = 28000;
             System.out.println("Deafault set!");
         } else {
@@ -103,11 +105,11 @@ public class GreedyController {
                 ///!!!!!!!!!!!!!!!
 //                GreedyCheckSensors();
 
-                System.out.println("Horizontal : Green time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(0).getTrafficLight().greenTime +
-                        "  Red time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(0).getTrafficLight().redTime);
+                System.out.println("Traffic light at Node " + intersection.index + " : Horizontal Green time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(0).getTrafficLight().greenTime +
+                        "  Red time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(0).getTrafficLight().redTime);
 
-                System.out.println("Vertical : Green time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(2).getTrafficLight().greenTime +
-                        "  Red time-" + parentController.getAnimationParts().model.map.intersectionFSMS.get(0).getAllFSMRoads().get(2).getTrafficLight().redTime);
+                System.out.println("Traffic light at Node " + intersection.index + " : Vertical: Green time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(2).getTrafficLight().greenTime +
+                        "  Red time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(2).getTrafficLight().redTime);
 
             }
         }, 0, 1000);
@@ -136,33 +138,16 @@ public class GreedyController {
 
         boolean otherRoadsEmpty = true;
 
-//        for (int i = 0; i < roadArrayList.size(); i++) {
-//
-//            if (this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(i), 50) > 0){
-//
-//                for (int j = 0; j < roadArrayList.size(); j++) {
-//
-//                    if(i != j && this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(j),50) > 0){
-//                        otherRoadsEmpty = false;
-//                    }
-//                }
-//
-//                if (otherRoadsEmpty){
-//                    this.parentController.getAnimationParts().model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
-//                }
-//            }
-//        }
-
-
         if(temp0 > 0 || temp1 > 0){
-            this.parentController.getAnimationParts().model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).runFSM_Vertical_Red();
         }
         else if (temp2 > 0 || temp3 > 0){
-            this.parentController.getAnimationParts().model.map.intersectionFSMS.get(0).runFSM_Horizontal_Red();
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).runFSM_Horizontal_Red();
         }
 
 
     }
+
     private void GreedyCheckIntersection() {
 
         int temp = 0;

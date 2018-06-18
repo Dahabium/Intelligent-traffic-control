@@ -76,8 +76,20 @@ public class Map {
 
         return out;
     }
+    public intersectionFSMS getCorrespondingFSM(Node node){
+        for (int i = 0; i < intersectionFSMS.size(); i++) {
+
+            if(intersectionFSMS.get(i).intersection == node){
+                return intersectionFSMS.get(i);
+            }
+        }
+
+        return null;
+
+    }
 
     public void runAllConnectedFSMS(){
+        System.out.println("IntersectionFSMS array size " + intersectionFSMS.size());
         for (int i = 0; i < this.intersectionFSMS.size() ; i++) {
             this.intersectionFSMS.get(i).runFSM_Horizontal_Red();
         }
