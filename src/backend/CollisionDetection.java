@@ -1,5 +1,9 @@
 package backend;
 
+import simulation.AnimationParts;
+import simulation.Board;
+import simulation.Graph;
+import simulation.carAnimation;
 import sun.awt.geom.AreaOp;
 
 import java.util.ArrayList;
@@ -10,11 +14,14 @@ public class CollisionDetection {
 
     public CollisionDetection() {
         this.cars = new ArrayList<>();
+
     }
 
     public void addCar(Car car) {
         this.cars.add(car);
     }
+
+
 
     //TODO orientation of the rectangular bounding box. at the moment its just a square.
     public boolean collisionDetection() {

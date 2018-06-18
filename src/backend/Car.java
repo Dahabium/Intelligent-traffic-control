@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Car {
 
-	
+	public boolean destinationReached;
 	private double desVel;
 	private double maxVel;
 	private int minimumSpacing;
@@ -44,6 +44,7 @@ public class Car {
 
 	//TODO fix the startroadend thing (why do we need it?)
     public Car(Node start, Node end, Map map){
+    	this.destinationReached = false;
         this.desVel = 80;
         this.maxVel = 100;
         this.minimumSpacing = 0;

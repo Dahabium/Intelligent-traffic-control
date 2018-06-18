@@ -1,7 +1,11 @@
 package backend;
 
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.util.Duration;
 import simulation.TrafficLight;
 
 import java.util.Timer;
@@ -10,13 +14,10 @@ import java.util.TimerTask;
 public class FSMTrafficLight {
 
 
-    public TrafficLight trafficLightGui;
-
     public final int RED = 1;
     public final int YELLOW = 2;
     public final int GREEN = 3;
-
-
+    public TrafficLight trafficLightGui;
     public int redTime, yellowTime, greenTime;
 
     //1 - red, 2 - yellow, 3- green
@@ -29,7 +30,7 @@ public class FSMTrafficLight {
 
     public FSMTrafficLight(int redTime, int greenTime, int yellowTime, int currentstate, int XPos, int YPos) {
 
-        this.trafficLightGui = new TrafficLight(XPos,YPos);
+        this.trafficLightGui = new TrafficLight(XPos, YPos);
 
         this.redTime = redTime;
         this.yellowTime = yellowTime;
@@ -46,26 +47,18 @@ public class FSMTrafficLight {
 
         this.trafficLightGui.changeTrafficLightColor(RED);
 
-        final Timer timer = new Timer();
-        final TimerTask task = new TimerTask() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(redTime), ev -> {
 
-            @Override
-            public void run() {
-                if (currentstate == RED) {
+            if (currentstate == RED) {
+                currentstate = GREEN;
 
-                    timer.cancel();
-                    timer.purge();
-
-                    currentstate = GREEN;
-
-                    runGreen();
-
-                }
+                runGreen();
             }
-        };
 
+        }));
 
-        timer.schedule(task, redTime);
+        timeline.setCycleCount(1);
+        timeline.play();
 
     }
 
@@ -75,85 +68,74 @@ public class FSMTrafficLight {
 
         this.trafficLightGui.changeTrafficLightColor(GREEN);
 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(greenTime), ev -> {
 
-        final Timer timer = new Timer();
-        final TimerTask task = new TimerTask() {
+            if (currentstate == GREEN) {
+                currentstate = YELLOW;
 
-            @Override
-            public void run() {
-                if (currentstate == GREEN) {
-                    timer.cancel();
-                    timer.purge();
-
-                    currentstate = YELLOW;
-
-                    runYellow();
-
-                }
+                runYellow();
             }
-        };
 
-        timer.schedule(task, greenTime);
+        }));
+
+        timeline.setCycleCount(1);
+        timeline.play();
+
 
     }
 
 
     public void runYellow() {
 
+        currentstate = YELLOW;
+
         this.trafficLightGui.changeTrafficLightColor(YELLOW);
 
-        final Timer timer = new Timer();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(yellowTime), ev -> {
 
+            if (currentstate == YELLOW) {
 
-        final TimerTask task = new TimerTask() {
+                currentstate = RED;
 
-            @Override
-            public void run() {
-                if (currentstate == YELLOW) {
+                runRed();
 
-                    timer.cancel();
-                    timer.purge();
-
-                    currentstate = RED;
-
-                    runRed();
-
-                }
             }
-        };
+        }
+        ));
 
-        timer.schedule(task, yellowTime);
+        timeline.setCycleCount(1);
+        timeline.play();
+
 
     }
 
-    public int getCurrentstate(){
+    public int getCurrentstate() {
         return currentstate;
     }
 
-    public void setGreenTime(int greeenTime){
+    public void setCurrentstate(int newstate) {
+        this.currentstate = newstate;
+    }
+
+    public void setGreenTime(int greeenTime) {
         this.greenTime = greeenTime;
     }
 
-    public void setYellowTime(int yellowTime){
+    public void setYellowTime(int yellowTime) {
         this.yellowTime = yellowTime;
     }
 
-    public void setRedTime(int redTime){
+    public void setRedTime(int redTime) {
         this.redTime = redTime;
     }
 
-    public void setTimingSequences(int redTime,int greenTime, int yellowTime){
+    public void setTimingSequences(int redTime, int greenTime, int yellowTime) {
         this.redTime = redTime;
         this.greenTime = greenTime;
         this.yellowTime = yellowTime;
     }
 
-
-    public void setCurrentstate(int newstate){
-        this.currentstate = newstate;
-    }
-
-    public Group getTrafficLightGui(){
+    public Group getTrafficLightGui() {
         return this.trafficLightGui.getTrafficlight();
     }
 

@@ -1,5 +1,9 @@
 package backend;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import simulation.Node;
 
 import java.util.ArrayList;
@@ -34,10 +38,6 @@ public class TrafficLightController {
         bestQueueDiff = new ArrayList<>();
         rangeCounter = -5;
 
-//        bestQueueDiff.add(0);
-//        bestQueueDiff.add(0);
-//        bestQueueDiff.add(0);
-//        bestQueueDiff.add(0);
     }
 
     public void updateCycle() {
@@ -67,44 +67,37 @@ public class TrafficLightController {
 
         System.out.println("DELAY START ");
 
-        final Timer timer = new Timer();
-        final TimerTask task = new TimerTask() {
 
-            @Override
-            public void run() {
-                System.out.println("IN The Delay ");
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((int) gTime * 2 + 4000), ev -> {
 
-                //calculate the queue after the cycle
-                ArrayList<Integer> qAfter = caLculateQueue(intersection);
+            System.out.println("IN The Delay ");
 
-                ArrayList<Integer> qDiff = new ArrayList();
-                //store cycle reference
-                qDiff.add(cycleCounter);
-                cycleCounter++;
-                if (qAfter.size()!= 0||qBefore.size()!=0){
-                    //calculate the difference in the queues
-                    for (int i = 1; i < qAfter.size(); i++) {
-                        qDiff.add(qAfter.get(i) - qBefore.get(i));
-                    }
+            //calculate the queue after the cycle
+            ArrayList<Integer> qAfter = caLculateQueue(intersection);
+
+            ArrayList<Integer> qDiff = new ArrayList();
+            //store cycle reference
+            qDiff.add(cycleCounter);
+            cycleCounter++;
+            if (qAfter.size()!= 0||qBefore.size()!=0){
+                //calculate the difference in the queues
+                for (int i = 1; i < qAfter.size(); i++) {
+                    qDiff.add(qAfter.get(i) - qBefore.get(i));
                 }
-
-                if (qDiff.size() != 1) {
-                    //check if new cycle is more optimal than current
-                    optimumChooser(qDiff);
-                }
-
-
             }
-        };
 
-        timer.schedule(task, (int) gTime * 2 + 4000);
+            if (qDiff.size() != 1) {
+                //check if new cycle is more optimal than current
+                optimumChooser(qDiff);
+            }
+
+        }));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
 
         System.out.println("AFTER DELAY");
-
-
-
-//        delay - delay in milliseconds before task is to be executed.
-//        period - time in milliseconds between successive task executions.
 
     }
 
@@ -129,7 +122,8 @@ public class TrafficLightController {
 
         double chooser = 0;
         System.out.println("Contestant " );
-        if(contestant.size()!= 1 ||bestQueueDiff.size()!= 1){
+
+        if(bestQueueDiff.size()!= 0 && bestQueueDiff.size() !=1 ){
             for (int i = 0; i < contestant.size()-1; i++) {
                 chooser = chooser + (contestant.get(i+1) - bestQueueDiff.get(i+1));
             }

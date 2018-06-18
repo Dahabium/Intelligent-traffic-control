@@ -113,6 +113,12 @@ public class intersectionFSMS {
         this.vertical1.getTrafficLight().setGreenTime(Green);
         this.vertical2.getTrafficLight().setGreenTime(Green);
 
+        this.horizontal1.getTrafficLight().setYellowTime(2000);
+        this.horizontal2.getTrafficLight().setYellowTime(2000);
+
+        this.vertical1.getTrafficLight().setYellowTime(2000);
+        this.vertical2.getTrafficLight().setYellowTime(2000);
+
 
         if (newCurrentState) {
 

@@ -10,14 +10,12 @@ import backend.TrafficLightController;
  */
 public class MainController {
 
+    public int mode;
     private TrafficLightController trafficLightController;
     private GreedyController greedyController;
-
     private Map map;
     private Model model;
     private double greenTime;
-
-    public int mode;
     private AnimationParts animationParts;
 
     public MainController(AnimationParts animationParts, int greenTime, int mode) {
@@ -30,13 +28,19 @@ public class MainController {
         this.mode = mode;
 
         if (mode == 1) {
-            this.greedyController = new GreedyController(this.animationParts.model.map, this.animationParts.model, this.animationParts.model.graph.nodes.get(1),
-                    this.greenTime, this);
+
+            for (int i = 0; i < animationParts.intersectionNodes.size(); i++) {
+                this.greedyController = new GreedyController(this.animationParts.model.map, this.animationParts.model, this.animationParts.intersectionNodes.get(i),
+                        this.greenTime, this);
+            }
         }
 
         if (mode == 2) {
-            this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model,
-                    this.animationParts.model.graph.nodes.get(1), 5000, 10000);
+
+            for (int i = 0; i < animationParts.intersectionNodes.size(); i++) {
+                this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model, this.animationParts.intersectionNodes.get(i), 5000, 10000);
+            }
+
 
         }
 
@@ -50,7 +54,7 @@ public class MainController {
         return this.trafficLightController;
     }
 
-    public GreedyController getGreedyController(){
+    public GreedyController getGreedyController() {
         return this.greedyController;
     }
 

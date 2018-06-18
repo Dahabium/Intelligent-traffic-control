@@ -229,7 +229,8 @@ public class carAnimation {
                         } else {
 
                             stop();
-
+                            System.out.println("delete car! ");
+                            car.destinationReached = true;
                         }
 
                     }
@@ -254,6 +255,7 @@ public class carAnimation {
                             if(car.getLocRoad().existsTrafficLight() == false){
                                 //continue going full speed
                             }
+
                             else if(car.getLocRoad().getTrafficLight().getCurrentstate() != 3 ){
 
                                 dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
@@ -262,7 +264,6 @@ public class carAnimation {
                             }
 
                         }
-
 
 
                         //decelerate before doing a turn untill "10 meters per second" .
@@ -293,8 +294,11 @@ public class carAnimation {
                         if(pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70){
                             dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) ;
 
-                        }
+                            if (dist < 0.1) {
+                                car.destinationReached = true;
+                            }
 
+                        }
 
                     }
 

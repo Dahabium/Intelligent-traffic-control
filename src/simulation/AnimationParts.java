@@ -3,9 +3,7 @@ package simulation;
 import backend.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class AnimationParts {
 
@@ -14,7 +12,9 @@ public class AnimationParts {
 
     ArrayList<TrafficLight> trafficLights;
 
-    ArrayList<FSMTrafficLight> trafficLightsV2;
+    ArrayList<FSMTrafficLight> FSMTrafficLights;
+
+    ArrayList<Node> intersectionNodes;
 
 
     //controls the speed changes of each car and traffic light controll.
@@ -25,6 +25,7 @@ public class AnimationParts {
     CollisionDetection collisionDetection;
 
     public AnimationParts(Graph graph, Board board) {
+        this.intersectionNodes = new ArrayList<>();
 
         this.carElements = new ArrayList<>();
         this.trafficLights = new ArrayList<>();
@@ -37,6 +38,10 @@ public class AnimationParts {
         this.collisionDetection = new CollisionDetection();
     }
 
+
+    public ArrayList<carAnimation> getCarElements(){
+        return this.carElements;
+    }
 
     //input a car object, comute the path here.
     public void addCarToAnimation(int start, int end, int pathFindingMode) {
@@ -169,8 +174,8 @@ public class AnimationParts {
         return this.trafficLights;
     }
 
-    public ArrayList<FSMTrafficLight> getTrafficLightsV2() {
-        return this.trafficLightsV2;
+    public ArrayList<FSMTrafficLight> getFSMTrafficLights() {
+        return this.FSMTrafficLights;
     }
 
 

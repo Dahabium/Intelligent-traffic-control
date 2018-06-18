@@ -1,6 +1,10 @@
 package simulation;
 
+import backend.Car;
 import backend.TrafficLightController;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -12,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.animation.AnimationTimer;
+import javafx.util.Duration;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,9 +81,8 @@ public class simulationWindowController {
         //refresh the value of cars on each road after specified time
         roadStatusUpdater(1000);
 
-
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 1);
+        this.mainController = new MainController(this.animationParts, 10000, 2);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -102,14 +106,19 @@ public class simulationWindowController {
     }
 
     public void updateCycleSander(){
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Cycle Runned in simWinControl");
-                mainController.getTLCcontroller().updateCycle();
-            }
-        }, 0, (int)(mainController.getTLCcontroller().getGTime()*2)+4000);
+
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((int)(mainController.getTLCcontroller().getGTime()*2)+4000), ev -> {
+
+            System.out.println("Cycle Runned in simWinControl");
+            mainController.getTLCcontroller().updateCycle();
+
+        }));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+
     }
 
 
@@ -126,6 +135,10 @@ public class simulationWindowController {
             //Cross-intersection...
             //check if more than one road is directed towards an intersection => create traffic lights at the end
             if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 4) {
+
+                if(!animationParts.intersectionNodes.contains(animationParts.getRoads().get(i).end)){
+                    animationParts.intersectionNodes.add(animationParts.getRoads().get(i).end);
+                }
 
                 if (animationParts.getRoads().get(i).getDirection() == 6) {
 
@@ -152,8 +165,12 @@ public class simulationWindowController {
 
                 }
             }
-            
+
             if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 3){
+                //T-Section
+                if (animationParts.getRoads().get(i).getDirection() == 6) {
+
+                }
 
             }
         }
@@ -226,7 +243,8 @@ public class simulationWindowController {
         this.animationParts.addCarToAnimation(graph.nodes.get(3).index, graph.nodes.get(2).index, PathfindingMode);
         lastCar = this.animationParts.carElements.size() - 1;
         this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
-//
+
+
 //        this.animationParts.addCarToAnimation(graph.nodes.get(4).index, graph.nodes.get(3).index, PathfindingMode);
 //        lastCar = this.animationParts.carElements.size() - 1;
 //        this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
@@ -265,20 +283,35 @@ public class simulationWindowController {
 
     public void roadStatusUpdater(int period){
 
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                roadWeightUpdate();
-            }
-        }, 0, period);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(period), ev -> {
 
+            deleteCarAtDestination();
+            roadWeightUpdate();
+
+        }));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+    }
+
+    private void deleteCarAtDestination() {
+
+        for (int i = 0; i < animationParts.carElements.size(); i++) {
+            if(animationParts.carElements.get(i).car.destinationReached){
+
+                this.simulationElements.getChildren().remove(animationParts.carElements.get(i).getAnimatedCar());
+                this.animationParts.collisionDetection.cars.remove(animationParts.carElements.get(i).getBackendCar());
+
+                animationParts.carElements.remove(i);
+
+            }
+        }
     }
 
 
     public void roadWeightUpdate(){
         this.animationParts.getRoadWeights(30);
-
     }
 
 
