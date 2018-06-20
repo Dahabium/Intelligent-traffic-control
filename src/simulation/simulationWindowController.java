@@ -82,7 +82,7 @@ public class simulationWindowController {
         roadStatusUpdater(1000);
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 2);
+        this.mainController = new MainController(this.animationParts, 10000, 1);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 

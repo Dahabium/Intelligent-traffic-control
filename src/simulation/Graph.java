@@ -100,7 +100,7 @@ public class Graph {
                 if (adj.get(j).y < nodes.get(i).y) nodes.get(i).up = true;
             }
 
-            System.out.println("Adjacent nodes: " + nodes.get(i).left + " " + nodes.get(i).up + " " + nodes.get(i).right + " " + nodes.get(i).down);
+//            System.out.println("Adjacent nodes: " + nodes.get(i).left + " " + nodes.get(i).up + " " + nodes.get(i).right + " " + nodes.get(i).down);
             nodes.get(i).createIntersections();
         }
     }
@@ -187,11 +187,6 @@ public class Graph {
         }
         return out;
     }
-
-    //return a road to the corresponding edge
-//    public Road getRoad(Edge edge) {
-//
-//    }
 
     public void removeEdge(Edge edge) {
         edges.remove(edge);

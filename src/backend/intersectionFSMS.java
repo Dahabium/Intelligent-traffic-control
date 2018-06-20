@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class intersectionFSMS {
 
-    Node intersection;
+    public Node intersection;
 
     Road horizontal1, horizontal2;
     Road vertical1, vertical2;
@@ -24,6 +24,7 @@ public class intersectionFSMS {
     public intersectionFSMS(ArrayList<Road> input) {
 
         this.unstructured = input;
+        this.intersection = input.get(0).end;
 
         //regular cross-intersection
         if (unstructured.size() == 4) {
@@ -354,5 +355,8 @@ public class intersectionFSMS {
         return out;
     }
 
+    public Node getIntersection(){
+        return this.intersection;
+    }
 
 }

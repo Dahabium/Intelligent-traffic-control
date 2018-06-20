@@ -22,7 +22,7 @@ public class carAnimation {
     ImageView imgView;
     simulationPath simPath;
     AnimationTimer animationTimer;
-
+    PathConstructor pathConstructor;
     Car car;
 
     int pathIterator;
@@ -49,257 +49,12 @@ public class carAnimation {
         javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", 25, 13, true, false);
         imgView = new ImageView(img);
 
-        //if a path has 2 points minimum
-
-        if (IntPath.size() == 2) {
-            for(int i = 0; i<IntPath.size(); i++)
-            {
-                int correctionX = 0;
-                int correctionY = 0;
-                if(i == 0)
-                {
-                    int curX = graph.getNodeByIndex(IntPath.get(0)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(0)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(1)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(1)).y * board.SIM_SIZE;
-
-                    dir = checkDirection(curX, curY, newX, newY);
-
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-                }
-                else
-                {
-                    int curX = graph.getNodeByIndex(IntPath.get(0)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(0)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(1)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(1)).y * board.SIM_SIZE;
-
-                    int dir = checkDirection(curX, curY, newX, newY);
-
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-                }
-                if (i == 0) {
-                    simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY);
-                }
-                else {
-
-                    simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX, graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY, dir);
-                }
-
-                int pathX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX;
-                int pathY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY;
-                System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY);
-            }
-
-
-
-        }
-
-        if (IntPath.size() > 2) {
-            int correctionX = 0;
-            int correctionY = 0;
-
-            for (int i = 0; i < IntPath.size(); i++) {
-                //determine starting position
-                if (i == 0) {
-                    int curX = graph.getNodeByIndex(IntPath.get(0)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(0)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(1)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(1)).y * board.SIM_SIZE;
-
-                    dir = checkDirection(curX, curY, newX, newY);
-
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-
-
-                }
-
-                //check previous and next direction and determine point on intersection car needs to travel through
-                else if (i < IntPath.size() - 1) {
-                    int curX = graph.getNodeByIndex(IntPath.get(i-1)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(i-1)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE;
-
-                    dir = checkDirection(curX, curY, newX, newY);
-
-                    curX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE;
-                    curY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE;
-                    newX = graph.getNodeByIndex(IntPath.get(i+1)).x * board.SIM_SIZE;
-                    newY = graph.getNodeByIndex(IntPath.get(i+1)).y * board.SIM_SIZE;
-
-                    int newDir = checkDirection(curX, curY, newX, newY);
-
-
-                    if (dir == 6) {
-                        correctionY = +8;
-
-                        if (newDir == 2) {
-                            correctionX = -17;
-                        }
-
-                        if (newDir == 8) {
-                            correctionX = +2;
-                        }
-
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-
-                        if (newDir == 2) {
-                            correctionX = -17;
-                        }
-
-                        if (newDir == 8) {
-                            correctionX = +2;
-                        }
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-
-                        if (newDir == 6) {
-                            correctionY = +8;
-                        }
-
-                        if (newDir == 4) {
-                            correctionY = -9;
-                        }
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-
-                        if (newDir == 6) {
-                            correctionY = +8;
-                        }
-
-                        if (newDir == 4) {
-                            correctionY = -9;
-                        }
-                    }
-                }
-
-
-                else if (i == IntPath.size() - 1) {
-
-                    int curX = graph.getNodeByIndex(IntPath.get(i-1)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(i-1)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE;
-
-                    dir = checkDirection(curX, curY, newX, newY);
-
-
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-
-                }
-
-
-                //set pthstep
-
-                if (i == 0) {
-
-                    simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY);
-                }
-                else {
-
-                    int pathX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX;
-                    int pathY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY;
-                    System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY + "DIR: " + dir);
-                    simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX, graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY, dir);
-                }
+        this.pathConstructor = new PathConstructor(IntPath, graph, board.SIM_SIZE);
+        simPath = pathConstructor.constructPath();
 
 
 
 
-            }
-
-//        //if a path has 2 points minimum
-//        if (IntPath.size() >= 2) {
-//
-//            for (int i = 0; i < IntPath.size(); i++) {
-//
-//                //set the start of the car movement animation
-//                if (i == 0) {
-//
-//                    previousPosition = 10;
-//
-//                    simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-//                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
-//
-//                } else {
-//
-//                    int dir = checkDirection(graph.getNodeByIndex(IntPath.get(i)).x, graph.getNodeByIndex(IntPath.get(i)).y,
-//                            graph.getNodeByIndex(IntPath.get(i - 1)).x, graph.getNodeByIndex(IntPath.get(i - 1)).y);
-//
-//
-//                    simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-//                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2, dir);
-//
-//                }
-//
-//            }
-       }
 
             car.setLocX(simPath.startX);
             car.setLocY(simPath.startY);
@@ -412,7 +167,7 @@ public class carAnimation {
 //                                                            Duration.seconds(0.5),
 //                                                            new KeyValue(
 //                                                                    rotationTransform.angleProperty(),
-//                                                                    -90
+//                                                                    -80
 //                                                            )
 //                                                    )
 //                                            );
