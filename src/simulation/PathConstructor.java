@@ -34,7 +34,7 @@ public class PathConstructor {
                     dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = +8;
+                        correctionY = + 4;
                     }
 
                     if (dir == 4) {
@@ -42,7 +42,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 8) {
-                        correctionX = +2;
+                        correctionX = -1;
                     }
 
                     if (dir == 2) {
@@ -57,7 +57,7 @@ public class PathConstructor {
                     int dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = +8;
+                        correctionY = + 4;
                     }
 
                     if (dir == 4) {
@@ -65,7 +65,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 8) {
-                        correctionX = +2;
+                        correctionX = -1;
                     }
 
                     if (dir == 2) {
@@ -103,7 +103,7 @@ public class PathConstructor {
                     dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = +8;
+                        correctionY = + 4;
                     }
 
                     if (dir == 4) {
@@ -111,7 +111,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 8) {
-                        correctionX = +2;
+                        correctionX = -1;
                     }
 
                     if (dir == 2) {
@@ -139,14 +139,14 @@ public class PathConstructor {
 
 
                     if (dir == 6) {
-                        correctionY = +8;
+                        correctionY = + 4;
 
                         if (newDir == 2) {
                             correctionX = -17;
                         }
 
                         if (newDir == 8) {
-                            correctionX = +2;
+                            correctionX = -1;
                         }
 
                     }
@@ -159,15 +159,15 @@ public class PathConstructor {
                         }
 
                         if (newDir == 8) {
-                            correctionX = +2;
+                            correctionX = -1;
                         }
                     }
 
                     if (dir == 8) {
-                        correctionX = +2;
+                        correctionX = -1;
 
                         if (newDir == 6) {
-                            correctionY = +8;
+                            correctionY = + 4;
                         }
 
                         if (newDir == 4) {
@@ -179,7 +179,7 @@ public class PathConstructor {
                         correctionX = -17;
 
                         if (newDir == 6) {
-                            correctionY = +8;
+                            correctionY = + 4;
                         }
 
                         if (newDir == 4) {
@@ -197,7 +197,7 @@ public class PathConstructor {
 
 
                     if (dir == 6) {
-                        correctionY = +8;
+                        correctionY = + 4;
                     }
 
                     if (dir == 4) {
@@ -205,7 +205,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 8) {
-                        correctionX = +2;
+                        correctionX = -1;
                     }
 
                     if (dir == 2) {

@@ -190,7 +190,7 @@ public class Board extends GridPane {
     public ImageView analyseTsection(Node n)
     {
         System.out.println("T Section checked");
-        javafx.scene.image.Image img = new javafx.scene.image.Image("threelaneadd.png", SIM_SIZE, SIM_SIZE, true, false);
+        javafx.scene.image.Image img = new javafx.scene.image.Image("Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
         ImageView imgView = new ImageView(img);
 
 

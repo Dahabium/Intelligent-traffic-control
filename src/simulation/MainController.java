@@ -43,10 +43,10 @@ public class MainController {
 
         }
 
-        System.out.println("INTERSECTION NODES " + animationParts.intersectionNodes.get(0).index + "   " +
-                animationParts.intersectionNodes.get(1).index);
-        System.out.println(" intersectionFSMS  " + animationParts.model.map.intersectionFSMS.get(0).intersection.index + "   " +
-                animationParts.model.map.intersectionFSMS.get(1).intersection.index);
+//        System.out.println("INTERSECTION NODES " + animationParts.intersectionNodes.get(0).index + "   " +
+//                animationParts.intersectionNodes.get(1).index);
+//        System.out.println(" intersectionFSMS  " + animationParts.model.map.intersectionFSMS.get(0).intersection.index + "   " +
+//                animationParts.model.map.intersectionFSMS.get(1).intersection.index);
 
     }
 
