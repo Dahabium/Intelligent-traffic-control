@@ -246,6 +246,8 @@ public class simulationWindowController {
 
         ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
+        ArrayList<Integer> interArrivals = new ArrayList<>();
+        double lambda = 13 ;
 
         //will return a value in index of the array of start/ending points
         Random random = new Random();
@@ -264,13 +266,29 @@ public class simulationWindowController {
             else if(i != 0){
                 i--;
             }
+            int rand = getPoissonRandom(lambda);
+            int temp = 60000 / (rand);
+
+            if(temp < 4000){
+                temp = 4000;
+            }
+
+            interArrivals.add(temp);
+            System.out.println("TIME IS:  " + temp);
 
         }
 
 
+
+
+
+
+
+
+
         if(startPositionsIndexes.size() == endPositionsIndexes.size()){
             //launch timer to start cars each 2 seconds....
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(4000), ev -> {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(interArrivals.get(interArrivals.size()-1)), ev -> {
 
                 System.out.println("Creating a new car with start at " + startPositionsIndexes.get(startPositionsIndexes.size()-1) + " and end at : " +
                         endPositionsIndexes.get(startPositionsIndexes.size()-1));
@@ -280,6 +298,9 @@ public class simulationWindowController {
                 this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
                 startPositionsIndexes.remove(startPositionsIndexes.size()-1);
                 animationParts.simulate();
+                interArrivals.remove(interArrivals.size()-1);
+
+
             }));
 
             timeline.setCycleCount(numberOfCarsToSimulate);
@@ -314,6 +335,18 @@ public class simulationWindowController {
         PathfindingMode = 2;
     }
 
+    public static int getPoissonRandom(double lambda) {
+        double L = Math.exp(-lambda);
+        double p = 1.0;
+        int k = 0;
+
+        do {
+            k++;
+            p *= Math.random();
+        } while (p > L);
+
+        return k - 1;
+    }
 
 
     public void roadStatusUpdater(int period){
