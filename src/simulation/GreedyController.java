@@ -100,7 +100,12 @@ public class GreedyController {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                GreedyCheckIntersection();
+                if (parentController.getAnimationParts().carElements.size() > 0) {
+
+                    GreedyCheckIntersection();
+                    GreedyCheckLeftTurn();
+
+                }
 
                 ///!!!!!!!!!!!!!!!
 //                GreedyCheckSensors();
@@ -129,7 +134,7 @@ public class GreedyController {
 
     }
 
-    private void GreedyCheckSensors(){
+    private void GreedyCheckSensors() {
 
         int temp0 = this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(0), 50);
         int temp1 = this.parentController.getAnimationParts().getWeightOnGivenRoad(roadArrayList.get(1), 50);
@@ -138,13 +143,29 @@ public class GreedyController {
 
         boolean otherRoadsEmpty = true;
 
-        if(temp0 > 0 || temp1 > 0){
+        if (temp0 > 0 || temp1 > 0) {
             parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).runFSM_Vertical_Red();
-        }
-        else if (temp2 > 0 || temp3 > 0){
+        } else if (temp2 > 0 || temp3 > 0) {
             parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).runFSM_Horizontal_Red();
         }
 
+
+    }
+
+    private void GreedyCheckLeftTurn(){
+        //leftcheck method returns following: [0,2,0]
+        //return 3 values: 1) intersection number 2) intersection side that will work green 3) number of cars that want to turn left?
+
+        for (int i = 0; i < model.map.intersectionFSMS.size(); i++) {
+            if (parentController.leftCheck().length > 2) {
+                if (model.map.intersectionFSMS.get(parentController.leftCheck()[0]).intersection == model.map.intersectionFSMS.get(i).intersection) {
+                    System.out.println("Optimization needed for intersection " + parentController.leftCheck()[0] + " at traffic light on side " +
+                            parentController.leftCheck()[1]);
+
+                    model.map.intersectionFSMS.get(i).runFSMforLeftTurn(parentController.leftCheck()[1],0);
+                }
+            }
+        }
 
     }
 

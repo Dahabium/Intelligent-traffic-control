@@ -192,10 +192,16 @@ public class Car {
 	}
 
 	public Road getLocRoad() {
-
 		return getCorrespondingRoad(this.locEdge);
-
 	}
+
+	public int getCurentDirection(){
+		return this.getCorrespondingRoad(this.locEdge).getDirection();
+	}
+
+//	public int getNextDirection(){
+//		return this.path.c
+//	}
 
 	public void setLocRoad(Road locRoad) {
 		this.locRoad = locRoad;

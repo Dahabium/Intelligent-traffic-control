@@ -356,4 +356,14 @@ public class Graph {
         return null;
     }
 
+    public Edge getEdgeByIndexes(int start, int end){
+
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).start.index == start && edges.get(i).end.index == end) {
+                return edges.get(i);
+            }
+        }
+        return null;
+    }
+
 }

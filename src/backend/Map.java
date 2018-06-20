@@ -76,6 +76,22 @@ public class Map {
 
         return out;
     }
+
+    public ArrayList<Road> getOutgoingRoads(Node node){
+
+        ArrayList<Road> out = new ArrayList<>();
+
+        for (int i = 0; i < this.roads.size(); i++) {
+
+            if(roads.get(i).start == node){
+                out.add(roads.get(i));
+            }
+
+        }
+        return out;
+    }
+
+
     public intersectionFSMS getCorrespondingFSM(Node node){
         for (int i = 0; i < intersectionFSMS.size(); i++) {
 

@@ -53,13 +53,11 @@ public class Model {
 
         for (int i = 0; i < graph.nodes.size(); i++) {
 
-
                 if (map.getIncomingRoads(graph.nodes.get(i)).size() == 4) {
 
                     intersectionFSMS crossSection = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
                     map.intersectionFSMS.add(crossSection);
                 }
-
 
                 if(map.getIncomingRoads(graph.nodes.get(i)).size() == 3){
 

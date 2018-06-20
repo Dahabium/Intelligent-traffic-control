@@ -81,7 +81,16 @@ public class FSMTrafficLight {
         timeline.setCycleCount(1);
         timeline.play();
 
+    }
 
+    public void runGreenAfterDelay(int delay){
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(delay), ev -> {
+            runGreen();
+        }));
+
+        timeline.setCycleCount(1);
+        timeline.play();
     }
 
 
