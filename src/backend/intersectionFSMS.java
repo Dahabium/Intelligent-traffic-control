@@ -114,7 +114,7 @@ public class intersectionFSMS {
             }
             if (place == WEST) {
 
-                //if the others sides have currently green - make sure they first turn yellow and then red! when red -> then green
+//                //if the others sides have currently green - make sure they first turn yellow and then red! when red -> then green
                 if (this.horizontal1.getTrafficLight().currentstate == RED && this.horizontal2.getTrafficLight().currentstate == RED) {
 
                     this.horizontal1.getTrafficLight().runGreenAfterDelay(this.horizontal1.getTrafficLight().yellowTime);
@@ -126,16 +126,17 @@ public class intersectionFSMS {
 
                 }
 
-                else if (this.horizontal1.getTrafficLight().currentstate == GREEN && this.horizontal2.getTrafficLight().currentstate == GREEN) {
-
-                    this.horizontal1.getTrafficLight().runGreen();
-                    this.horizontal2.getTrafficLight().runYellow();
-
-                    this.vertical1.getTrafficLight().runRed();
-                    this.vertical2.getTrafficLight().runRed();
-
-                    runFSM_Horizontal_Red_Delay(4000);
-                }
+//                 if (this.horizontal1.getTrafficLight().currentstate == GREEN && this.horizontal2.getTrafficLight().currentstate == GREEN) {
+//
+//                    this.horizontal1.getTrafficLight().runGreen();
+//                    this.horizontal2.getTrafficLight().runYellow();
+//
+//                    this.vertical1.getTrafficLight().runRed();
+//                    this.vertical2.getTrafficLight().runRed();
+//
+//
+//                    runFSM_Horizontal_Red_Delay(4000);
+//                }
 
 
 
@@ -195,6 +196,7 @@ public class intersectionFSMS {
     public void runFSM_Horizontal_Red() {
 
         if (intersectionType == CROSS_SECTION) {
+
             this.horizontal1.getTrafficLight().runRed();
             this.horizontal2.getTrafficLight().runRed();
 

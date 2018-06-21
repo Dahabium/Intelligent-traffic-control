@@ -1,7 +1,5 @@
 package simulation;
 
-import backend.Car;
-import backend.TrafficLightController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,15 +11,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.animation.AnimationTimer;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class simulationWindowController {
 
@@ -119,7 +113,6 @@ public class simulationWindowController {
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-
 
     }
 
@@ -278,14 +271,6 @@ public class simulationWindowController {
 
         }
 
-
-
-
-
-
-
-
-
         if(startPositionsIndexes.size() == endPositionsIndexes.size()){
             //launch timer to start cars each 2 seconds....
             Timeline timeline = new Timeline(new KeyFrame(Duration.millis(interArrivals.get(interArrivals.size()-1)), ev -> {
@@ -371,6 +356,8 @@ public class simulationWindowController {
                 this.simulationElements.getChildren().remove(animationParts.carElements.get(i).getAnimatedCar());
                 this.animationParts.collisionDetection.cars.remove(animationParts.carElements.get(i).getBackendCar());
 
+                System.out.println("Removing a car that took " + animationParts.carElements.get(i).car.getElapsedTimeTotal() +"  seconds to reach destination");
+//                System.out.println("This car was waiting at intersection for " + animationParts.carElements.get(i).car.timeAtIntersection + " seconds...");
                 animationParts.carElements.remove(i);
 
             }
