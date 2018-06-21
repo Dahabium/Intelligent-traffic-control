@@ -27,6 +27,7 @@ public class GreedyController {
     //list of roads that are confronting the intersection. (share same endpoint at intersection)
     ArrayList<Road> roadArrayList;
 
+    boolean temp = true;
 
     public GreedyController(Map map, Model model, Node intersection, double greenTime, MainController parentController) {
 
@@ -87,7 +88,8 @@ public class GreedyController {
             parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).setHorizontalRed(12000, false);
             fullcycleTime = 28000;
             System.out.println("Deafault set!");
-        } else {
+        }
+        else {
             horizontalWeight = 0;
             verticalWeight = 0;
         }
@@ -110,12 +112,12 @@ public class GreedyController {
                 ///!!!!!!!!!!!!!!!
 //                GreedyCheckSensors();
 
-                System.out.println("Traffic light at Node " + intersection.index + " : Horizontal Green time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(0).getTrafficLight().greenTime +
-                        "  Red time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(0).getTrafficLight().redTime);
-
-                System.out.println("Traffic light at Node " + intersection.index + " : Vertical: Green time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(2).getTrafficLight().greenTime +
-                        "  Red time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(2).getTrafficLight().redTime);
-
+//                System.out.println("Traffic light at Node " + intersection.index + " : Horizontal Green time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(0).getTrafficLight().greenTime +
+//                        "  Red time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(0).getTrafficLight().redTime);
+//
+//                System.out.println("Traffic light at Node " + intersection.index + " : Vertical: Green time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(2).getTrafficLight().greenTime +
+//                        "  Red time-" + parentController.getAnimationParts().model.map.getCorrespondingFSM(intersection).getAllFSMRoads().get(2).getTrafficLight().redTime);
+//
             }
         }, 0, 1000);
 
@@ -157,13 +159,19 @@ public class GreedyController {
         //return 3 values: 1) intersection number 2) intersection side that will work green 3) number of cars that want to turn left?
 
         for (int i = 0; i < model.map.intersectionFSMS.size(); i++) {
-            if (parentController.leftCheck().length > 2) {
+            if (parentController.leftCheck().length > 2 && temp) {
                 if (model.map.intersectionFSMS.get(parentController.leftCheck()[0]).intersection == model.map.intersectionFSMS.get(i).intersection) {
-                    System.out.println("Optimization needed for intersection " + parentController.leftCheck()[0] + " at traffic light on side " +
-                            parentController.leftCheck()[1]);
+//                    System.out.println("Optimization needed for intersection " + parentController.leftCheck()[0] + " at traffic light on side " +
+//                            parentController.leftCheck()[1]);
+                    System.out.println("Left turn detected! ");
 
                     model.map.intersectionFSMS.get(i).runFSMforLeftTurn(parentController.leftCheck()[1],0);
+                    temp = false;
+
                 }
+            }
+            else {
+                temp = true;
             }
         }
 
@@ -203,7 +211,7 @@ public class GreedyController {
 
                     }
                     horizontalWeight = temp + temp1;
-                    System.out.println("Horizontal weight " + horizontalWeight);
+//                    System.out.println("Horizontal weight " + horizontalWeight);
 
                 } else if (this.roadArrayList.get(i).getDirection() == 4) {
 
@@ -226,7 +234,7 @@ public class GreedyController {
                     }
 
                     horizontalWeight = temp + temp1;
-                    System.out.println("Horizontal weight " + horizontalWeight);
+//                    System.out.println("Horizontal weight " + horizontalWeight);
 
                 } else if (this.roadArrayList.get(i).getDirection() == 2) {
 
@@ -248,7 +256,7 @@ public class GreedyController {
 
                     }
                     verticalWeight = temp2 + temp3;
-                    System.out.println("Vertical weight " + verticalWeight);
+//                    System.out.println("Vertical weight " + verticalWeight);
 
                 } else if (this.roadArrayList.get(i).getDirection() == 8) {
 
@@ -269,7 +277,7 @@ public class GreedyController {
 
                     }
                     verticalWeight = temp2 + temp3;
-                    System.out.println("Vertical weight " + verticalWeight);
+//                    System.out.println("Vertical weight " + verticalWeight);
 
                 }
 

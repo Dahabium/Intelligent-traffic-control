@@ -95,6 +95,7 @@ public class intersectionFSMS {
     public void runFSMforLeftTurn(int place, int time) {
 
         if (intersectionType == CROSS_SECTION) {
+
             if (place == NORTH) {
 
                 this.horizontal1.getTrafficLight().runYellow();
@@ -115,27 +116,54 @@ public class intersectionFSMS {
 
                 //if the others sides have currently green - make sure they first turn yellow and then red! when red -> then green
                 if (this.horizontal1.getTrafficLight().currentstate == RED && this.horizontal2.getTrafficLight().currentstate == RED) {
-                    this.horizontal1.getTrafficLight().runGreenAfterDelay(2000);
+
+                    this.horizontal1.getTrafficLight().runGreenAfterDelay(this.horizontal1.getTrafficLight().yellowTime);
                     this.horizontal2.getTrafficLight().runRed();
                     this.vertical1.getTrafficLight().runYellow();
                     this.vertical2.getTrafficLight().runYellow();
-                } else if (this.horizontal1.getTrafficLight().currentstate == GREEN && this.horizontal2.getTrafficLight().currentstate == GREEN) {
+
+                    runFSM_Horizontal_Red_Delay(4000);
+
+                }
+
+                else if (this.horizontal1.getTrafficLight().currentstate == GREEN && this.horizontal2.getTrafficLight().currentstate == GREEN) {
+
                     this.horizontal1.getTrafficLight().runGreen();
                     this.horizontal2.getTrafficLight().runYellow();
 
                     this.vertical1.getTrafficLight().runRed();
                     this.vertical2.getTrafficLight().runRed();
+
+                    runFSM_Horizontal_Red_Delay(4000);
                 }
 
-                runFSM_Horizontal_Red_Delay(3000);
+
 
             }
 
             if (place == EAST) {
-                this.horizontal1.getTrafficLight().runRed();
-                this.horizontal2.getTrafficLight().runGreen();
-                this.vertical1.getTrafficLight().runRed();
-                this.vertical2.getTrafficLight().runRed();
+
+                if (this.horizontal1.getTrafficLight().currentstate == RED && this.horizontal2.getTrafficLight().currentstate == RED) {
+
+                    this.horizontal1.getTrafficLight().runRed();
+                    this.horizontal2.getTrafficLight().runGreenAfterDelay(this.horizontal1.getTrafficLight().yellowTime);
+                    this.vertical1.getTrafficLight().runYellow();
+                    this.vertical2.getTrafficLight().runYellow();
+
+                    runFSM_Horizontal_Red_Delay(4000);
+
+                }
+
+//                else if (this.horizontal1.getTrafficLight().currentstate == GREEN && this.horizontal2.getTrafficLight().currentstate == GREEN) {
+//
+//                    this.horizontal1.getTrafficLight().runYellow();
+//                    this.horizontal2.getTrafficLight().runGreen();
+//
+//                    this.vertical1.getTrafficLight().runRed();
+//                    this.vertical2.getTrafficLight().runRed();
+//
+//                    runFSM_Horizontal_Red_Delay(4000);
+//                }
             }
         }
 
@@ -143,21 +171,26 @@ public class intersectionFSMS {
 
     private void runFSM_Horizontal_Red_Delay(int delay) {
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(delay), ev -> {
-            System.out.println("Setting back to default! ");
+            System.out.println("Gonna run a method in 3 seconds");
 
-//            setHorizontalRed(12000, true);
-
-            runFSM_Horizontal_Red();
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(delay), ev -> {
+                System.out.println("Setting back to default!");
 
 
-        }));
+            this.horizontal1.getTrafficLight().stopTimeLines();
+            this.horizontal2.getTrafficLight().stopTimeLines();
 
-        timeline.setCycleCount(1);
-        timeline.play();
+                setHorizontalRed(12000, true);
+                this.runFSM_Horizontal_Red();
+
+
+            }));
+
+//            timeline.setDelay();
+            timeline.setCycleCount(1);
+            timeline.play();
 
     }
-
 
     public void runFSM_Horizontal_Red() {
 

@@ -19,13 +19,15 @@ public class FSMTrafficLight {
     public final int GREEN = 3;
     public TrafficLight trafficLightGui;
     public int redTime, yellowTime, greenTime;
-
+    public int currentstate;
+    Timeline redTimeLine;
+    Timeline yellowTimeLine;
     //1 - red, 2 - yellow, 3- green
+
 
     //1 > 3 > 2 > 1 > 3 > 2
     // Red > Green > Yellow > Red > Green > Yellow > ...
-
-    public int currentstate;
+    Timeline greenTimeLine;
 
 
     public FSMTrafficLight(int redTime, int greenTime, int yellowTime, int currentstate, int XPos, int YPos) {
@@ -47,7 +49,7 @@ public class FSMTrafficLight {
 
         this.trafficLightGui.changeTrafficLightColor(RED);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(redTime), ev -> {
+        this.redTimeLine = new Timeline(new KeyFrame(Duration.millis(redTime), ev -> {
 
             if (currentstate == RED) {
                 currentstate = GREEN;
@@ -57,8 +59,8 @@ public class FSMTrafficLight {
 
         }));
 
-        timeline.setCycleCount(1);
-        timeline.play();
+        redTimeLine.setCycleCount(1);
+        redTimeLine.play();
 
     }
 
@@ -68,7 +70,7 @@ public class FSMTrafficLight {
 
         this.trafficLightGui.changeTrafficLightColor(GREEN);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(greenTime), ev -> {
+        this.greenTimeLine = new Timeline(new KeyFrame(Duration.millis(greenTime), ev -> {
 
             if (currentstate == GREEN) {
                 currentstate = YELLOW;
@@ -78,19 +80,20 @@ public class FSMTrafficLight {
 
         }));
 
-        timeline.setCycleCount(1);
-        timeline.play();
+        greenTimeLine.setCycleCount(1);
+        greenTimeLine.play();
 
     }
 
-    public void runGreenAfterDelay(int delay){
+    public void runGreenAfterDelay(int delay) {
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(delay), ev -> {
+        Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(delay), ev -> {
+            System.out.println("Rungreen After Delay");
             runGreen();
         }));
 
-        timeline.setCycleCount(1);
-        timeline.play();
+        timeline2.setCycleCount(1);
+        timeline2.play();
     }
 
 
@@ -100,7 +103,7 @@ public class FSMTrafficLight {
 
         this.trafficLightGui.changeTrafficLightColor(YELLOW);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(yellowTime), ev -> {
+        this.yellowTimeLine = new Timeline(new KeyFrame(Duration.millis(yellowTime), ev -> {
 
             if (currentstate == YELLOW) {
 
@@ -112,8 +115,8 @@ public class FSMTrafficLight {
         }
         ));
 
-        timeline.setCycleCount(1);
-        timeline.play();
+        yellowTimeLine.setCycleCount(1);
+        yellowTimeLine.play();
 
 
     }
@@ -146,6 +149,15 @@ public class FSMTrafficLight {
 
     public Group getTrafficLightGui() {
         return this.trafficLightGui.getTrafficlight();
+    }
+
+    public void stopTimeLines() {
+        this.redTimeLine.stop();
+        this.greenTimeLine.stop();
+        if (this.yellowTimeLine != null) {
+
+            this.yellowTimeLine.stop();
+        }
     }
 
 }
