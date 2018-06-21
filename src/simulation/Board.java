@@ -108,13 +108,23 @@ public class Board extends GridPane {
             if(roads == 2 || roads == 1)
             {
                 javafx.scene.image.Image img = new javafx.scene.image.Image("Road.png",  SIM_SIZE, SIM_SIZE,true,false);
+                if(roads == 1)
+                {
+                    Node m = getNeighbour(node);
+                    if(m!=node)
+                    {
+                        int amountOfLanes = getAmountOfLanes(node, m);
+
+                        if(amountOfLanes == 3) img = new javafx.scene.image.Image("three.png",  SIM_SIZE, SIM_SIZE,true,false);
+                        if(amountOfLanes == 4) img = new javafx.scene.image.Image("four.png",  SIM_SIZE, SIM_SIZE,true,false);
+                    }
+                }
                 imgView = new ImageView(img);
 
                 if((node.up && !node.down) || (node.down && !node.up) || (node.up && node.down))
                 {
                     imgView.setRotate(90);
                 }
-
                 if(node.left && node.up)
                 {
                     img = new javafx.scene.image.Image("Corner.png",  SIM_SIZE, SIM_SIZE,true,false);
@@ -145,25 +155,26 @@ public class Board extends GridPane {
 
             if(roads == 3)
             {
-                javafx.scene.image.Image img = new javafx.scene.image.Image("Tsection.png",  SIM_SIZE, SIM_SIZE,true,false);
-                imgView = new ImageView(img);
-                if(!node.left)
-                {
-                    imgView.setRotate(270);
-                }
-                if(!node.down)
-                {
-                    imgView.setRotate(180);
-                }
-                if(!node.up)
-                {
-                    imgView.setRotate(360);
-                }
-                if(!node.right)
-                {
-                    imgView.setRotate(90);
-                }
+//                javafx.scene.image.Image img = new javafx.scene.image.Image("Tsection.png",  SIM_SIZE, SIM_SIZE,true,false);
+//                imgView = new ImageView(img);
+//                if(!node.left)
+//                {
+//                    imgView.setRotate(270);
+//                }
+//                if(!node.down)
+//                {
+//                    imgView.setRotate(180);
+//                }
+//                if(!node.up)
+//                {
+//                    imgView.setRotate(360);
+//                }
+//                if(!node.right)
+//                {
+//                    imgView.setRotate(90);
+//                }
 
+                imgView = analyseTsection(node);
                 tile.getChildren().add(imgView);
             }
 
@@ -171,92 +182,150 @@ public class Board extends GridPane {
         }
 
 
-//        System.out.println("There are " + graph.edges.size() + " edges");
-//        for(int i = 0; i<graph.edges.size(); i++)
-//        {
-//            if(graph.edges.get(i).type == 0)
-//            {
-//                Node start = graph.edges.get(i).start;
-//                Node end = graph.edges.get(i).end;
-//                if(start.Xpos < end.Xpos || start.Xpos > end.Xpos)
-//                {
-//                    int startX = graph.edges.get(i).start.x;
-//                    int endX = graph.edges.get(i).end.x;
-//                    int startY = graph.edges.get(i).start.y;
-//                    int endY = graph.edges.get(i).end.y;
-//                    int edgeX = startX + (endX - startX)/2;
-//                    int edgeY = startY + (endY - startY)/2;
-//                    int distance = Math.abs(endX-startX);
-//
-//                    javafx.scene.image.Image img = new javafx.scene.image.Image("Road.png", SIM_SIZE, SIM_SIZE, true, false);
-//
-//
-//
-//                    if( endX - startX < 0)
-//                    {
-//
-//                        for(int j = 1; j<distance; j++) {
-//                            ImageView imgView = new ImageView(img);
-//                            board[endX+j][edgeY].getChildren().add(imgView);
-//                        }
-//                    }
-//
-//                    else if(endX - startX > 0)
-//                    {
-//
-//                        for(int j = 1; j<distance; j++) {
-//                            ImageView imgView = new ImageView(img);
-//                            board[startX+j][edgeY].getChildren().add(imgView);
-//                        }
-//                    }
-//                    System.out.println("Edge drawn at board["+edgeX+"]["+ edgeY+ "]");
-//
-//                }
-//                if(start.Ypos < end.Ypos || start.Ypos > end.Ypos)
-//                {
-//                    int startX = graph.edges.get(i).start.x;
-//                    int endX = graph.edges.get(i).end.x;
-//                    int startY = graph.edges.get(i).start.y;
-//                    int endY = graph.edges.get(i).end.y;
-//                    int edgeX = startX + (endX - startX)/2;
-//                    int edgeY = startY + (endY-startY)/2;
-//
-//
-//                    javafx.scene.image.Image img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
-//
-//
-//
-//                    //checks how far apart the nodes are
-//                    int distance = Math.abs(endY-startY);
-//                    if( endY - startY < 0)
-//                    {
-//
-//                        for(int j = 1; j<distance; j++) {
-//                            ImageView imgView = new ImageView(img);
-//                            imgView.setRotate(90);
-//                            board[edgeX][endY+j].getChildren().add(imgView);
-//                        }
-//                    }
-//                    else if(endY - startY > 0)
-//                    {
-//
-//                        for(int j = 1; j<distance; j++) {
-//                            ImageView imgView = new ImageView(img);
-//                            imgView.setRotate(90);
-//                            board[edgeX][startY+j].getChildren().add(imgView);
-//                        }
-//                    }
-//
-//                    System.out.println("Edge drawn at board["+edgeX+"]["+edgeY+ "]");
-//                }
-//
-//            }
-//
-//
-//        }
 
         initiateLanes();
 
+    }
+
+    public ImageView analyseTsection(Node n)
+    {
+        System.out.println("T Section checked");
+        javafx.scene.image.Image img = new javafx.scene.image.Image("Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+        ImageView imgView = new ImageView(img);
+
+
+            ArrayList<Edge> edg = new ArrayList<>();
+            for(Edge e : graph.edges)
+            {
+                if (e.start == n || e.end == n) {
+
+
+
+                            edg.add(e);
+
+
+                }
+            }
+
+            int six = 0, two = 0, eight = 0, four = 0;
+
+            for(Edge e : edg)
+            {
+                if(e.direction == 6)
+                {
+                    six++;
+                }
+                if(e.direction == 4)
+                {
+                    four++;
+                }
+                if(e.direction == 8)
+                {
+                    eight++;
+                }
+                if(e.direction == 2)
+                {
+                    two++;
+                }
+            }
+
+        System.out.println("lanes in each direction: six " + six + " four " + four + " two " + two + " eight " + eight );
+
+            if(two == eight)
+            {
+                if(two == 2)
+                {
+                    img = new javafx.scene.image.Image("Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+                    imgView = new ImageView(img);
+                    if(four!=0)
+                    {
+                        imgView.setRotate(90);
+                    }
+                    if(six!=0)
+                    {
+                        imgView.setRotate(270);
+                    }
+                }
+                if(two == 3)
+                {
+                    img = new javafx.scene.image.Image("3Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+                    imgView = new ImageView(img);
+                    if(four!=0)
+                    {
+                        imgView.setRotate(90);
+                    }
+                    if(six!=0)
+                    {
+                        imgView.setRotate(270);
+                    }
+                }
+                if(two == 4)
+                {
+                    img = new javafx.scene.image.Image("4Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+                    imgView = new ImageView(img);
+                    if(four!=0)
+                    {
+                        imgView.setRotate(90);
+                    }
+                    if(six!=0)
+                    {
+                        imgView.setRotate(270);
+                    }
+                }
+            }
+
+            if(four == six)
+            {
+                if(six == 2)
+                {
+                    img = new javafx.scene.image.Image("Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+                    imgView = new ImageView(img);
+                    if(eight!=0)
+                    {
+                        imgView.setRotate(180);
+                    }
+                }
+                if(six == 3)
+                {
+                    img = new javafx.scene.image.Image("4Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+                    imgView = new ImageView(img);
+                    if(eight!=0)
+                    {
+                        imgView.setRotate(180);
+                    }
+                }
+                if(six == 4)
+                {
+                    img = new javafx.scene.image.Image("4Tsection.png", SIM_SIZE, SIM_SIZE, true, false);
+                    imgView = new ImageView(img);
+                    if(eight!=0)
+                    {
+                        imgView.setRotate(180);
+                    }
+                }
+            }
+
+
+
+
+        return imgView;
+    }
+
+    public Node getNeighbour(Node n)
+    {
+        for(Edge e : graph.edges)
+        {
+            if(e.start == n)
+            {
+                return e.end;
+            }
+            if(e.end == n)
+            {
+                return e.start;
+            }
+        }
+
+        return n;
     }
 
     public void initiateLanes()
@@ -276,6 +345,311 @@ public class Board extends GridPane {
         }
     }
 
+    public void drawIntersectionAddition(int x, int y, int dir, int lanes)
+    {
+        if(lanes == 3)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("threelaneadd.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            //rotate to a direction (6=right, 4=left, 2=down & 8=up). Standard direction is 6
+            if(dir == 4)
+            {
+                imgView.setRotate(180);
+            }
+            if(dir == 8)
+            {
+                imgView.setRotate(270);
+            }
+            if(dir == 2)
+            {
+                imgView.setRotate(90);
+            }
+            board[x][y].getChildren().add(imgView);
+        }
+
+        if(lanes == 4)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("fourlaneadd.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            //rotate to a direction (6=right, 4=left, 2=down & 8=up). Standard direction is 6
+            if(dir == 4)
+            {
+                imgView.setRotate(180);
+            }
+            if(dir == 8)
+            {
+                imgView.setRotate(270);
+            }
+            if(dir == 2)
+            {
+                imgView.setRotate(90);
+            }
+            board[x][y].getChildren().add(imgView);
+        }
+
+        if(lanes == 5)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("fivelaneadd.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            //rotate to a direction (6=right, 4=left, 2=down & 8=up). Standard direction is 6
+            if(dir == 4)
+            {
+                imgView.setRotate(180);
+            }
+            if(dir == 8)
+            {
+                imgView.setRotate(270);
+            }
+            if(dir == 2)
+            {
+                imgView.setRotate(90);
+            }
+            board[x][y].getChildren().add(imgView);
+        }
+
+    }
+
+    //Amount:
+    //23 -> two to three lanes
+    //24 -> two to four lanes
+    //34 -> three to four lanes
+    public void drawLaneAddition(int x, int y, int dir, int amount)
+    {
+        if(amount == 23)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("twotothree.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            ImageView imgView2 = new ImageView(img);
+            //vertical
+            if(dir == 2 || dir == 8)
+            {
+                imgView.setRotate(90);
+                imgView2.setRotate(270);
+            }
+
+            //horizontal
+            if(dir == 6 || dir == 4)
+            {
+                imgView2.setRotate(180);
+            }
+            board[x][y].getChildren().add(imgView);
+            board[x][y].getChildren().add(imgView2);
+        }
+
+        if(amount == 24)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("twotofour.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            ImageView imgView2 = new ImageView(img);
+            //vertical
+            if(dir == 2 || dir == 8)
+            {
+                imgView.setRotate(90);
+                imgView2.setRotate(270);
+            }
+
+            //horizontal
+            if(dir == 6 || dir == 4)
+            {
+                imgView2.setRotate(180);
+            }
+            board[x][y].getChildren().add(imgView);
+            board[x][y].getChildren().add(imgView2);
+        }
+
+        if(amount == 34)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("threetofour.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            ImageView imgView2 = new ImageView(img);
+            //vertical
+            if(dir == 2 || dir == 8)
+            {
+                imgView.setRotate(90);
+                imgView2.setRotate(270);
+            }
+
+            //horizontal
+            if(dir == 6 || dir == 4)
+            {
+                imgView2.setRotate(180);
+            }
+            board[x][y].getChildren().add(imgView);
+            board[x][y].getChildren().add(imgView2);
+        }
+    }
+
+    public void checkMultiLanes()
+    {
+        for(Node n : graph.nodes)
+        {
+            for(Node m : graph.nodes)
+            {
+                int lanes = getAmountOfLanes(n, m);
+                int dir = 0;
+                //check which side of the "n" intersection needs the overlay
+                if(n.x>m.x) dir = 4;
+                if(n.x<m.x) dir = 6;
+                if(n.y>m.y) dir = 8;
+                if(n.y<m.y) dir = 2;
+                //one exception. When an intersection only has two roads it needs a different image
+                if(getAmountOfRoads(n) == 2 || getAmountOfRoads(n) == 1)
+                {
+                    checkRoadIntersections();
+                }
+                else
+                {
+                    drawIntersectionAddition(n.x, n.y, dir, lanes);
+                }
+
+                //same but for the "m" intersection -> opposite direction
+                if(n.x>m.x) dir = 6;
+                if(n.x<m.x) dir = 4;
+                if(n.y>m.y) dir = 2;
+                if(n.y<m.y) dir = 8;
+                if(getAmountOfRoads(m) == 2 || getAmountOfRoads(m) == 1)
+                {
+                    checkRoadIntersections();
+                }
+                else
+                {
+                    drawIntersectionAddition(m.x, m.y, dir, lanes);
+                }
+
+
+            }
+        }
+
+        //checkMultiLaneDestinations();
+    }
+
+    public void checkRoadIntersections()
+    {
+
+    }
+
+    public void checkMultiLaneDestinations()
+    {
+//        int smallestX = 1000;
+//        int smallestY = 1000;
+//        int biggestX = 0;
+//        int biggestY = 0;
+//        for(Node n : graph.nodes)
+//        {
+//            if(n.x<smallestX)
+//            {
+//                smallestX = n.x;
+//            }
+//            if(n.y<smallestY)
+//            {
+//                smallestY = n.y;
+//            }
+//            if(n.x>biggestX)
+//            {
+//                biggestX = n.x;
+//            }
+//            if(n.y>biggestY)
+//            {
+//                biggestY = n.y;
+//            }
+//        }
+        for(Node n : graph.nodes)
+        {
+            //checks if theyre a single road ending
+            if(getAmountOfRoads(n) == 1)
+            {
+                if(n.right||n.left)
+                {
+                    int amount = 2;
+                    for(Edge e : graph.edges)
+                    {
+                        if(e.start == n)
+                        {
+
+                            amount = getAmountOfLanes(n,e.end);
+
+                           drawIntersection(n.x, n.y, amount, false);
+                        }
+                        if(e.end == n)
+                        {
+                            amount = getAmountOfLanes(n, e.start);
+                            drawIntersection(n.x, n.y, amount, false);
+                        }
+                    }
+
+                }
+                if(n.up||n.down)
+                {
+                    int amount = 2;
+                    for(Edge e : graph.edges)
+                    {
+                        if(e.start == n)
+                        {
+
+                            amount = getAmountOfLanes(n,e.end);
+
+                            drawIntersection(n.x, n.y, amount, true);
+                        }
+                        if(e.end == n)
+                        {
+                            amount = getAmountOfLanes(n, e.start);
+                            drawIntersection(n.x, n.y, amount, true);
+                        }
+                    }
+                }
+                //checks if they are on the edges of the map
+//                if(n.x == smallestX)
+//                {
+//
+//                }
+//                else if(n.y == smallestY)
+//                {
+//
+//                }
+//                else if(n.x == biggestX)
+//                {
+//
+//                }
+//                else if(n.y == biggestY)
+//                {
+//
+//                }
+            }
+
+        }
+    }
+
+    public void drawIntersection(int x, int y, int amount, boolean rotate)
+    {
+        if(amount == 2)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("Road.PNG", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            if(rotate) imgView.setRotate(90);
+            board[x][y].getChildren().add(imgView);
+        }
+        if(amount == 3)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("Three.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            if(rotate) imgView.setRotate(90);
+            board[x][y].getChildren().add(imgView);
+        }
+        if(amount == 4)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("four.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            board[x][y].getChildren().add(imgView);
+        }
+        if(amount == 5)
+        {
+            javafx.scene.image.Image img = new javafx.scene.image.Image("five.png", SIM_SIZE, SIM_SIZE, true, false);
+            ImageView imgView = new ImageView(img);
+            if(rotate) imgView.setRotate(90);
+            board[x][y].getChildren().add(imgView);
+        }
+
+    }
     public void drawLanes(int amount, Node from, Node to)
     {
         int gridX = (from.x + to.x)/2;
@@ -327,8 +701,14 @@ public class Board extends GridPane {
                 if(amount == 1 && graph.getAdjecents(from).contains(to) && from.x>to.x) imgView.setRotate(180);
                 if(amount == 1 && graph.getAdjecents(to).contains(from) && from.x<to.x) imgView.setRotate(180);
             }
-
-
+            if(from.x<to.x)
+            {
+                gridX = from.x+1;
+            }
+            else if(from.x>to.x)
+            {
+                gridX = to.x+1;
+            }
             board[gridX+i][gridY].getChildren().add(imgView);
         }
 
@@ -377,17 +757,19 @@ public class Board extends GridPane {
             }
 
 
+            if(from.y<to.y)
+            {
+                gridY = from.y+1;
+            }
+            else if(from.y>to.y)
+            {
+                gridY = to.y+1;
+            }
             board[gridX][gridY+i].getChildren().add(imgView);
         }
 
-
-
-
-
-
-
-
-
+        //adjust the intersections to the # of lanes
+        checkMultiLanes();
     }
 
     public int getAmountOfLanes(Node n, Node m)
