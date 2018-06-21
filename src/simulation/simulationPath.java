@@ -33,6 +33,21 @@ public class simulationPath {
         path.add(point);
     }
 
+    public void remove(int index)
+    {
+        path.remove(index);
+    }
+
+    public void addtoPath(int x, int y, int direction, int index){
+        ArrayList<Integer> point = new ArrayList<>(2);
+        point.add(x);
+        point.add(y);
+
+        directions.add(direction);
+
+        path.add(index, point);
+    }
+
     public int getX(int intex){
         return this.path.get(intex).get(0);
     }

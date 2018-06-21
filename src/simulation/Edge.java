@@ -10,7 +10,7 @@ public class Edge {
     public int type;
 
     public int direction;
-
+    public int index;
     private int speedLimit;
     private int distance;
     private boolean blocked;

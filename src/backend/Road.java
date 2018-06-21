@@ -27,6 +27,7 @@ public class Road {
 	private int direction;
 	private boolean blocked;
 
+
 	private boolean existsTrafficLight = false;
 
 	public Road(ArrayList<Edge> edges){

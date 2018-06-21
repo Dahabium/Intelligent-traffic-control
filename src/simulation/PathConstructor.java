@@ -268,4 +268,13 @@ public class PathConstructor {
     }
 
 
+
+    private int changeLane()
+    {
+        int index = 0;
+
+        return index;
+    }
+
+
 }

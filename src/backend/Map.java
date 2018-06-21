@@ -26,6 +26,19 @@ public class Map {
 
     }
 
+    public void indexLanes()
+    {
+        for(Road r: roads)
+        {
+            int counter = 0;
+            for(Edge e : r.lanes)
+            {
+                e.index = counter;
+                counter++;
+            }
+        }
+    }
+
     public void createRoads(){
 
         for (int i = 0; i < this.graph.edges.size(); i++) {
@@ -47,6 +60,8 @@ public class Map {
             }
 
         }
+
+        indexLanes();
 
     }
 

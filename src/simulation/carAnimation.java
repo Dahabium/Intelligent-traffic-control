@@ -24,7 +24,7 @@ public class carAnimation {
     AnimationTimer animationTimer;
     PathConstructor pathConstructor;
     Car car;
-
+    int lane0X = 10, lane0Y = 10, lane1X = 20, lane1Y = 20;
     int pathIterator;
     int previousPosition;
     int dir;
@@ -314,6 +314,83 @@ public class carAnimation {
 
         }
 
+
+
+    public void changeLane(int laneIndex, int dir)
+    {
+        int index = pathIterator;
+        ArrayList<Double> point = new ArrayList<>();
+        double curX = car.getLocX();
+        double curY = car.getLocY();
+        double diffX = 0;
+        double diffY = 0;
+
+        //If it's changing to outer road
+        if(dir == 8 && laneIndex == 1)
+        {
+            diffX += lane0Y;
+            diffY -= 10;
+        }
+
+        if(dir == 2 && laneIndex == 1)
+        {
+            diffX -= lane0Y;
+            diffY += 10;
+        }
+
+        if(dir == 4 && laneIndex == 1)
+        {
+            diffY -= lane0Y;
+            diffX -= 10;
+        }
+
+        if(dir == 6 && laneIndex == 1)
+        {
+            diffY += lane0Y;
+            diffX += 10;
+        }
+
+        //If it's changing back to middle road
+        if(dir == 8 && laneIndex == 0)
+        {
+            diffX += lane0Y;
+            diffY -= 10;
+        }
+
+        if(dir == 2 && laneIndex == 0)
+        {
+            diffX -= lane0Y;
+            diffY += 10;
+        }
+
+        if(dir == 4 && laneIndex == 0)
+        {
+            diffY -= lane0Y;
+            diffX -= 10;
+        }
+
+        if(dir == 6 && laneIndex == 1)
+        {
+            diffY += lane0Y;
+            diffX += 10;
+        }
+
+        simPath.addtoPath((int)(curX + diffX), (int)(curY + diffY), index);
+        if(index + 1 <= IntPath.size())
+        {
+            int counter = 1;
+            while(simPath.getX(index + counter) == simPath.getX(index + counter -1) || simPath.getY(index + counter) == simPath.getY(index + counter -1))
+            {
+                int pathX = simPath.getX(index+counter);
+                int pathY = simPath.getY(index+counter);
+                simPath.remove(index+counter);
+                simPath.addtoPath(pathX, pathY, index + counter);
+            }
+
+        }
+
+
+    }
 
 
     public boolean nextActionIsTurn(int oldDir, int newDir) {

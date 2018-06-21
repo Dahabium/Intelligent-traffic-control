@@ -39,7 +39,6 @@ public class Car {
 
 	private int width = 25;
 	private int height = 25;
-
 	private ArrayList<Integer> path;
 
 	//TODO fix the startroadend thing (why do we need it?)
@@ -65,6 +64,7 @@ public class Car {
 //        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
 //    public Car()
+
 
     public ArrayList<Integer> getPath(){
     	return this.path;
