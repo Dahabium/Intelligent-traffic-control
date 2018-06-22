@@ -1,7 +1,6 @@
 package backend;
 
 import simulation.Graph;
-import sun.security.timestamp.TSRequest;
 
 public class Model {
 
@@ -38,8 +37,8 @@ public class Model {
                         && map.exsistParallelOutgoingRoad(map.roads.get(j).getDirection(), map.roads.get(j).end) != null
                         && map.RoadsFacingEachOther(map.roads.get(i), map.roads.get(j))) {
 
-                    map.roads.get(i).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
-                    map.roads.get(j).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
+//                    map.roads.get(i).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
+//                    map.roads.get(j).getTrafficLight().setTimingSequences(DefaultRedTime, DefaultGreenTime, DefaultYellowTime);
 
                     map.roads.get(i).setRoadWithSameFSM(map.roads.get(j));
                     map.roads.get(j).setRoadWithSameFSM(map.roads.get(i));
@@ -55,14 +54,14 @@ public class Model {
 
                 if (map.getIncomingRoads(graph.nodes.get(i)).size() == 4) {
 
-                    intersectionFSMS crossSection = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
-                    map.intersectionFSMS.add(crossSection);
+                    intersectionFSM crossSection = new intersectionFSM(map.getIncomingRoads(graph.nodes.get(i)));
+                    map.intersectionFSM.add(crossSection);
                 }
 
                 if(map.getIncomingRoads(graph.nodes.get(i)).size() == 3){
 
-                    intersectionFSMS TSection = new intersectionFSMS(map.getIncomingRoads(graph.nodes.get(i)));
-                    map.intersectionFSMS.add(TSection);
+                    intersectionFSM TSection = new intersectionFSM(map.getIncomingRoads(graph.nodes.get(i)));
+                    map.intersectionFSM.add(TSection);
 
                 }
         }
@@ -99,7 +98,7 @@ public class Model {
 
             if (map.roads.get(i).existsTrafficLight() == true) {
 
-                map.roads.get(i).getTrafficLight().runRed();
+//                map.roads.get(i).getTrafficLight().runRed();
             }
         }
     }

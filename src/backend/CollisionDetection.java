@@ -68,24 +68,24 @@ public class CollisionDetection {
         for (int i = 0; i < cars.size(); i++) {
 
             if(     cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 6 &&
-                    car.getLocX() + 90 >= cars.get(i).getLocX() && car.getLocX() + 25 <= cars.get(i).getLocX() &&
-                    car.getLocY() + 15 >= cars.get(i).getLocY() && car.getLocY() - 15 <= cars.get(i).getLocY() ) {
+                    car.getLocX() + 60 >= cars.get(i).getLocX() && car.getLocX() + 25 <= cars.get(i).getLocX() &&
+                    car.getLocY() + 10 >= cars.get(i).getLocY() && car.getLocY() - 10 <= cars.get(i).getLocY() ) {
                 return true;
 
             }
             else if(cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 4 &&
-                    car.getLocX() - 90 <= cars.get(i).getLocX() && car.getLocX() - 25 >= cars.get(i).getLocX() &&
-                    car.getLocY() + 15 >= cars.get(i).getLocY() && car.getLocY() - 15 <= cars.get(i).getLocY() ) {
+                    car.getLocX() - 60 <= cars.get(i).getLocX() && car.getLocX() - 25 >= cars.get(i).getLocX() &&
+                    car.getLocY() + 10 >= cars.get(i).getLocY() && car.getLocY() - 10 <= cars.get(i).getLocY() ) {
                 return true;
             }
             else if(cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 8 &&
-                    car.getLocY() - 90 <= cars.get(i).getLocY() && car.getLocY() - 25 >= cars.get(i).getLocY() &&
-                    car.getLocX() + 15 >= cars.get(i).getLocX() && car.getLocX() - 15 <= cars.get(i).getLocX() ) {
+                    car.getLocY() - 60 <= cars.get(i).getLocY() && car.getLocY() - 25 >= cars.get(i).getLocY() &&
+                    car.getLocX() + 10 >= cars.get(i).getLocX() && car.getLocX() - 10 <= cars.get(i).getLocX() ) {
                 return true;
             }
             else if(cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 2 &&
-                    car.getLocY() + 90 >= cars.get(i).getLocY() && car.getLocY() + 25 <= cars.get(i).getLocY() &&
-                    car.getLocX() + 15 >= cars.get(i).getLocX() && car.getLocX() - 15 <= cars.get(i).getLocX() ) {
+                    car.getLocY() + 60 >= cars.get(i).getLocY() && car.getLocY() + 25 <= cars.get(i).getLocY() &&
+                    car.getLocX() + 10 >= cars.get(i).getLocX() && car.getLocX() - 10 <= cars.get(i).getLocX() ) {
                 return true;
             }
 

@@ -283,7 +283,7 @@ public class carAnimation {
                             //just by increasing the margins of normal collisiondetection.
                             if (collisionDetection.frontCarCollisionDetection(car)) {
 
-                                System.out.println("side collision" + car + "car in front? : " + collisionDetection.returnCarInFront(car));
+                                System.out.println("collision check for " + car + " : car in front? : " + collisionDetection.returnCarInFront(car));
 
                                 if (car.getVel() > 0) {
 
@@ -300,9 +300,7 @@ public class carAnimation {
                                     car.stopTime = System.currentTimeMillis();
                                     car.destinationReached = true;
                                 }
-
                             }
-
                         }
 
 
@@ -311,7 +309,7 @@ public class carAnimation {
                         car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
 
                         //try to detect a collision here
-                        if (collisionDetection.collisionDetection(dir)) {
+                        if (collisionDetection.collisionDetection(car.getCurentDirection())) {
 
                             stopCarAnimation();
 

@@ -98,7 +98,8 @@ public class simulationWindowController {
 //
 //        this.animationParts.model.map.runAllConnectedFSMS();
 
-        this.animationParts.model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
+        this.animationParts.model.map.intersectionFSM.get(0).LeftTurn_East = true;
+//        this.animationParts.model.map.intersectionFSM.get(0).runFSM_Vertical_Red();
     }
 
     public void updateCycleSander(){
@@ -240,7 +241,7 @@ public class simulationWindowController {
         ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> interArrivals = new ArrayList<>();
-        double lambda = 13 ;
+        double lambda = 11 ;
 
         //will return a value in index of the array of start/ending points
         Random random = new Random();
@@ -262,8 +263,8 @@ public class simulationWindowController {
             int rand = getPoissonRandom(lambda);
             int temp = 60000 / (rand);
 
-            if(temp < 4000){
-                temp = 4000;
+            if(temp < 5000){
+                temp = 5000;
             }
 
             interArrivals.add(temp);

@@ -7,8 +7,6 @@ import javafx.util.Duration;
 import simulation.Node;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by sandersalahmadibapost on 29/05/2018.
@@ -60,10 +58,10 @@ public class TrafficLightController {
 
         //run cycle here
 
-        this.model.map.intersectionFSMS.get(0).setHorizontalRed((int) gTime, false);
-        this.model.map.intersectionFSMS.get(0).runFSM_Horizontal_Red();
+//        this.model.map.intersectionFSM.get(0).setHorizontalRed((int) gTime, false);
+        this.model.map.intersectionFSM.get(0).runFSM_Horizontal_Red();
 
-//        this.model.map.intersectionFSMS.get(1).setHorizontalRed((int)g, false);
+//        this.model.map.intersectionFSM.get(1).setHorizontalRed((int)g, false);
 
         System.out.println("DELAY START ");
 
