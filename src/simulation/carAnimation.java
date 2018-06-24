@@ -24,11 +24,11 @@ public class carAnimation {
     AnimationTimer animationTimer;
     PathConstructor pathConstructor;
     Car car;
-
+    int lane0X = 10, lane0Y = 13, lane1X = 20, lane1Y = 20;
     int pathIterator;
     int previousPosition;
     int dir;
-
+    boolean first = true;
 
     public carAnimation(Graph graph, Board board, Model model, Car car, CollisionDetection collisionDetection) {
 
@@ -103,9 +103,18 @@ public class carAnimation {
                     double dist = 100000;
                     double carFrontVelocity = 0;
 
-                    if (simPath.directions.get(pathIterator - 1) == 4) {
-                        newX = oldX - delta;
-                    }
+                        //FOR TESTING LANE CHANGING
+//                        if(car.getLocX()>100 && first) {
+//
+//                            System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator-1));
+//                            dir = simPath.directions.get(pathIterator-1);
+//                            changeLane(1, dir);
+//
+//                            first = false;
+//                        }
+
+                        xCoord = simPath.path.get(pathIterator).get(0);
+                        yCoord = simPath.path.get(pathIterator).get(1);
 
                     if (simPath.directions.get(pathIterator - 1) == 8) {
                         newY = oldY - delta;
@@ -175,19 +184,13 @@ public class carAnimation {
                                 if (newDir == 2) {
                                     imgView.setRotate(90);
                                 }
-                            }
-                            if (oldDir == 4) {
-                                if (newDir == 8) {
-                                    imgView.setRotate(270);
-                                }
-                                if (newDir == 2) {
-                                    imgView.setRotate(90);
-                                }
-                            }
-
-                            if (oldDir == 2) {
-                                if (newDir == 4) {
-                                    imgView.setRotate(180);
+                                if (oldDir == 2) {
+                                    if (newDir == 4) {
+                                        imgView.setRotate(180);
+                                    }
+                                    if (newDir == 6) {
+                                        imgView.setRotate(0);
+                                    }
                                 }
                                 if (newDir == 6) {
                                     imgView.setRotate(0);
@@ -325,6 +328,93 @@ public class carAnimation {
             }
 
         };
+
+
+    }
+
+
+
+    public void changeLane(int laneIndex, int dire)
+    {
+        System.out.println(dire + " = THE DIRECTION");
+        int index = pathIterator;
+        ArrayList<Double> point = new ArrayList<>();
+        double curX = car.getLocX();
+        double curY = car.getLocY();
+        double diffX = 0;
+        double diffY = 0;
+        double nextX = simPath.getX(index);
+        double nextY = simPath.getY(index);
+        //If it's changing to outer road
+        if(dire == 8 && laneIndex == 1)
+        {
+            diffX += lane0Y;
+            //diffY -= 10;
+        }
+
+        if(dire == 2 && laneIndex == 1)
+        {
+            diffX -= lane0Y;
+            //diffY += 10;
+        }
+
+        if(dire == 4 && laneIndex == 1)
+        {
+            diffY -= lane0Y;
+            //diffX -= 10;
+        }
+
+        if(dire == 6 && laneIndex == 1)
+        {
+            diffY += lane0Y;
+            //diffX += 10;
+        }
+
+        //If it's changing back to middle road
+        if(dire == 8 && laneIndex == 0)
+        {
+            diffX -= lane0Y;
+            //diffY -= 10;
+        }
+
+        if(dire == 2 && laneIndex == 0)
+        {
+            diffX += lane0Y;
+            //diffY += 10;
+        }
+
+        if(dire == 4 && laneIndex == 0)
+        {
+            diffY += lane0Y;
+            //diffX -= 10;
+        }
+
+        if(dire == 6 && laneIndex == 0)
+        {
+            diffY -= lane0Y;
+            //diffX += 10;
+        }
+
+        simPath.remove(index);
+        //simPath.addtoPath((int)(curX + diffX), (int)(curY + diffY), dire, index);
+        System.out.println("Difference: " + diffX + ", " + diffY);
+        imgView.setTranslateY(car.getLocY()+diffY);
+        imgView.setTranslateX(car.getLocX()+diffX);
+        simPath.addtoPath((int)(nextX + diffX), (int)(nextY + diffY),dire,index);
+        if(index  <= IntPath.size())
+        {
+            int counter = 1;
+            while(index+counter<IntPath.size() && simPath.directions.get(index+counter) == simPath.directions.get(index + counter-1))
+            {
+                System.out.println("Path edited");
+                int pathX = simPath.getX(index+counter);
+                int pathY = simPath.getY(index+counter);
+                simPath.remove(index+counter);
+                simPath.addtoPath((int)(pathX+diffX), (int)(pathY+diffY), dire, index + counter);
+                counter ++;
+            }
+
+        }
 
 
     }

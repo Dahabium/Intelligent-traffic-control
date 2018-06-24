@@ -43,7 +43,6 @@ public class Car {
 
 	private int width = 25;
 	private int height = 25;
-
 	private ArrayList<Integer> path;
 
 	//TODO fix the startroadend thing (why do we need it?)
@@ -76,6 +75,7 @@ public class Car {
 	public long getElapsedTimeTotal(){
     	return stopTime - startTime;
 	}
+
 
     public ArrayList<Integer> getPath(){
     	return this.path;

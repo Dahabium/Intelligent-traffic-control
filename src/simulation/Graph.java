@@ -245,6 +245,8 @@ public class Graph {
         return number;
     }
 
+
+
     //given a node, return the ammount of incoming edges
     public int getNumberOfIncomingRoads(Node node) {
         int count = 0;

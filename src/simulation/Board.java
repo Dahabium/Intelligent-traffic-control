@@ -213,19 +213,48 @@ public class Board extends GridPane {
             {
                 if(e.direction == 6)
                 {
-                    six++;
+                    if(e.start == n )
+                    {
+                        six++;
+                    }
+                    if(e.end == n)
+                    {
+                        four++;
+                    }
+
                 }
                 if(e.direction == 4)
                 {
-                    four++;
+                    if(e.start == n )
+                    {
+                        four++;
+                    }
+                    if(e.end == n)
+                    {
+                        six++;
+                    }
                 }
                 if(e.direction == 8)
                 {
-                    eight++;
+                    if(e.start == n )
+                    {
+                        eight++;
+                    }
+                    if(e.end == n)
+                    {
+                        two++;
+                    }
                 }
                 if(e.direction == 2)
                 {
-                    two++;
+                    if(e.start == n )
+                    {
+                        two++;
+                    }
+                    if(e.end == n)
+                    {
+                        eight++;
+                    }
                 }
             }
 
