@@ -82,7 +82,7 @@ public class PathConstructor {
 
                 int pathX = graph.getNodeByIndex(IntPath.get(i)).x * SIM_SIZE + SIM_SIZE / 2 + correctionX;
                 int pathY = graph.getNodeByIndex(IntPath.get(i)).y * SIM_SIZE + SIM_SIZE / 2 + correctionY;
-                System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY);
+//                System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY);
             }
 
 
@@ -225,7 +225,7 @@ public class PathConstructor {
 
                     int pathX = graph.getNodeByIndex(IntPath.get(i)).x * SIM_SIZE + SIM_SIZE / 2 + correctionX;
                     int pathY = graph.getNodeByIndex(IntPath.get(i)).y * SIM_SIZE + SIM_SIZE / 2 + correctionY;
-                    System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY + "DIR: " + dir);
+//                    System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY + "DIR: " + dir);
                     simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * SIM_SIZE + SIM_SIZE / 2 + correctionX, graph.getNodeByIndex(IntPath.get(i)).y * SIM_SIZE + SIM_SIZE / 2 + correctionY, dir);
                 }
 
@@ -242,23 +242,23 @@ public class PathConstructor {
 
         //north
         if (oldX == newX && oldY < newY) {
-            System.out.println("Direction is: " + 2);
+//            System.out.println("Direction is: " + 2);
             return 2;
         }
         //south
         if (oldX == newX && oldY > newY) {
-            System.out.println("Direction is: " + 8);
+//            System.out.println("Direction is: " + 8);
             return 8;
         }
         //east
         if (oldX > newX && oldY == newY) {
             //turn east
-            System.out.println("Direction is: " + 4);
+//            System.out.println("Direction is: " + 4);
             return 4;
         }
         //west
         if (oldX < newX && oldY == newY) {
-            System.out.println("Direction is: " + 6);
+//            System.out.println("Direction is: " + 6);
             return 6;
         }
 

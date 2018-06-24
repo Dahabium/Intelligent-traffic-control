@@ -50,7 +50,7 @@ public class Road {
 
 	public void addTrafficLight(int XPos, int YPos, int redtime, int greentime, int yellowtime, int currentstate){
 
-		this.trafficLight = new FSMTrafficLight(redtime,greentime,yellowtime,currentstate,XPos,YPos);
+		this.trafficLight = new FSMTrafficLight(currentstate,XPos,YPos);
 		existsTrafficLight = true;
 
 	}

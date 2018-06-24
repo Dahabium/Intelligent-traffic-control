@@ -1,27 +1,26 @@
 package simulation;
 
-import backend.Car;
-import backend.TrafficLightController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.animation.AnimationTimer;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class simulationWindowController {
 
@@ -41,6 +40,8 @@ public class simulationWindowController {
     private Graph graph;
     private String filename;
 
+    private Scene infoPanelScene;
+    private Pane infoPanePane;
 
     private MainController mainController;
 
@@ -68,7 +69,6 @@ public class simulationWindowController {
 
         simulationBoard.setBoard(graph);
 
-
         simulationElements.getChildren().add(simulationBoard);
 
 
@@ -84,7 +84,7 @@ public class simulationWindowController {
         roadStatusUpdater(1000);
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 1);
+        this.mainController = new MainController(this.animationParts, 10000, 2);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -95,7 +95,39 @@ public class simulationWindowController {
 
         simulationScrollpane.setContent(simulationElements);
 
+
+//        this.infoPanelScene = new Scene();
+
+
+//        Scene scene =  new Scene(root, 800,800);
+//
+//        stage.setScene(scene);
+//        stage.show();
+
+
+        handleMouseClickOnCars();
+
     }
+
+    private void handleMouseClickOnCars() {
+
+        this.simulationElements.setOnMouseClicked(event -> {
+
+            System.out.println("Clicked on position " + event.getSceneX() + "   " +  event.getSceneY());
+            for (int i = 0; i < animationParts.carElements.size(); i++) {
+
+                if (event.getTarget() == animationParts.carElements.get(i).getAnimatedCar()) {
+                    String infoPanel;
+                    infoPanel = "Car number: " + i + " Direction: " + animationParts.carElements.get(i).car.getCurentDirection()
+                    +"   Velocity: " + animationParts.carElements.get(i).car.getVel() + "   Local road: " + animationParts.carElements.get(i).car.getLocRoad();
+                    JOptionPane.showMessageDialog(null, infoPanel );
+                }
+
+            }
+
+        });
+    }
+
 
     @FXML
     public void debugbtnaction() {
@@ -104,7 +136,8 @@ public class simulationWindowController {
 //
 //        this.animationParts.model.map.runAllConnectedFSMS();
 
-        this.animationParts.model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
+        this.animationParts.model.map.intersectionFSM.get(0).LeftTurn_East = true;
+//        this.animationParts.model.map.intersectionFSM.get(0).runFSM_Vertical_Red();
     }
 
     public void updateCycleSander(){
@@ -119,7 +152,6 @@ public class simulationWindowController {
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-
 
     }
 
@@ -247,7 +279,7 @@ public class simulationWindowController {
         ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> interArrivals = new ArrayList<>();
-        double lambda = 13 ;
+        double lambda = 11 ;
 
         //will return a value in index of the array of start/ending points
         Random random = new Random();
@@ -269,22 +301,14 @@ public class simulationWindowController {
             int rand = getPoissonRandom(lambda);
             int temp = 60000 / (rand);
 
-            if(temp < 4000){
-                temp = 4000;
+            if(temp < 5000){
+                temp = 5000;
             }
 
             interArrivals.add(temp);
             System.out.println("TIME IS:  " + temp);
 
         }
-
-
-
-
-
-
-
-
 
         if(startPositionsIndexes.size() == endPositionsIndexes.size()){
             //launch timer to start cars each 2 seconds....
@@ -371,6 +395,8 @@ public class simulationWindowController {
                 this.simulationElements.getChildren().remove(animationParts.carElements.get(i).getAnimatedCar());
                 this.animationParts.collisionDetection.cars.remove(animationParts.carElements.get(i).getBackendCar());
 
+                System.out.println("Removing a car that took " + animationParts.carElements.get(i).car.getElapsedTimeTotal() +"  seconds to reach destination");
+//                System.out.println("This car was waiting at intersection for " + animationParts.carElements.get(i).car.timeAtIntersection + " seconds...");
                 animationParts.carElements.remove(i);
 
             }

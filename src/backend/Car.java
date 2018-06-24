@@ -20,6 +20,10 @@ public class Car {
 	private double maxDec;
 	private int exponent;
 
+	public long startTime, stopTime;
+	public long timeAtIntersectionStart, timeAtIntersectionEnd;
+	public long totalTimeAtIntersections;
+
 	//todo just doing it with an edge now, in future we will use road
 	private Edge locEdge;
 	private Road locRoad;
@@ -56,14 +60,21 @@ public class Car {
         this.locX = start.getXpos();
         this.locY = start.getYpos();
         this.carFollow = false;
-        this.obeyFactor = 1;
+        this.obeyFactor = 0.95;
         this.start = start;
         this.end = end;
         this.map = map;
-
+		this.totalTimeAtIntersections = 0;
 //        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
-//    public Car()
+
+	public void addTimeToIntersection(){
+    	this.totalTimeAtIntersections += timeAtIntersectionEnd - timeAtIntersectionStart;
+
+	}
+	public long getElapsedTimeTotal(){
+    	return stopTime - startTime;
+	}
 
 
     public ArrayList<Integer> getPath(){
