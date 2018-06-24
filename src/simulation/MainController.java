@@ -52,7 +52,6 @@ public class MainController {
 
         }
 
-
         updateLeftBooleans();
     }
 
@@ -92,7 +91,6 @@ public class MainController {
                         model.map.intersectionFSM.get(i).LeftTurn_East = true;
 //                        model.map.intersectionFSM.get(i).LeftTurn_East_Time = getCarsNumberTurningLeft(leftCheck()[0],EAST);
                         model.map.intersectionFSM.get(i).LeftTurn_East_Time = getCarsNumberPassingIntersection(leftCheck()[0],EAST);
-                        System.out.println("Left turn east time " +    model.map.intersectionFSM.get(i).LeftTurn_East_Time);
 
                     }
                     if (leftCheck()[1] == SOUTH) {
@@ -124,7 +122,7 @@ public class MainController {
             for (int j = 0; j < animationParts.carElements.size(); j++) {
 
                 if (model.map.intersectionFSM.get(i).intersection == animationParts.carElements.get(j).car.getLocRoad().end &&
-                        animationParts.carElements.get(j).car.getPercentageOnCurrentRoad() >= 70) {
+                        animationParts.carElements.get(j).car.getPercentageOnCurrentRoad() >= 50) {
 
                     if (isALeftTurn(animationParts.carElements.get(j).car.getCurentDirection(),
                             getDirection2Nodes(animationParts.carElements.get(j).car.getPath().get(animationParts.carElements.get(j).pathIterator),

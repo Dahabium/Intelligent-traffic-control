@@ -61,7 +61,7 @@ public class Car {
         this.locX = start.getXpos();
         this.locY = start.getYpos();
         this.carFollow = false;
-        this.obeyFactor = 1;
+        this.obeyFactor = 0.95;
         this.start = start;
         this.end = end;
         this.map = map;

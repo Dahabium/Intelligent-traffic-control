@@ -51,8 +51,8 @@ public class intersectionFSM {
     Road vertical1, vertical2;
     Map map;
     ArrayList<Road> unstructured;
+
     intersectionState intersectionState;
-    MainController mainController;
 
     Timeline timeCheckBeforeDecision;
     Timeline timeCheckBeforeDecision_2;
@@ -61,8 +61,6 @@ public class intersectionFSM {
     boolean passedToNextState = false;
     boolean passedToNextState_2 = false;
 
-    Timeline timeline;
-//    Timeline timeline;
 
     public intersectionFSM(ArrayList<Road> input) {
 
@@ -157,6 +155,7 @@ public class intersectionFSM {
     }
 
     public void Red_H_Green_V() {
+        System.out.println("Currently running Red H Green V");
 
         passedToNextState_2 = false;
         Timeline mainLine;
@@ -185,8 +184,6 @@ public class intersectionFSM {
                 this.timeCheckBeforeDecision_2 = null;
 
             }
-
-
         }));
 
         this.timeCheckBeforeDecision_2.setCycleCount(Math.round(RED_HORIZONTAL_TIME/1000));
@@ -211,7 +208,11 @@ public class intersectionFSM {
 
     public void Red_H_Yellow_V() {
 
+        System.out.println("Currently running Red H Yellow V");
+
         this.intersectionState.Set_Red_Horizontal_Yellow_Vertical();
+
+        System.out.println("car comming from west wants to turn left? " + LeftTurn_West);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
             //a cr that turns left
@@ -220,7 +221,7 @@ public class intersectionFSM {
                 Green_West_Red_All();
                 LeftTurn_West = false;
             }
-            if (LeftTurn_East) {
+            else if (LeftTurn_East) {
 
                 Green_East_Red_All();
                 LeftTurn_East = false;
@@ -241,6 +242,8 @@ public class intersectionFSM {
 
     public void Yellow_West_Red_All() {
 
+        System.out.println("Currently running Yellow West Red all");
+
         LeftTurn_West = false;
 
         this.intersectionState.Set_Yellow_West_Only();
@@ -256,6 +259,8 @@ public class intersectionFSM {
     }
 
     public void Yellow_East_Red_All() {
+
+        System.out.println("Currently running Yellow East Red all");
 
         LeftTurn_East = false;
 
@@ -273,6 +278,8 @@ public class intersectionFSM {
 
     public void Yellow_South_Red_All() {
 
+        System.out.println("Currently running Yellow South Red all");
+
         LeftTurn_South = false;
 
         this.intersectionState.Set_Yellow_South_Only();
@@ -289,6 +296,8 @@ public class intersectionFSM {
 
     public void Yellow_North_Red_All() {
 
+        System.out.println("Currently running Yellow North Red all");
+
         LeftTurn_North = false;
 
         this.intersectionState.Set_Yellow_North_Only();
@@ -296,7 +305,6 @@ public class intersectionFSM {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
 
             Green_H_Red_V();
-
         }));
 
         timeline.setCycleCount(1);
@@ -305,6 +313,8 @@ public class intersectionFSM {
 
 
     public void Green_H_Red_V() {
+
+        System.out.println("Currently running Green H Red V");
 
         passedToNextState = false;
         Timeline mainLine;
@@ -315,14 +325,15 @@ public class intersectionFSM {
         this.timeCheckBeforeDecision = new Timeline(new KeyFrame(Duration.millis(1000), ev -> {
 
             if (LeftTurn_West) {
-
                 LeftTurn_West = false;
                 passedToNextState = true;
 
                 Green_West_Yellow_East();
                 this.timeCheckBeforeDecision.stop();
                 this.timeCheckBeforeDecision = null;
-            } else if (LeftTurn_East) {
+            }
+
+            else if (LeftTurn_East) {
 
                 LeftTurn_East = false;
                 passedToNextState = true;
@@ -360,9 +371,11 @@ public class intersectionFSM {
 
     public void Green_West_Yellow_East() {
 
+        System.out.println("Currently running Green West Yellow East");
+
         this.intersectionState.Set_Green_West_Yellow_East();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
 
             Green_West_Red_All();
 
@@ -375,9 +388,11 @@ public class intersectionFSM {
 
     public void Green_East_Yellow_West() {
 
+        System.out.println("Currently running Green East Yellow West");
+
         this.intersectionState.Set_Green_East_Yellow_West();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
 
             Green_East_Red_All();
 
@@ -388,11 +403,14 @@ public class intersectionFSM {
 
     }
 
+    //this
     public void Green_South_Yellow_North() {
+
+        System.out.println("Currently running Green South Yellow north");
 
         this.intersectionState.Set_Green_South_Yellow_North();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
 
             Green_South_Red_All();
 
@@ -405,9 +423,11 @@ public class intersectionFSM {
 
     public void Green_North_Yellow_South() {
 
+        System.out.println("Currently running Green North Yellow South");
+
         this.intersectionState.Set_Green_North_Yellow_South();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
 
             Green_North_Red_All();
 
@@ -419,6 +439,8 @@ public class intersectionFSM {
     }
 
     public void Green_West_Red_All() {
+
+        System.out.println("Currently running Green West Red all");
 
         this.intersectionState.Set_Green_West_Only();
 
@@ -432,6 +454,7 @@ public class intersectionFSM {
     }
 
     public void Green_East_Red_All() {
+        System.out.println("Currently running Green East Red all");
 
         this.intersectionState.Set_Green_East_Only();
 
@@ -448,12 +471,12 @@ public class intersectionFSM {
 
     public void Green_South_Red_All() {
 
+        System.out.println("Currently running Green South Red all");
+
         this.intersectionState.Set_Green_South_Only();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(LeftTurn_South_Time * 5000), ev -> {
-
             Yellow_South_Red_All();
-
         }));
 
         timeline.setCycleCount(1);
@@ -463,43 +486,40 @@ public class intersectionFSM {
 
     public void Green_North_Red_All() {
 
+        System.out.println("Currently running Green North Red all");
+
         this.intersectionState.Set_Green_North_Only();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(LeftTurn_North_Time * 5000), ev -> {
-
             Yellow_North_Red_All();
-
         }));
 
         timeline.setCycleCount(1);
         timeline.play();
-
     }
 
 
-
     public void Yellow_H_Red_V() {
+
+        System.out.println("Currently running Yellow H Red V");
 
         this.intersectionState.Set_Yellow_Horizontal_Red_Vertical();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(YELLOW_TIME), ev -> {
 
             if (LeftTurn_South) {
-
                 Green_South_Red_All();
                 LeftTurn_South = false;
 
             }
-            if(LeftTurn_North){
+            else if(LeftTurn_North){
                 Green_North_Red_All();
                 LeftTurn_North = false;
             }
 
             else {
                 Red_H_Green_V();
-
             }
-
 
         }));
 
@@ -643,8 +663,8 @@ public class intersectionFSM {
 
         if (intersectionType == CROSS_SECTION) {
 
-            this.RED_HORIZONTAL_TIME = Green + 2000;
-            this.RED_VERTICAL_TIME = Green + 2000;
+            this.RED_HORIZONTAL_TIME = Green + YELLOW_TIME;
+            this.RED_VERTICAL_TIME = Green + YELLOW_TIME;
 
             this.GREEN_HORIZONTAL_TIME = Green;
             this.GREEN_VERTICAL_TIME = Green;

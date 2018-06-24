@@ -3,8 +3,10 @@ package simulation;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
@@ -12,8 +14,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.animation.AnimationTimer;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,6 +40,8 @@ public class simulationWindowController {
     private Graph graph;
     private String filename;
 
+    private Scene infoPanelScene;
+    private Pane infoPanePane;
 
     private MainController mainController;
 
@@ -62,7 +69,6 @@ public class simulationWindowController {
 
         simulationBoard.setBoard(graph);
 
-
         simulationElements.getChildren().add(simulationBoard);
 
 
@@ -78,7 +84,7 @@ public class simulationWindowController {
         roadStatusUpdater(1000);
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 1);
+        this.mainController = new MainController(this.animationParts, 10000, 2);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -89,7 +95,39 @@ public class simulationWindowController {
 
         simulationScrollpane.setContent(simulationElements);
 
+
+//        this.infoPanelScene = new Scene();
+
+
+//        Scene scene =  new Scene(root, 800,800);
+//
+//        stage.setScene(scene);
+//        stage.show();
+
+
+        handleMouseClickOnCars();
+
     }
+
+    private void handleMouseClickOnCars() {
+
+        this.simulationElements.setOnMouseClicked(event -> {
+
+            System.out.println("Clicked on position " + event.getSceneX() + "   " +  event.getSceneY());
+            for (int i = 0; i < animationParts.carElements.size(); i++) {
+
+                if (event.getTarget() == animationParts.carElements.get(i).getAnimatedCar()) {
+                    String infoPanel;
+                    infoPanel = "Car number: " + i + " Direction: " + animationParts.carElements.get(i).car.getCurentDirection()
+                    +"   Velocity: " + animationParts.carElements.get(i).car.getVel() + "   Local road: " + animationParts.carElements.get(i).car.getLocRoad();
+                    JOptionPane.showMessageDialog(null, infoPanel );
+                }
+
+            }
+
+        });
+    }
+
 
     @FXML
     public void debugbtnaction() {

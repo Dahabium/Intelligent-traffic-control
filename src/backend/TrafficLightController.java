@@ -59,7 +59,8 @@ public class TrafficLightController {
         //run cycle here
 
 //        this.model.map.intersectionFSM.get(0).setHorizontalRed((int) gTime, false);
-        this.model.map.intersectionFSM.get(0).runFSM_Horizontal_Red();
+
+//        this.model.map.intersectionFSM.get(0).runFSM_Horizontal_Red();
 
 //        this.model.map.intersectionFSM.get(1).setHorizontalRed((int)g, false);
 
