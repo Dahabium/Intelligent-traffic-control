@@ -76,6 +76,7 @@ public class AnimationParts {
 
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.start();
+            this.carElements.get(i).car.startTime = System.currentTimeMillis();
         }
 
     }

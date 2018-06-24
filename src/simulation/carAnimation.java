@@ -227,6 +227,8 @@ public class carAnimation {
                             } else {
 
                                 stop();
+                                car.stopTime = System.currentTimeMillis();
+                                System.out.println("Time taken for car to reach destination " + car.getElapsedTimeTotal());
                                 System.out.println("delete car! ");
                                 car.destinationReached = true;
                             }
@@ -246,16 +248,30 @@ public class carAnimation {
                                 carFrontVelocity = 0;
                             }
 
-                        } else {
+                        }
+                        else {
                             //else check the distance in the front node (...)
                             if (car.getPercentageOnCurrentRoad() > 30 && collisionDetection.returnCarInFront(car) == null) {
 
                                 if (car.getLocRoad().existsTrafficLight() == false) {
                                     //continue going full speed
-                                } else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
+                                }
+                                else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
 
                                     dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
                                     carFrontVelocity = 0;
+
+                                    if(car.getVel() < 1 && car.timeAtIntersectionStart == 0){
+                                        car.timeAtIntersectionStart = System.currentTimeMillis();
+
+                                    }
+                                }
+
+                                else if(car.getLocRoad().getTrafficLight().getCurrentstate() == 3 && car.timeAtIntersectionEnd != 0){
+                                    car.timeAtIntersectionEnd = System.currentTimeMillis();
+                                    car.addTimeToIntersection();
+
+                                    System.out.println("Car stood at intersection " + car.totalTimeAtIntersections);
 
                                 }
 
@@ -277,7 +293,7 @@ public class carAnimation {
                             //just by increasing the margins of normal collisiondetection.
                             if (collisionDetection.frontCarCollisionDetection(car)) {
 
-                                System.out.println("side collision" + car + "car in front? : " + collisionDetection.returnCarInFront(car));
+                                System.out.println("collision check for " + car + " : car in front? : " + collisionDetection.returnCarInFront(car));
 
                                 if (car.getVel() > 0) {
 
@@ -290,12 +306,11 @@ public class carAnimation {
                             if (pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70) {
                                 dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
 
-                                if (dist < 0.1) {
+                                if (dist < 0.1 && car.destinationReached == false) {
+                                    car.stopTime = System.currentTimeMillis();
                                     car.destinationReached = true;
                                 }
-
                             }
-
                         }
 
 
@@ -304,7 +319,7 @@ public class carAnimation {
                         car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
 
                         //try to detect a collision here
-                        if (collisionDetection.collisionDetection(dir)) {
+                        if (collisionDetection.collisionDetection(car.getCurentDirection())) {
 
                             stopCarAnimation();
 

@@ -1,7 +1,5 @@
 package simulation;
 
-import backend.Car;
-import backend.TrafficLightController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,15 +11,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.animation.AnimationTimer;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class simulationWindowController {
 
@@ -104,7 +98,8 @@ public class simulationWindowController {
 //
 //        this.animationParts.model.map.runAllConnectedFSMS();
 
-        this.animationParts.model.map.intersectionFSMS.get(0).runFSM_Vertical_Red();
+        this.animationParts.model.map.intersectionFSM.get(0).LeftTurn_East = true;
+//        this.animationParts.model.map.intersectionFSM.get(0).runFSM_Vertical_Red();
     }
 
     public void updateCycleSander(){
@@ -119,7 +114,6 @@ public class simulationWindowController {
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-
 
     }
 
@@ -247,7 +241,7 @@ public class simulationWindowController {
         ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> interArrivals = new ArrayList<>();
-        double lambda = 13 ;
+        double lambda = 11 ;
 
         //will return a value in index of the array of start/ending points
         Random random = new Random();
@@ -269,22 +263,14 @@ public class simulationWindowController {
             int rand = getPoissonRandom(lambda);
             int temp = 60000 / (rand);
 
-            if(temp < 4000){
-                temp = 4000;
+            if(temp < 5000){
+                temp = 5000;
             }
 
             interArrivals.add(temp);
             System.out.println("TIME IS:  " + temp);
 
         }
-
-
-
-
-
-
-
-
 
         if(startPositionsIndexes.size() == endPositionsIndexes.size()){
             //launch timer to start cars each 2 seconds....
@@ -371,6 +357,8 @@ public class simulationWindowController {
                 this.simulationElements.getChildren().remove(animationParts.carElements.get(i).getAnimatedCar());
                 this.animationParts.collisionDetection.cars.remove(animationParts.carElements.get(i).getBackendCar());
 
+                System.out.println("Removing a car that took " + animationParts.carElements.get(i).car.getElapsedTimeTotal() +"  seconds to reach destination");
+//                System.out.println("This car was waiting at intersection for " + animationParts.carElements.get(i).car.timeAtIntersection + " seconds...");
                 animationParts.carElements.remove(i);
 
             }
