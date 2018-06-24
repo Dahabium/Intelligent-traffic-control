@@ -31,22 +31,28 @@ public class Map {
         for(Road r: roads)
         {
             int counter = 0;
+
             for(Edge e : r.lanes)
             {
-                e.index = counter;
+                e.setLaneIndex(counter);
                 counter++;
             }
         }
+
     }
 
     public void createRoads(){
+        int counter = 0;
 
         for (int i = 0; i < this.graph.edges.size(); i++) {
 
             //if this edge is not yet added to road and there is no analogical edges in road already, then add the first edge to road.
             if(this.graph.edges.get(i).addedToRoad == false && getRoadByEdge(this.graph.edges.get(i)) == null){
+
                 ArrayList<Edge> tempEdge = new ArrayList<>();
+
                 tempEdge.add(this.graph.edges.get(i));
+
                 Road temp = new Road(tempEdge);
                 this.graph.edges.get(i).addedToRoad = true;
 

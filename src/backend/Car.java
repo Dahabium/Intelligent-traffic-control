@@ -44,9 +44,10 @@ public class Car {
 	private int width = 25;
 	private int height = 25;
 	private ArrayList<Integer> path;
+	public int StartingLane;
 
 	//TODO fix the startroadend thing (why do we need it?)
-    public Car(Node start, Node end, Map map){
+    public Car(Node start, Node end, int StartingLane, Map map){
     	this.destinationReached = false;
         this.desVel = 80;
         this.maxVel = 100;
@@ -65,6 +66,8 @@ public class Car {
         this.end = end;
         this.map = map;
 		this.totalTimeAtIntersections = 0;
+
+		this.StartingLane = StartingLane;
 //        this.locRoad = graph.getEdge(start, startRoadend).getRoad();
     }
 
@@ -214,13 +217,21 @@ public class Car {
 //		return this.path.c
 //	}
 
-	public void setLocRoad(Road locRoad) {
+	public void setLocRoad(Road locRoad, int index) {
 		this.locRoad = locRoad;
+
+		for (int i = 0; i < locRoad.lanes.size(); i++) {
+			if(locRoad.lanes.get(i).getLaneIndex() == index){
+				this.locEdge = locRoad.lanes.get(i);
+			}
+		}
+
 	}
 
-	public void setLocEdge(Edge edge){
+	public void setLocEdge(Edge edge, int index){
 
 		this.locEdge = edge;
+
 		this.locRoad = getCorrespondingRoad(edge);
 
 	}

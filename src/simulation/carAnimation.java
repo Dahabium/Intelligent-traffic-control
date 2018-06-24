@@ -39,11 +39,10 @@ public class carAnimation {
 
         pathIterator = 1;
 
-//        System.out.println("INTPATH " + IntPath + " PATHITERATOR " + pathIterator);
-
-        //set the initial road for the car
         //TODO use roads instead of edges
-        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))));
+
+        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
+//        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))), car.StartingLane);
 
         int carsizeWidth = 25;
         int carsizeHight = 13;
@@ -78,6 +77,13 @@ public class carAnimation {
             imgView.setRotate(360);
         }
 
+        if(car.StartingLane == 0){
+            //dont displace car
+        }
+        else if(car.StartingLane == 1){
+            changeLane(1,car.getCurentDirection());
+        }
+
         animationTimer = new AnimationTimer() {
 
 
@@ -87,6 +93,8 @@ public class carAnimation {
                 // insert in the if statement to make the care move only on green : && car.getLocRoad().getTrafficLight().getCurrentstate() == 3
                 if (lastUpdateTime.get() > 0) {
 
+
+                    System.out.println("I am currently driving on lane number " + car.getLocEdge().getLaneIndex() + "  XPOS "+ car.getLocX()+ "  YPOS "+ car.getLocY());
 
                     int xCoord = simPath.path.get(pathIterator).get(0);
                     int yCoord = simPath.path.get(pathIterator).get(1);
@@ -155,8 +163,12 @@ public class carAnimation {
 
                             int newDir = simPath.directions.get(pathIterator - 1);
 
-                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)),
-                                    graph.getNodeByIndex(IntPath.get(pathIterator))));
+//                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)),
+//                                    graph.getNodeByIndex(IntPath.get(pathIterator))),0);
+//
+//                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
+
+                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
 
                             if (oldDir == 6) {
@@ -302,19 +314,15 @@ public class carAnimation {
                     }
                 }
 
-
                 lastUpdateTime.set(now);
 
             }
-
         };
-
-
     }
 
 
     public void changeLane(int laneIndex, int dire) {
-        System.out.println(dire + " = THE DIRECTION");
+
         int index = pathIterator;
         ArrayList<Double> point = new ArrayList<>();
         double curX = car.getLocX();
@@ -326,42 +334,50 @@ public class carAnimation {
         //If it's changing to outer road
         if (dire == 8 && laneIndex == 1) {
             diffX += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
             //diffY -= 10;
         }
 
         if (dire == 2 && laneIndex == 1) {
             diffX -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
             //diffY += 10;
         }
 
         if (dire == 4 && laneIndex == 1) {
             diffY -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
             //diffX -= 10;
         }
 
         if (dire == 6 && laneIndex == 1) {
             diffY += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
             //diffX += 10;
         }
 
         //If it's changing back to middle road
         if (dire == 8 && laneIndex == 0) {
             diffX -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
             //diffY -= 10;
         }
 
         if (dire == 2 && laneIndex == 0) {
             diffX += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
             //diffY += 10;
         }
 
         if (dire == 4 && laneIndex == 0) {
             diffY += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
             //diffX -= 10;
         }
 
         if (dire == 6 && laneIndex == 0) {
             diffY -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
             //diffX += 10;
         }
 

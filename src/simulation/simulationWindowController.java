@@ -132,12 +132,9 @@ public class simulationWindowController {
     @FXML
     public void debugbtnaction() {
 
-//        this.mainController.getTLCcontroller().updateCycle();
-//
-//        this.animationParts.model.map.runAllConnectedFSMS();
+//        System.out.println("Currently running on lane " + this.animationParts.carElements.get(0).car.getLocEdge());
 
-        this.animationParts.model.map.intersectionFSM.get(0).LeftTurn_East = true;
-//        this.animationParts.model.map.intersectionFSM.get(0).runFSM_Vertical_Red();
+        this.animationParts.carElements.get(0).changeLane(0,this.animationParts.carElements.get(0).getBackendCar().getCurentDirection());
     }
 
     public void updateCycleSander(){
