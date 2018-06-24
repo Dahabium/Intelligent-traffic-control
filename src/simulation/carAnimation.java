@@ -104,14 +104,14 @@ public class carAnimation {
                     double carFrontVelocity = 0;
 
 //                    FOR TESTING LANE CHANGING
-                    if (car.getLocX() > 100 && first) {
-
-                        System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator - 1));
-                        dir = simPath.directions.get(pathIterator - 1);
-                        changeLane(1, dir);
-
-                        first = false;
-                    }
+//                    if (car.getLocX() > 100 && first) {
+//
+//                        System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator - 1));
+//                        dir = simPath.directions.get(pathIterator - 1);
+//                        changeLane(1, dir);
+//
+//                        first = false;
+//                    }
 
                     xCoord = simPath.path.get(pathIterator).get(0);
                     yCoord = simPath.path.get(pathIterator).get(1);
@@ -251,12 +251,12 @@ public class carAnimation {
                             } else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
 
                                 if (car.getCurentDirection() == 4 && simPath.directions.get(pathIterator) == 2) {
-                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 65;
+                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15);
                                     carFrontVelocity = 0;
 
                                 }
                                 if (car.getCurentDirection() == 8 && simPath.directions.get(pathIterator) == 4) {
-                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 60;
+                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15) ;
                                     carFrontVelocity = 0;
                                 } else {
                                     dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40;
@@ -274,11 +274,8 @@ public class carAnimation {
                                 car.addTimeToIntersection();
 
                                 System.out.println("Car stood at intersection " + car.totalTimeAtIntersections);
-
                             }
-
                         }
-
 
                         //decelerate before doing a turn untill "10 meters per second" .
                         if (car.getPercentageOnCurrentRoad() > 60 && (pathIterator < simPath.path.size() - 1) &&
