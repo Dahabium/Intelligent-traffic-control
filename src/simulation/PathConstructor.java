@@ -34,7 +34,7 @@ public class PathConstructor {
                     dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = + 4;
+                        correctionY = +5;
                     }
 
                     if (dir == 4) {
@@ -46,7 +46,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -14;
+                        correctionX = -17;
                     }
                 } else {
                     int curX = graph.getNodeByIndex(IntPath.get(0)).x * SIM_SIZE;
@@ -57,7 +57,7 @@ public class PathConstructor {
                     int dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = + 4;
+                        correctionY = +5;
                     }
 
                     if (dir == 4) {
@@ -69,7 +69,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -14;
+                        correctionX = -17;
                     }
                 }
                 if (i == 0) {
@@ -103,7 +103,7 @@ public class PathConstructor {
                     dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = + 4;
+                        correctionY = +5;
                     }
 
                     if (dir == 4) {
@@ -115,7 +115,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -14;
+                        correctionX = -17;
                     }
 
 
@@ -139,10 +139,10 @@ public class PathConstructor {
 
 
                     if (dir == 6) {
-                        correctionY = + 4;
+                        correctionY = +5;
 
                         if (newDir == 2) {
-                            correctionX = -14;
+                            correctionX = -17;
                         }
 
                         if (newDir == 8) {
@@ -155,7 +155,7 @@ public class PathConstructor {
                         correctionY = -9;
 
                         if (newDir == 2) {
-                            correctionX = -14;
+                            correctionX = -17;
                         }
 
                         if (newDir == 8) {
@@ -167,7 +167,7 @@ public class PathConstructor {
                         correctionX = -1;
 
                         if (newDir == 6) {
-                            correctionY = + 4;
+                            correctionY = +5;
                         }
 
                         if (newDir == 4) {
@@ -176,10 +176,10 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -14;
+                        correctionX = -17;
 
                         if (newDir == 6) {
-                            correctionY = + 4;
+                            correctionY = +5;
                         }
 
                         if (newDir == 4) {
@@ -197,7 +197,7 @@ public class PathConstructor {
 
 
                     if (dir == 6) {
-                        correctionY = + 4;
+                        correctionY = +5;
                     }
 
                     if (dir == 4) {
@@ -209,7 +209,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -14;
+                        correctionX = -17;
                     }
 
                 }
@@ -238,6 +238,12 @@ public class PathConstructor {
         return simPath;
     }
 
+    public void editStep(int index, int laneindex)
+    {
+        int dir = simPath.directions.get(index);
+        
+    }
+
     private int checkDirection(int oldX, int oldY, int newX, int newY) {
 
         //north
@@ -253,7 +259,7 @@ public class PathConstructor {
         //east
         if (oldX > newX && oldY == newY) {
             //turn east
-//            System.out.println("Direction is: " + 4);
+//            System.out.println("Direction is: " +5);
             return 4;
         }
         //west

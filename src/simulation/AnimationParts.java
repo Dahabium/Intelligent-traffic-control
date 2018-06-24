@@ -50,7 +50,7 @@ public class AnimationParts {
             ArrayList<Integer> IntPath = getRouteGreedy(start, end);
 
             System.out.println("dir 1" );
-            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)),1, this.model.map);
+            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)),0, this.model.map);
             car.setPath(IntPath);
 
             collisionDetection.addCar(car);

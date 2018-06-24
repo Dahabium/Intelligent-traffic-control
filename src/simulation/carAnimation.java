@@ -24,10 +24,10 @@ public class carAnimation {
     AnimationTimer animationTimer;
     PathConstructor pathConstructor;
     Car car;
-    int lane0X = 10, lane0Y = 13, lane1X = 20, lane1Y = 20;
+    int lane0X = 10, lane0Y = 10, lane1X = 20, lane1Y = 20;
     int pathIterator;
     int previousPosition;
-    int dir;
+    int dir, carsizeWidth, carsizeHight;
     boolean first = true;
 
     public carAnimation(Graph graph, Board board, Model model, Car car, CollisionDetection collisionDetection) {
@@ -44,8 +44,8 @@ public class carAnimation {
         car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 //        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))), car.StartingLane);
 
-        int carsizeWidth = 25;
-        int carsizeHight = 13;
+        carsizeWidth = 25;
+        carsizeHight = 13;
 
         javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", carsizeWidth, carsizeHight, true, false);
         imgView = new ImageView(img);
@@ -323,14 +323,16 @@ public class carAnimation {
 
     public void changeLane(int laneIndex, int dire) {
 
+
         int index = pathIterator;
         ArrayList<Double> point = new ArrayList<>();
-        double curX = car.getLocX();
-        double curY = car.getLocY();
+        double curX = imgView.getTranslateX();
+        double curY = imgView.getTranslateY();
         double diffX = 0;
         double diffY = 0;
         double nextX = simPath.getX(index);
         double nextY = simPath.getY(index);
+
         //If it's changing to outer road
         if (dire == 8 && laneIndex == 1) {
             diffX += lane0Y;
@@ -384,8 +386,9 @@ public class carAnimation {
         simPath.remove(index);
         //simPath.addtoPath((int)(curX + diffX), (int)(curY + diffY), dire, index);
         System.out.println("Difference: " + diffX + ", " + diffY);
-        imgView.setTranslateY(car.getLocY() + diffY);
-        imgView.setTranslateX(car.getLocX() + diffX);
+
+        imgView.setTranslateY(curY + diffY);
+        imgView.setTranslateX(curX + diffX);
         simPath.addtoPath((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
         if (index <= IntPath.size()) {
             int counter = 1;

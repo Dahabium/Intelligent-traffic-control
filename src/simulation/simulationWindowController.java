@@ -134,7 +134,7 @@ public class simulationWindowController {
 
 //        System.out.println("Currently running on lane " + this.animationParts.carElements.get(0).car.getLocEdge());
 
-        this.animationParts.carElements.get(0).changeLane(0,this.animationParts.carElements.get(0).getBackendCar().getCurentDirection());
+        this.animationParts.carElements.get(0).changeLane(1,this.animationParts.carElements.get(0).getBackendCar().getCurentDirection());
     }
 
     public void updateCycleSander(){
