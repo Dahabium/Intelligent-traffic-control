@@ -93,28 +93,32 @@ public class carAnimation {
 
                     final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    final double delta = elapsedSeconds * car.getVel() *2;
+                    final double delta = elapsedSeconds * car.getVel() * 2;
 
-                    final double oldX = imgView.getTranslateX() ;
-                    final double oldY = imgView.getTranslateY() ;
+                    final double oldX = imgView.getTranslateX();
+                    final double oldY = imgView.getTranslateY();
                     double newX = oldX + delta;
                     double newY = oldY + delta;
 
                     double dist = 100000;
                     double carFrontVelocity = 0;
 
-                        //FOR TESTING LANE CHANGING
-//                        if(car.getLocX()>100 && first) {
-//
-//                            System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator-1));
-//                            dir = simPath.directions.get(pathIterator-1);
-//                            changeLane(1, dir);
-//
-//                            first = false;
-//                        }
+//                    FOR TESTING LANE CHANGING
+                    if (car.getLocX() > 100 && first) {
 
-                        xCoord = simPath.path.get(pathIterator).get(0);
-                        yCoord = simPath.path.get(pathIterator).get(1);
+                        System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator - 1));
+                        dir = simPath.directions.get(pathIterator - 1);
+                        changeLane(1, dir);
+
+                        first = false;
+                    }
+
+                    xCoord = simPath.path.get(pathIterator).get(0);
+                    yCoord = simPath.path.get(pathIterator).get(1);
+
+                    if (simPath.directions.get(pathIterator - 1) == 4) {
+                        newX = oldX - delta;
+                    }
 
                     if (simPath.directions.get(pathIterator - 1) == 8) {
                         newY = oldY - delta;
@@ -123,19 +127,19 @@ public class carAnimation {
 
                     if (simPath.directions.get(pathIterator - 1) == 6 && newX < xCoord) {
                         imgView.setTranslateX(newX);
-                        car.setLocX(newX + carsizeWidth/2);
+                        car.setLocX(newX + carsizeWidth / 2);
 
                     } else if (simPath.directions.get(pathIterator - 1) == 4 && newX > xCoord) {
                         imgView.setTranslateX(newX);
-                        car.setLocX(newX + carsizeWidth/2);
+                        car.setLocX(newX + carsizeWidth / 2);
 
                     } else if (simPath.directions.get(pathIterator - 1) == 2 && newY < yCoord) {
                         imgView.setTranslateY(newY);
-                        car.setLocY(newY + carsizeHight/2);
+                        car.setLocY(newY + carsizeHight / 2);
 
                     } else if (simPath.directions.get(pathIterator - 1) == 8 && newY > yCoord) {
                         imgView.setTranslateY(newY);
-                        car.setLocY(newY + carsizeHight/2);
+                        car.setLocY(newY + carsizeHight / 2);
 
                     } else {
 
@@ -184,13 +188,19 @@ public class carAnimation {
                                 if (newDir == 2) {
                                     imgView.setRotate(90);
                                 }
-                                if (oldDir == 2) {
-                                    if (newDir == 4) {
-                                        imgView.setRotate(180);
-                                    }
-                                    if (newDir == 6) {
-                                        imgView.setRotate(0);
-                                    }
+                            }
+                            if (oldDir == 4) {
+                                if (newDir == 8) {
+                                    imgView.setRotate(270);
+                                }
+                                if (newDir == 2) {
+                                    imgView.setRotate(90);
+                                }
+                            }
+
+                            if (oldDir == 2) {
+                                if (newDir == 4) {
+                                    imgView.setRotate(180);
                                 }
                                 if (newDir == 6) {
                                     imgView.setRotate(0);
@@ -232,39 +242,34 @@ public class carAnimation {
                             carFrontVelocity = 0;
                         }
 
-                    }
-                    else {
+                    } else {
                         //else check the distance in the front node (...)
                         if (car.getPercentageOnCurrentRoad() > 30 && collisionDetection.returnCarInFront(car) == null) {
 
                             if (car.getLocRoad().existsTrafficLight() == false) {
                                 //continue going full speed
-                            }
-                            else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
+                            } else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
 
-                                if(car.getCurentDirection() == 4 && simPath.directions.get(pathIterator) == 2){
+                                if (car.getCurentDirection() == 4 && simPath.directions.get(pathIterator) == 2) {
                                     dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 65;
                                     carFrontVelocity = 0;
 
                                 }
-                                if(car.getCurentDirection() == 8 && simPath.directions.get(pathIterator) == 4){
+                                if (car.getCurentDirection() == 8 && simPath.directions.get(pathIterator) == 4) {
                                     dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 60;
                                     carFrontVelocity = 0;
-                                }
-
-                                else {
+                                } else {
                                     dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40;
                                     carFrontVelocity = 0;
 
                                 }
 
                                 if (car.getVel() < 1 && car.getVel() >= 0 && car.timeAtIntersectionStart == 0) {
-                                    car.setVel(car.getVel()-0.1);
+                                    car.setVel(car.getVel() - 0.1);
                                     car.timeAtIntersectionStart = System.currentTimeMillis();
                                 }
 
-                            }
-                            else if (car.getLocRoad().getTrafficLight().getCurrentstate() == 3 && car.timeAtIntersectionEnd != 0) {
+                            } else if (car.getLocRoad().getTrafficLight().getCurrentstate() == 3 && car.timeAtIntersectionEnd != 0) {
                                 car.timeAtIntersectionEnd = System.currentTimeMillis();
                                 car.addTimeToIntersection();
 
@@ -333,9 +338,7 @@ public class carAnimation {
     }
 
 
-
-    public void changeLane(int laneIndex, int dire)
-    {
+    public void changeLane(int laneIndex, int dire) {
         System.out.println(dire + " = THE DIRECTION");
         int index = pathIterator;
         ArrayList<Double> point = new ArrayList<>();
@@ -346,51 +349,43 @@ public class carAnimation {
         double nextX = simPath.getX(index);
         double nextY = simPath.getY(index);
         //If it's changing to outer road
-        if(dire == 8 && laneIndex == 1)
-        {
+        if (dire == 8 && laneIndex == 1) {
             diffX += lane0Y;
             //diffY -= 10;
         }
 
-        if(dire == 2 && laneIndex == 1)
-        {
+        if (dire == 2 && laneIndex == 1) {
             diffX -= lane0Y;
             //diffY += 10;
         }
 
-        if(dire == 4 && laneIndex == 1)
-        {
+        if (dire == 4 && laneIndex == 1) {
             diffY -= lane0Y;
             //diffX -= 10;
         }
 
-        if(dire == 6 && laneIndex == 1)
-        {
+        if (dire == 6 && laneIndex == 1) {
             diffY += lane0Y;
             //diffX += 10;
         }
 
         //If it's changing back to middle road
-        if(dire == 8 && laneIndex == 0)
-        {
+        if (dire == 8 && laneIndex == 0) {
             diffX -= lane0Y;
             //diffY -= 10;
         }
 
-        if(dire == 2 && laneIndex == 0)
-        {
+        if (dire == 2 && laneIndex == 0) {
             diffX += lane0Y;
             //diffY += 10;
         }
 
-        if(dire == 4 && laneIndex == 0)
-        {
+        if (dire == 4 && laneIndex == 0) {
             diffY += lane0Y;
             //diffX -= 10;
         }
 
-        if(dire == 6 && laneIndex == 0)
-        {
+        if (dire == 6 && laneIndex == 0) {
             diffY -= lane0Y;
             //diffX += 10;
         }
@@ -398,20 +393,18 @@ public class carAnimation {
         simPath.remove(index);
         //simPath.addtoPath((int)(curX + diffX), (int)(curY + diffY), dire, index);
         System.out.println("Difference: " + diffX + ", " + diffY);
-        imgView.setTranslateY(car.getLocY()+diffY);
-        imgView.setTranslateX(car.getLocX()+diffX);
-        simPath.addtoPath((int)(nextX + diffX), (int)(nextY + diffY),dire,index);
-        if(index  <= IntPath.size())
-        {
+        imgView.setTranslateY(car.getLocY() + diffY);
+        imgView.setTranslateX(car.getLocX() + diffX);
+        simPath.addtoPath((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
+        if (index <= IntPath.size()) {
             int counter = 1;
-            while(index+counter<IntPath.size() && simPath.directions.get(index+counter) == simPath.directions.get(index + counter-1))
-            {
+            while (index + counter < IntPath.size() && simPath.directions.get(index + counter) == simPath.directions.get(index + counter - 1)) {
                 System.out.println("Path edited");
-                int pathX = simPath.getX(index+counter);
-                int pathY = simPath.getY(index+counter);
-                simPath.remove(index+counter);
-                simPath.addtoPath((int)(pathX+diffX), (int)(pathY+diffY), dire, index + counter);
-                counter ++;
+                int pathX = simPath.getX(index + counter);
+                int pathY = simPath.getY(index + counter);
+                simPath.remove(index + counter);
+                simPath.addtoPath((int) (pathX + diffX), (int) (pathY + diffY), dire, index + counter);
+                counter++;
             }
 
         }
