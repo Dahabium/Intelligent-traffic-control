@@ -104,17 +104,16 @@ public class carAnimation {
                     double carFrontVelocity = 0;
 
 //                    FOR TESTING LANE CHANGING
-                    if (car.getLocX() > 100 && first) {
+//                    if (car.getLocX() > 100 && first) {
+//
+//                        System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator - 1));
+//                        dir = simPath.directions.get(pathIterator - 1);
+//                        changeLane(1, dir);
+//
+//                        first = false;
+//                    }
 
-                        System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator - 1));
-                        dir = simPath.directions.get(pathIterator - 1);
-                        changeLane(1, dir);
 
-                        first = false;
-                    }
-
-                    xCoord = simPath.path.get(pathIterator).get(0);
-                    yCoord = simPath.path.get(pathIterator).get(1);
 
                     if (simPath.directions.get(pathIterator - 1) == 4) {
                         newX = oldX - delta;
@@ -161,29 +160,7 @@ public class carAnimation {
 
                             if (oldDir == 6) {
                                 if (newDir == 8) {
-//                                    final Rotate rotationTransform = new Rotate(0, imgView.getX(), imgView.getY());
-//                                    imgView.getTransforms().add(rotationTransform);
-//
-//                                    final Timeline rotationAnimation = new Timeline();
-//                                    rotationAnimation.getKeyFrames()
-//                                            .add(
-//                                                    new KeyFrame(
-//                                                            Duration.seconds(0.5),
-//                                                            new KeyValue(
-//                                                                    rotationTransform.angleProperty(),
-//                                                                    -80
-//                                                            )
-//                                                    )
-//                                            );
-//                                    rotationAnimation.setCycleCount(1);
-//                                    rotationAnimation.play();
-
-
                                     imgView.setRotate(270);
-//                                    while(currentRotation != 270){
-//                                        imgView.setRotate(currentRotation - 10);
-//
-//                                    }
                                 }
                                 if (newDir == 2) {
                                     imgView.setRotate(90);

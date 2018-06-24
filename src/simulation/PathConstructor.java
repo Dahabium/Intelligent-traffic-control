@@ -46,7 +46,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = -14;
                     }
                 } else {
                     int curX = graph.getNodeByIndex(IntPath.get(0)).x * SIM_SIZE;
@@ -69,7 +69,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = -14;
                     }
                 }
                 if (i == 0) {
@@ -115,7 +115,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = -14;
                     }
 
 
@@ -142,7 +142,7 @@ public class PathConstructor {
                         correctionY = + 4;
 
                         if (newDir == 2) {
-                            correctionX = -17;
+                            correctionX = -14;
                         }
 
                         if (newDir == 8) {
@@ -155,7 +155,7 @@ public class PathConstructor {
                         correctionY = -9;
 
                         if (newDir == 2) {
-                            correctionX = -17;
+                            correctionX = -14;
                         }
 
                         if (newDir == 8) {
@@ -176,7 +176,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = -14;
 
                         if (newDir == 6) {
                             correctionY = + 4;
@@ -209,7 +209,7 @@ public class PathConstructor {
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = -14;
                     }
 
                 }
