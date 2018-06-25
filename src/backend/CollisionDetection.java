@@ -30,7 +30,7 @@ public class CollisionDetection {
 
         for (int i = 0; i < cars.size(); i++) {
 
-            if ((car.getCurentDirection() == 6 || car.getCurentDirection() == 4) &&
+            if (car.getLocEdge() == cars.get(i).getLocEdge() &&(car.getCurentDirection() == 6 || car.getCurentDirection() == 4) &&
 
                     car.getLocX() <= cars.get(i).getLocX() + 25 &&
                     car.getLocX() + 25 >= cars.get(i).getLocX() &&
