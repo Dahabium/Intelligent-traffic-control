@@ -41,7 +41,6 @@ public class carAnimation {
 
         //TODO use roads instead of edges
 
-        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 //        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))), car.StartingLane);
 
         carsizeWidth = 25;
@@ -53,6 +52,8 @@ public class carAnimation {
 
         this.pathConstructor = new PathConstructor(IntPath, graph, board.SIM_SIZE, car);
         simPath = pathConstructor.constructPath();
+
+        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
         car.setLocX(simPath.startX + carsizeWidth / 2);
         car.setLocY(simPath.startY + carsizeHight / 2);
@@ -81,7 +82,7 @@ public class carAnimation {
             //dont displace car
         }
         else if(car.StartingLane == 1){
-            changeLane(1,car.getCurentDirection());
+            //changeLane(1,car.getCurentDirection());
         }
 
         animationTimer = new AnimationTimer() {

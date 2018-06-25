@@ -30,8 +30,9 @@ public class TrafficLight {
 
         trafficlight = new Group();
 
-        trafficlight.setLayoutX(XPos);
-        trafficlight.setLayoutY(YPos);
+        //trafficlight.setLayoutX(XPos);
+        //trafficlight.setLayoutY(YPos);
+        trafficlight.relocate(XPos, YPos);
 
         Rectangle rectangle = new Rectangle(30,90, Color.DARKGRAY);
         rectangle.setFill(Color.DARKGRAY);

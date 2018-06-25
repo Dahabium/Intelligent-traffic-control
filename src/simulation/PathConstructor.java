@@ -11,6 +11,7 @@ public class PathConstructor {
     simulationPath simPath;
     int dir;
     int offset = 13;
+    int xm = -18, xp = -4, ym = -12, yp = +3;
     Car car;
 
 
@@ -18,7 +19,7 @@ public class PathConstructor {
     {
         this.car = car;
         this.graph = graph;
-        this.SIM_SIZE = SIM_SIZE;
+        this.SIM_SIZE = SIM_SIZE +1;
         this.IntPath = IntPath;
 
     }
@@ -39,19 +40,19 @@ public class PathConstructor {
                     dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = +5;
+                        correctionY = yp;
                     }
 
                     if (dir == 4) {
-                        correctionY = -9;
+                        correctionY = ym;
                     }
 
                     if (dir == 8) {
-                        correctionX = -1;
+                        correctionX = xp;
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = xm;
                     }
                 } else {
                     int curX = graph.getNodeByIndex(IntPath.get(0)).x * SIM_SIZE;
@@ -62,19 +63,19 @@ public class PathConstructor {
                     int dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = +5;
+                        correctionY = yp;
                     }
 
                     if (dir == 4) {
-                        correctionY = -9;
+                        correctionY = ym;
                     }
 
                     if (dir == 8) {
-                        correctionX = -1;
+                        correctionX = xp;
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = xm;
                     }
                 }
                 if (i == 0) {
@@ -108,19 +109,19 @@ public class PathConstructor {
                     dir = checkDirection(curX, curY, newX, newY);
 
                     if (dir == 6) {
-                        correctionY = +5;
+                        correctionY = yp;
                     }
 
                     if (dir == 4) {
-                        correctionY = -9;
+                        correctionY = ym;
                     }
 
                     if (dir == 8) {
-                        correctionX = -1;
+                        correctionX = xp;
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = xm;
                     }
 
 
@@ -144,51 +145,51 @@ public class PathConstructor {
 
 
                     if (dir == 6) {
-                        correctionY = +5;
+                        correctionY = yp;
 
                         if (newDir == 2) {
-                            correctionX = -17;
+                            correctionX = xm;
                         }
 
                         if (newDir == 8) {
-                            correctionX = -1;
+                            correctionX = xp;
                         }
 
                     }
 
                     if (dir == 4) {
-                        correctionY = -9;
+                        correctionY = ym;
 
                         if (newDir == 2) {
-                            correctionX = -17;
+                            correctionX = xm;
                         }
 
                         if (newDir == 8) {
-                            correctionX = -1;
+                            correctionX = xp;
                         }
                     }
 
                     if (dir == 8) {
-                        correctionX = -1;
+                        correctionX = xp;
 
                         if (newDir == 6) {
-                            correctionY = +5;
+                            correctionY = yp;
                         }
 
                         if (newDir == 4) {
-                            correctionY = -9;
+                            correctionY = ym;
                         }
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = xm;
 
                         if (newDir == 6) {
-                            correctionY = +5;
+                            correctionY = yp;
                         }
 
                         if (newDir == 4) {
-                            correctionY = -9;
+                            correctionY = ym;
                         }
                     }
                 }
@@ -203,19 +204,19 @@ public class PathConstructor {
 
 
                     if (dir == 6) {
-                        correctionY = +5;
+                        correctionY = yp;
                     }
 
                     if (dir == 4) {
-                        correctionY = -9;
+                        correctionY = ym;
                     }
 
                     if (dir == 8) {
-                        correctionX = -1;
+                        correctionX = xp;
                     }
 
                     if (dir == 2) {
-                        correctionX = -17;
+                        correctionX = xm;
                     }
 
                 }
@@ -326,6 +327,7 @@ public class PathConstructor {
     public void setLanes()
     {
 
+        System.out.println("LaneIndices are: " + simPath.laneIndices);
         for(int i = 0; i < simPath.laneIndices.size(); i++)
         {
             if(i < simPath.directions.size()-1) {
@@ -338,8 +340,9 @@ public class PathConstructor {
                 if (dir == 6) {
                     if (simPath.laneIndices.get(i) == 1) {
                         if (i == 0) {
-                            simPath.startX = simPath.getX(i);
-                            simPath.startY = simPath.getY(i) + offset;
+                            simPath.startX = simPath.startX;
+                            simPath.startY = simPath.startY + offset;
+                            car.StartingLane = 1;
                         }
                         simPath.addtoPathAt(simPath.getX(i), simPath.getY(i) + offset, dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1), simPath.getY(i + 1) + offset, newdir, i + 1);
@@ -350,6 +353,7 @@ public class PathConstructor {
                         if (i == 0) {
                             simPath.startX = simPath.getX(i);
                             simPath.startY = simPath.getY(i) - offset;
+                            car.StartingLane = 1;
                         }
                         simPath.addtoPathAt(simPath.getX(i), simPath.getY(i) - offset, dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1), simPath.getY(i + 1) - offset, newdir, i + 1);
@@ -360,6 +364,7 @@ public class PathConstructor {
                         if (i == 0) {
                             simPath.startX = simPath.getX(i) + offset;
                             simPath.startY = simPath.getY(i);
+                            car.StartingLane = 1;
                         }
                         simPath.addtoPathAt(simPath.getX(i) + offset, simPath.getY(i), dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1) + offset, simPath.getY(i + 1), newdir, i + 1);
@@ -371,6 +376,7 @@ public class PathConstructor {
                         if (i == 0) {
                             simPath.startX = simPath.getX(i) - offset;
                             simPath.startY = simPath.getY(i);
+                            car.StartingLane = 1;
                         }
                         simPath.addtoPathAt(simPath.getX(i) - offset, simPath.getY(i), dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1) - offset, simPath.getY(i + 1), newdir, i + 1);
@@ -381,7 +387,7 @@ public class PathConstructor {
 
         }
 
-        System.out.println("Sizes are: Path = "+ simPath.path.size() + " directions = " + simPath.directions.size() + " lanes = " + simPath.laneIndices.size());
+        System.out.println("Sizes are: Path = " + simPath.path.size() + " directions = " + simPath.directions.size() + " lanes = " + simPath.laneIndices.size());
 
 
     }
@@ -401,7 +407,7 @@ public class PathConstructor {
         //east
         if (oldX > newX && oldY == newY) {
             //turn east
-//            System.out.println("Direction is: " +5);
+//            System.out.println("Direction is: " yp);
             return 4;
         }
         //west
