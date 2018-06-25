@@ -315,32 +315,13 @@ public class PathConstructor {
             }
         }
 
-        correct();
+        
 
         setLanes();
         
     }
 
-    public void correct()
-    {
-        boolean outer = false;
 
-        for(int i = simPath.laneIndices.size()-1; i>-1; i--)
-        {
-            if(i>0 && simPath.laneIndices.get(i-1) == 0 && simPath.directions.get(i)== simPath.directions.get(i-1) && outer)
-            {
-                simPath.laneIndices.remove(i-1);
-                simPath.laneIndices.add(i-1, 1);
-                if(i == 1)
-                {
-                    car.StartingLane = 1;
-                }
-            }
-            if(simPath.laneIndices.get(i) == 1) outer = true;
-            else outer = false;
-
-        }
-    }
 
     public void setLanes()
     {
