@@ -12,7 +12,7 @@ public class Map {
     private Graph graph;
     public ArrayList<Road> roads;
 
-    public ArrayList<intersectionFSMS> intersectionFSMS;
+    public ArrayList<intersectionFSM> intersectionFSM;
 
 
     public Map(Graph graph){
@@ -20,20 +20,39 @@ public class Map {
         this.graph = graph;
 
         this.roads = new ArrayList<>();
-        this.intersectionFSMS = new ArrayList<>();
+        this.intersectionFSM = new ArrayList<>();
 
         createRoads();
 
     }
 
+    public void indexLanes()
+    {
+        for(Road r: roads)
+        {
+            int counter = 0;
+
+            for(Edge e : r.lanes)
+            {
+                e.setLaneIndex(counter);
+                counter++;
+            }
+        }
+
+    }
+
     public void createRoads(){
+        int counter = 0;
 
         for (int i = 0; i < this.graph.edges.size(); i++) {
 
             //if this edge is not yet added to road and there is no analogical edges in road already, then add the first edge to road.
             if(this.graph.edges.get(i).addedToRoad == false && getRoadByEdge(this.graph.edges.get(i)) == null){
+
                 ArrayList<Edge> tempEdge = new ArrayList<>();
+
                 tempEdge.add(this.graph.edges.get(i));
+
                 Road temp = new Road(tempEdge);
                 this.graph.edges.get(i).addedToRoad = true;
 
@@ -47,6 +66,8 @@ public class Map {
             }
 
         }
+
+        indexLanes();
 
     }
 
@@ -92,11 +113,11 @@ public class Map {
     }
 
 
-    public intersectionFSMS getCorrespondingFSM(Node node){
-        for (int i = 0; i < intersectionFSMS.size(); i++) {
+    public intersectionFSM getCorrespondingFSM(Node node){
+        for (int i = 0; i < intersectionFSM.size(); i++) {
 
-            if(intersectionFSMS.get(i).intersection == node){
-                return intersectionFSMS.get(i);
+            if(intersectionFSM.get(i).intersection == node){
+                return intersectionFSM.get(i);
             }
         }
 
@@ -105,9 +126,9 @@ public class Map {
     }
 
     public void runAllConnectedFSMS(){
-        System.out.println("IntersectionFSMS array size " + intersectionFSMS.size());
-        for (int i = 0; i < this.intersectionFSMS.size() ; i++) {
-            this.intersectionFSMS.get(i).runFSM_Horizontal_Red();
+        System.out.println("IntersectionFSMS array size " + intersectionFSM.size());
+        for (int i = 0; i < this.intersectionFSM.size() ; i++) {
+            this.intersectionFSM.get(i).runFSM_Horizontal_Red();
         }
     }
 

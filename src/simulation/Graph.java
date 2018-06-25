@@ -245,6 +245,8 @@ public class Graph {
         return number;
     }
 
+
+
     //given a node, return the ammount of incoming edges
     public int getNumberOfIncomingRoads(Node node) {
         int count = 0;
@@ -354,6 +356,19 @@ public class Graph {
             }
         }
         return null;
+    }
+    public ArrayList<Edge> getLanes(Node start, Node end){
+        ArrayList<Edge> out = new ArrayList<>();
+
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).start == start && edges.get(i).end == end) {
+                out.add(edges.get(i));
+            }
+        }
+        if(out.size()>1){
+            return out;
+        }
+        else return null;
     }
 
     public Edge getEdgeByIndexes(int start, int end){

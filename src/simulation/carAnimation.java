@@ -22,13 +22,13 @@ public class carAnimation {
     ImageView imgView;
     simulationPath simPath;
     AnimationTimer animationTimer;
-
+    PathConstructor pathConstructor;
     Car car;
-
+    int lane0X = 10, lane0Y = 10, lane1X = 20, lane1Y = 20;
     int pathIterator;
     int previousPosition;
-    int dir;
-
+    int dir, carsizeWidth, carsizeHight;
+    boolean first = true;
 
     public carAnimation(Graph graph, Board board, Model model, Car car, CollisionDetection collisionDetection) {
 
@@ -39,526 +39,372 @@ public class carAnimation {
 
         pathIterator = 1;
 
-        System.out.println("INTPATH " + IntPath + " PATHITERATOR " + pathIterator);
-
-        //set the initial road for the car
         //TODO use roads instead of edges
-        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))));
 
+        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
+//        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))), car.StartingLane);
 
-        javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", 25, 13, true, false);
+        carsizeWidth = 25;
+        carsizeHight = 13;
+
+        javafx.scene.image.Image img = new javafx.scene.image.Image("car.PNG", carsizeWidth, carsizeHight, true, false);
         imgView = new ImageView(img);
 
-        //if a path has 2 points minimum
 
-        if (IntPath.size() == 2) {
-            for(int i = 0; i<IntPath.size(); i++)
-            {
-                int correctionX = 0;
-                int correctionY = 0;
-                if(i == 0)
-                {
-                    int curX = graph.getNodeByIndex(IntPath.get(0)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(0)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(1)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(1)).y * board.SIM_SIZE;
+        this.pathConstructor = new PathConstructor(IntPath, graph, board.SIM_SIZE);
+        simPath = pathConstructor.constructPath();
 
-                    dir = checkDirection(curX, curY, newX, newY);
+        car.setLocX(simPath.startX + carsizeWidth / 2);
+        car.setLocY(simPath.startY + carsizeHight / 2);
 
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
+        imgView.setTranslateX(simPath.startX);
+        imgView.setTranslateY(simPath.startY);
 
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-                }
-                else
-                {
-                    int curX = graph.getNodeByIndex(IntPath.get(0)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(0)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(1)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(1)).y * board.SIM_SIZE;
-
-                    int dir = checkDirection(curX, curY, newX, newY);
-
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-                }
-                if (i == 0) {
-                    simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY);
-                }
-                else {
-
-                    simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX, graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY, dir);
-                }
-
-                int pathX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX;
-                int pathY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY;
-                System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY);
-            }
-
-
-
+        //prerotate
+        if (simPath.directions.get(0) == 8) {
+            imgView.setRotate(270);
         }
 
-        if (IntPath.size() > 2) {
-            int correctionX = 0;
-            int correctionY = 0;
+        if (simPath.directions.get(0) == 4) {
+            imgView.setRotate(180);
+        }
 
-            for (int i = 0; i < IntPath.size(); i++) {
-                //determine starting position
-                if (i == 0) {
-                    int curX = graph.getNodeByIndex(IntPath.get(0)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(0)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(1)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(1)).y * board.SIM_SIZE;
+        if (simPath.directions.get(0) == 2) {
+            imgView.setRotate(90);
+        }
 
-                    dir = checkDirection(curX, curY, newX, newY);
+        if (simPath.directions.get(0) == 6) {
+            imgView.setRotate(360);
+        }
 
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
+        if(car.StartingLane == 0){
+            //dont displace car
+        }
+        else if(car.StartingLane == 1){
+            changeLane(1,car.getCurentDirection());
+        }
 
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
+        animationTimer = new AnimationTimer() {
 
 
-                }
+            @Override
+            public void handle(long now) {
 
-                //check previous and next direction and determine point on intersection car needs to travel through
-                else if (i < IntPath.size() - 1) {
-                    int curX = graph.getNodeByIndex(IntPath.get(i-1)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(i-1)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE;
-
-                    dir = checkDirection(curX, curY, newX, newY);
-
-                    curX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE;
-                    curY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE;
-                    newX = graph.getNodeByIndex(IntPath.get(i+1)).x * board.SIM_SIZE;
-                    newY = graph.getNodeByIndex(IntPath.get(i+1)).y * board.SIM_SIZE;
-
-                    int newDir = checkDirection(curX, curY, newX, newY);
+                // insert in the if statement to make the care move only on green : && car.getLocRoad().getTrafficLight().getCurrentstate() == 3
+                if (lastUpdateTime.get() > 0) {
 
 
-                    if (dir == 6) {
-                        correctionY = +8;
+                    System.out.println("I am currently driving on lane number " + car.getLocEdge().getLaneIndex() + "  XPOS "+ car.getLocX()+ "  YPOS "+ car.getLocY());
 
-                        if (newDir == 2) {
-                            correctionX = -17;
-                        }
+                    int xCoord = simPath.path.get(pathIterator).get(0);
+                    int yCoord = simPath.path.get(pathIterator).get(1);
 
-                        if (newDir == 8) {
-                            correctionX = +2;
-                        }
+                    final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
 
-                    }
+                    final double delta = elapsedSeconds * car.getVel() * 2;
 
-                    if (dir == 4) {
-                        correctionY = -9;
+                    final double oldX = imgView.getTranslateX();
+                    final double oldY = imgView.getTranslateY();
+                    double newX = oldX + delta;
+                    double newY = oldY + delta;
 
-                        if (newDir == 2) {
-                            correctionX = -17;
-                        }
+                    double dist = 100000;
+                    double carFrontVelocity = 0;
 
-                        if (newDir == 8) {
-                            correctionX = +2;
-                        }
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-
-                        if (newDir == 6) {
-                            correctionY = +8;
-                        }
-
-                        if (newDir == 4) {
-                            correctionY = -9;
-                        }
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-
-                        if (newDir == 6) {
-                            correctionY = +8;
-                        }
-
-                        if (newDir == 4) {
-                            correctionY = -9;
-                        }
-                    }
-                }
-
-
-                else if (i == IntPath.size() - 1) {
-
-                    int curX = graph.getNodeByIndex(IntPath.get(i-1)).x * board.SIM_SIZE;
-                    int curY = graph.getNodeByIndex(IntPath.get(i-1)).y * board.SIM_SIZE;
-                    int newX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE;
-                    int newY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE;
-
-                    dir = checkDirection(curX, curY, newX, newY);
-
-
-                    if (dir == 6) {
-                        correctionY = +8;
-                    }
-
-                    if (dir == 4) {
-                        correctionY = -9;
-                    }
-
-                    if (dir == 8) {
-                        correctionX = +2;
-                    }
-
-                    if (dir == 2) {
-                        correctionX = -17;
-                    }
-
-                }
-
-
-                //set pthstep
-
-                if (i == 0) {
-
-                    simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX,
-                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY);
-                }
-                else {
-
-                    int pathX = graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX;
-                    int pathY = graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY;
-                    System.out.println("Added to path: " + pathX + ", " + pathY + " with corrections: " + correctionX + ", " + correctionY + "DIR: " + dir);
-                    simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionX, graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2 + correctionY, dir);
-                }
-
-
-
-
-            }
-
-//        //if a path has 2 points minimum
-//        if (IntPath.size() >= 2) {
+//                    FOR TESTING LANE CHANGING
+//                    if (car.getLocX() > 100 && first) {
 //
-//            for (int i = 0; i < IntPath.size(); i++) {
+//                        System.out.println("SWIIITTCH" + simPath.directions.get(pathIterator - 1));
+//                        dir = simPath.directions.get(pathIterator - 1);
+//                        changeLane(1, dir);
 //
-//                //set the start of the car movement animation
-//                if (i == 0) {
+//                        first = false;
+//                    }
+
+                    xCoord = simPath.path.get(pathIterator).get(0);
+                    yCoord = simPath.path.get(pathIterator).get(1);
+
+                    if (simPath.directions.get(pathIterator - 1) == 4) {
+                        newX = oldX - delta;
+                    }
+
+                    if (simPath.directions.get(pathIterator - 1) == 8) {
+                        newY = oldY - delta;
+                    }
+
+
+                    if (simPath.directions.get(pathIterator - 1) == 6 && newX < xCoord) {
+                        imgView.setTranslateX(newX);
+                        car.setLocX(newX + carsizeWidth / 2);
+
+                    } else if (simPath.directions.get(pathIterator - 1) == 4 && newX > xCoord) {
+                        imgView.setTranslateX(newX);
+                        car.setLocX(newX + carsizeWidth / 2);
+
+                    } else if (simPath.directions.get(pathIterator - 1) == 2 && newY < yCoord) {
+                        imgView.setTranslateY(newY);
+                        car.setLocY(newY + carsizeHight / 2);
+
+                    } else if (simPath.directions.get(pathIterator - 1) == 8 && newY > yCoord) {
+                        imgView.setTranslateY(newY);
+                        car.setLocY(newY + carsizeHight / 2);
+
+                    } else {
+
+                        if (pathIterator < simPath.path.size() - 1) {
+
+                            imgView.setTranslateX(Math.round(xCoord));
+                            imgView.setTranslateY(Math.round(yCoord));
+
+
+                            int oldDir = simPath.directions.get(pathIterator - 1);
+
+                            pathIterator++;
+
+                            int newDir = simPath.directions.get(pathIterator - 1);
+
+//                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)),
+//                                    graph.getNodeByIndex(IntPath.get(pathIterator))),0);
 //
-//                    previousPosition = 10;
-//
-//                    simPath = new simulationPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-//                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2);
-//
-//                } else {
-//
-//                    int dir = checkDirection(graph.getNodeByIndex(IntPath.get(i)).x, graph.getNodeByIndex(IntPath.get(i)).y,
-//                            graph.getNodeByIndex(IntPath.get(i - 1)).x, graph.getNodeByIndex(IntPath.get(i - 1)).y);
-//
-//
-//                    simPath.addtoPath(graph.getNodeByIndex(IntPath.get(i)).x * board.SIM_SIZE + board.SIM_SIZE / 2,
-//                            graph.getNodeByIndex(IntPath.get(i)).y * board.SIM_SIZE + board.SIM_SIZE / 2, dir);
-//
-//                }
-//
-//            }
-       }
+//                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
-            car.setLocX(simPath.startX);
-            car.setLocY(simPath.startY);
-
-            imgView.setTranslateX(simPath.startX);
-            imgView.setTranslateY(simPath.startY);
-
-            //prerotate
-            if (simPath.directions.get(0) == 8) {
-                imgView.setRotate(270);
-            }
-
-            if (simPath.directions.get(0) == 4) {
-                imgView.setRotate(180);
-            }
-
-            if (simPath.directions.get(0) == 2) {
-                imgView.setRotate(90);
-            }
-
-            if (simPath.directions.get(0) == 6) {
-                imgView.setRotate(360);
-            }
-
-            System.out.println("CAR POSITION BEFORE ANIMATION START    X: " + car.getLocX() + "  Y:" + car.getLocY());
-
-            animationTimer = new AnimationTimer() {
+                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
 
-                @Override
-                public void handle(long now) {
+                            if (oldDir == 6) {
+                                if (newDir == 8) {
+                                    imgView.setRotate(270);
+                                }
+                                if (newDir == 2) {
+                                    imgView.setRotate(90);
+                                }
+                            }
+                            if (oldDir == 4) {
+                                if (newDir == 8) {
+                                    imgView.setRotate(270);
+                                }
+                                if (newDir == 2) {
+                                    imgView.setRotate(90);
+                                }
+                            }
 
-                    // insert in the if statement to make the care move only on green : && car.getLocRoad().getTrafficLight().getCurrentstate() == 3
-                    if (lastUpdateTime.get() > 0) {
+                            if (oldDir == 2) {
+                                if (newDir == 4) {
+                                    imgView.setRotate(180);
+                                }
+                                if (newDir == 6) {
+                                    imgView.setRotate(0);
+                                }
+                            }
+                            if (oldDir == 8) {
+                                if (newDir == 4) {
+                                    imgView.setRotate(180);
+                                }
+                                if (newDir == 6) {
+                                    imgView.setRotate(0);
+                                }
+                            }
 
 
-                        int xCoord = simPath.path.get(pathIterator).get(0);
-                        int yCoord = simPath.path.get(pathIterator).get(1);
-
-                        final double elapsedSeconds = (now - lastUpdateTime.get()) / 1_000_000_000.0;
-
-                        final double delta = elapsedSeconds * car.getVel() * 2;
-
-
-                        final double oldX = imgView.getTranslateX();
-                        final double oldY = imgView.getTranslateY();
-                        double newX = oldX + delta;
-                        double newY = oldY + delta;
-
-                        double dist = 100000;
-                        double carFrontVelocity = 0;
-
-                        if (simPath.directions.get(pathIterator - 1) == 4) {
-                            newX = oldX - delta;
-                        }
-
-                        if (simPath.directions.get(pathIterator - 1) == 8) {
-                            newY = oldY - delta;
-                        }
-
-
-                        if (simPath.directions.get(pathIterator - 1) == 6 && newX < xCoord) {
-                            imgView.setTranslateX(newX);
-                            car.setLocX(newX);
-
-                        } else if (simPath.directions.get(pathIterator - 1) == 4 && newX > xCoord) {
-                            imgView.setTranslateX(newX);
-                            car.setLocX(newX);
-
-                        } else if (simPath.directions.get(pathIterator - 1) == 2 && newY < yCoord) {
-                            imgView.setTranslateY(newY);
-                            car.setLocY(newY);
-
-                        } else if (simPath.directions.get(pathIterator - 1) == 8 && newY > yCoord) {
-                            imgView.setTranslateY(newY);
-                            car.setLocY(newY);
+                            System.out.println(simPath.directions);
 
                         } else {
 
-                            if (pathIterator < simPath.path.size() - 1) {
-
-                                System.out.println("Turning initiated");
-
-                                imgView.setTranslateX(Math.round(xCoord));
-                                imgView.setTranslateY(Math.round(yCoord));
-
-
-                                int oldDir = simPath.directions.get(pathIterator - 1);
-
-                                pathIterator++;
-
-                                int newDir = simPath.directions.get(pathIterator - 1);
-
-                                System.out.println("Old & New directions are: " + oldDir + " " + newDir);
-                                car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)),
-                                        graph.getNodeByIndex(IntPath.get(pathIterator))));
-
-
-                                System.out.println("Intpath " + IntPath + "  SimPath " + simPath.directions + "  pathiterator " + pathIterator);
-
-                                if (oldDir == 6) {
-                                    if (newDir == 8) {
-//                                    final Rotate rotationTransform = new Rotate(0, imgView.getX(), imgView.getY());
-//                                    imgView.getTransforms().add(rotationTransform);
-//
-//                                    final Timeline rotationAnimation = new Timeline();
-//                                    rotationAnimation.getKeyFrames()
-//                                            .add(
-//                                                    new KeyFrame(
-//                                                            Duration.seconds(0.5),
-//                                                            new KeyValue(
-//                                                                    rotationTransform.angleProperty(),
-//                                                                    -90
-//                                                            )
-//                                                    )
-//                                            );
-//                                    rotationAnimation.setCycleCount(1);
-//                                    rotationAnimation.play();
-
-
-                                        imgView.setRotate(270);
-//                                    while(currentRotation != 270){
-//                                        imgView.setRotate(currentRotation - 10);
-//
-//                                    }
-                                    }
-                                    if (newDir == 2) {
-                                        imgView.setRotate(90);
-                                    }
-                                }
-                                if (oldDir == 4) {
-                                    if (newDir == 8) {
-                                        imgView.setRotate(270);
-                                    }
-                                    if (newDir == 2) {
-                                        imgView.setRotate(90);
-                                    }
-                                }
-
-                                if (oldDir == 2) {
-                                    if (newDir == 4) {
-                                        imgView.setRotate(180);
-                                    }
-                                    if (newDir == 6) {
-                                        imgView.setRotate(0);
-                                    }
-                                }
-                                if (oldDir == 8) {
-                                    if (newDir == 4) {
-                                        imgView.setRotate(180);
-                                    }
-                                    if (newDir == 6) {
-                                        imgView.setRotate(0);
-                                    }
-                                }
-
-
-                                System.out.println(simPath.directions);
-
-                            } else {
-
-                                stop();
-                                System.out.println("delete car! ");
-                                car.destinationReached = true;
-                            }
-
+                            stop();
+                            car.stopTime = System.currentTimeMillis();
+                            System.out.println("Time taken for car to reach destination " + car.getElapsedTimeTotal());
+                            System.out.println("delete car! ");
+                            car.destinationReached = true;
                         }
 
+                    }
 
-                        //if there is a car in the front, on current road
-                        if (collisionDetection.returnCarInFront(car) != null) {
-                            //calculate the distance between current car and the car in the front .
 
-                            dist = (Math.sqrt(Math.pow((imgView.getTranslateX() - collisionDetection.returnCarInFront(car).getLocX()), 2) + (Math.pow(imgView.getTranslateY() - collisionDetection.returnCarInFront(car).getLocY(), 2)))) - 25 - 10;
+                    //if there is a car in the front, on current road
+                    if (collisionDetection.returnCarInFront(car) != null) {
+                        //calculate the distance between current car and the car in the front .
 
-                            carFrontVelocity = collisionDetection.returnCarInFront(car).getVel();
-                            //round a small number
-                            if (carFrontVelocity < 0.1) {
-                                carFrontVelocity = 0;
-                            }
+                        dist = (Math.sqrt(Math.pow((car.getLocX() - collisionDetection.returnCarInFront(car).getLocX()), 2) + (Math.pow(car.getLocY() - collisionDetection.returnCarInFront(car).getLocY(), 2)))) - 25 - 25;
 
-                        } else {
-                            //else check the distance in the front node (...)
-                            if (car.getPercentageOnCurrentRoad() > 30 && collisionDetection.returnCarInFront(car) == null) {
+                        carFrontVelocity = collisionDetection.returnCarInFront(car).getVel();
+                        //round a small number
+                        if (carFrontVelocity < 0.1) {
+                            carFrontVelocity = 0;
+                        }
 
-                                if (car.getLocRoad().existsTrafficLight() == false) {
-                                    //continue going full speed
-                                } else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
+                    } else {
+                        //else check the distance in the front node (...)
+                        if (car.getPercentageOnCurrentRoad() > 30 && collisionDetection.returnCarInFront(car) == null) {
 
-                                    dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2))) - 50;
+                            if (car.getLocRoad().existsTrafficLight() == false) {
+                                //continue going full speed
+                            } else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
+
+                                if (car.getCurentDirection() == 4 && simPath.directions.get(pathIterator) == 2) {
+                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15);
+                                    carFrontVelocity = 0;
+
+                                }
+                                if (car.getCurentDirection() == 8 && simPath.directions.get(pathIterator) == 4) {
+                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15) ;
+                                    carFrontVelocity = 0;
+                                } else {
+                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40;
                                     carFrontVelocity = 0;
 
                                 }
 
-                            }
-
-
-                            //decelerate before doing a turn untill "10 meters per second" .
-                            if (car.getPercentageOnCurrentRoad() > 60 && (pathIterator < simPath.path.size() - 1) &&
-                                    nextActionIsTurn(simPath.directions.get(pathIterator - 1), simPath.directions.get(pathIterator))) {
-
-                                if (car.getVel() > 10) {
-
+                                if (car.getVel() < 1 && car.getVel() >= 0 && car.timeAtIntersectionStart == 0) {
                                     car.setVel(car.getVel() - 0.1);
-
+                                    car.timeAtIntersectionStart = System.currentTimeMillis();
                                 }
+
+                            } else if (car.getLocRoad().getTrafficLight().getCurrentstate() == 3 && car.timeAtIntersectionEnd != 0) {
+                                car.timeAtIntersectionEnd = System.currentTimeMillis();
+                                car.addTimeToIntersection();
+
+                                System.out.println("Car stood at intersection " + car.totalTimeAtIntersections);
                             }
+                        }
 
-                            //rough draft of side collision detection.... its carried by the collisionDetection class without IDM.
-                            //just by increasing the margins of normal collisiondetection.
-                            if (collisionDetection.frontCarCollisionDetection(car)) {
+                        //decelerate before doing a turn untill "10 meters per second" .
+                        if (car.getPercentageOnCurrentRoad() > 60 && (pathIterator < simPath.path.size() - 1) &&
+                                nextActionIsTurn(simPath.directions.get(pathIterator - 1), simPath.directions.get(pathIterator))) {
 
-                                System.out.println("side collision" + car + "car in front? : " + collisionDetection.returnCarInFront(car));
+                            if (car.getVel() > 10) {
 
-                                if (car.getVel() > 0) {
+                                car.setVel(car.getVel() - 0.1);
 
-                                    car.setVel(car.getVel() - 0.2);
-                                }
                             }
+                        }
+
+                        //rough draft of side collision detection.... its carried by the collisionDetection class without IDM.
+                        //just by increasing the margins of normal collisiondetection.
+                        if (collisionDetection.frontCarCollisionDetection(car)) {
+
+                            if (car.getVel() > 0) {
+
+                                car.setVel(car.getVel() - 0.2);
+                            }
+                        }
 //                        System.out.println("X " + car.getLocX() + "  Y: "+ car.getLocY());
 
-                            //stop the car properly before the goal
-                            if (pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70) {
-                                dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+                        //stop the car properly before the goal
+                        if (pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70) {
+                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
 
-                                if (dist < 0.1) {
-                                    car.destinationReached = true;
-                                }
-
+                            if (dist < 0.1 && car.destinationReached == false) {
+                                car.stopTime = System.currentTimeMillis();
+                                car.destinationReached = true;
                             }
-
                         }
-
-
-                        //"Dist " + dist + "  CarFrontVelocity " + "  local edge : " + car.getLocEdge() + "   " +  carFrontVelocity +
-
-                        car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
-
-                        //try to detect a collision here
-                        if (collisionDetection.collisionDetection(dir)) {
-
-                            stopCarAnimation();
-
-                            System.out.println("COLLISION");
-                        }
-
-
                     }
 
 
-                    lastUpdateTime.set(now);
+                    //"Dist " + dist + "  CarFrontVelocity " + "  local edge : " + car.getLocEdge() + "   " +  carFrontVelocity +
 
+                    car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
+
+                    //try to detect a collision here
+                    if (collisionDetection.collisionDetection(car)) {
+
+                        stopCarAnimation();
+
+                        System.out.println("COLLISION");
+                    }
                 }
 
-            };
+                lastUpdateTime.set(now);
 
+            }
+        };
+    }
+
+
+    public void changeLane(int laneIndex, int dire) {
+
+
+        int index = pathIterator;
+        ArrayList<Double> point = new ArrayList<>();
+        double curX = imgView.getTranslateX();
+        double curY = imgView.getTranslateY();
+        double diffX = 0;
+        double diffY = 0;
+        double nextX = simPath.getX(index);
+        double nextY = simPath.getY(index);
+
+        //If it's changing to outer road
+        if (dire == 8 && laneIndex == 1) {
+            diffX += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
+            //diffY -= 10;
+        }
+
+        if (dire == 2 && laneIndex == 1) {
+            diffX -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
+            //diffY += 10;
+        }
+
+        if (dire == 4 && laneIndex == 1) {
+            diffY -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
+            //diffX -= 10;
+        }
+
+        if (dire == 6 && laneIndex == 1) {
+            diffY += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),1);
+            //diffX += 10;
+        }
+
+        //If it's changing back to middle road
+        if (dire == 8 && laneIndex == 0) {
+            diffX -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
+            //diffY -= 10;
+        }
+
+        if (dire == 2 && laneIndex == 0) {
+            diffX += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
+            //diffY += 10;
+        }
+
+        if (dire == 4 && laneIndex == 0) {
+            diffY += lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
+            //diffX -= 10;
+        }
+
+        if (dire == 6 && laneIndex == 0) {
+            diffY -= lane0Y;
+            this.car.setLocRoad(this.car.getLocRoad(),0);
+            //diffX += 10;
+        }
+
+        simPath.remove(index);
+        //simPath.addtoPath((int)(curX + diffX), (int)(curY + diffY), dire, index);
+        System.out.println("Difference: " + diffX + ", " + diffY);
+
+        imgView.setTranslateY(curY + diffY);
+        imgView.setTranslateX(curX + diffX);
+        simPath.addtoPath((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
+        if (index <= IntPath.size()) {
+            int counter = 1;
+            while (index + counter < IntPath.size() && simPath.directions.get(index + counter) == simPath.directions.get(index + counter - 1)) {
+                System.out.println("Path edited");
+                int pathX = simPath.getX(index + counter);
+                int pathY = simPath.getY(index + counter);
+                simPath.remove(index + counter);
+                simPath.addtoPath((int) (pathX + diffX), (int) (pathY + diffY), dire, index + counter);
+                counter++;
+            }
 
         }
 
+
+    }
 
 
     public boolean nextActionIsTurn(int oldDir, int newDir) {
@@ -603,6 +449,7 @@ public class carAnimation {
 
     //TODO Fix this. (when hitting a stop button this doesent stop the car
     public void stopCarAnimation() {
+
         System.out.println("CAR ANIMATION STOPPED!");
         car.setVel(0);
         animationTimer.stop();

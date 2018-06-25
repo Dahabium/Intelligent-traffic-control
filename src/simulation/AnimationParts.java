@@ -49,7 +49,8 @@ public class AnimationParts {
         if (pathFindingMode == 1) {
             ArrayList<Integer> IntPath = getRouteGreedy(start, end);
 
-            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)), this.model.map);
+            System.out.println("dir 1" );
+            Car car = new Car(graph.getNodeByIndex(IntPath.get(0)), graph.getNodeByIndex(IntPath.get(IntPath.size() - 1)),0, this.model.map);
             car.setPath(IntPath);
 
             collisionDetection.addCar(car);
@@ -59,7 +60,7 @@ public class AnimationParts {
         }
 
         if (pathFindingMode == 2) {
-            Car car = new Car(graph.getNodeByIndex(start), graph.getNodeByIndex(end), this.model.map);
+            Car car = new Car(graph.getNodeByIndex(start), graph.getNodeByIndex(end),0, this.model.map);
 
             ArrayList<Integer> IntPath = getRouteAStar(car);
             car.setPath(IntPath);
@@ -76,6 +77,7 @@ public class AnimationParts {
 
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.start();
+            this.carElements.get(i).car.startTime = System.currentTimeMillis();
         }
 
     }
