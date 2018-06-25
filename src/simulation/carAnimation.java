@@ -51,7 +51,7 @@ public class carAnimation {
         imgView = new ImageView(img);
 
 
-        this.pathConstructor = new PathConstructor(IntPath, graph, board.SIM_SIZE);
+        this.pathConstructor = new PathConstructor(IntPath, graph, board.SIM_SIZE, car);
         simPath = pathConstructor.constructPath();
 
         car.setLocX(simPath.startX + carsizeWidth / 2);
@@ -152,6 +152,10 @@ public class carAnimation {
                     } else {
 
                         if (pathIterator < simPath.path.size() - 1) {
+
+
+                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), simPath.laneIndices.get(pathIterator-1));
+
 
                             imgView.setTranslateX(Math.round(xCoord));
                             imgView.setTranslateY(Math.round(yCoord));
@@ -389,7 +393,7 @@ public class carAnimation {
 
         imgView.setTranslateY(curY + diffY);
         imgView.setTranslateX(curX + diffX);
-        simPath.addtoPath((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
+        simPath.addtoPathAt((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
         if (index <= IntPath.size()) {
             int counter = 1;
             while (index + counter < IntPath.size() && simPath.directions.get(index + counter) == simPath.directions.get(index + counter - 1)) {
@@ -397,7 +401,7 @@ public class carAnimation {
                 int pathX = simPath.getX(index + counter);
                 int pathY = simPath.getY(index + counter);
                 simPath.remove(index + counter);
-                simPath.addtoPath((int) (pathX + diffX), (int) (pathY + diffY), dire, index + counter);
+                simPath.addtoPathAt((int) (pathX + diffX), (int) (pathY + diffY), dire, index + counter);
                 counter++;
             }
 
