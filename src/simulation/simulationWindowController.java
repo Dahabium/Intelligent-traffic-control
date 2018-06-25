@@ -223,7 +223,90 @@ public class simulationWindowController {
     }
 
 
-    @FXML
+
+    public void launchCarsSim1(int index){
+
+        ArrayList<Node> startEndPoints = new ArrayList<>();
+
+        for (int i = 0; i < animationParts.model.map.roads.size(); i++) {
+
+            if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).start).size() <= 1 &&
+                    animationParts.model.map.getOutgoingRoads(animationParts.getRoads().get(i).start).size() <= 1 ){
+
+                startEndPoints.add(animationParts.getRoads().get(i).start);
+
+            }
+        }
+
+        //determine the range for the random selector
+        int min = 0;
+        int max = startEndPoints.size()-1;
+
+        int numberOfCarsToSimulate = Integer.valueOf(numberCarsForSim.getText());
+
+        ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
+        ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
+        ArrayList<Integer> interArrivals = new ArrayList<>();
+        double lambda = 13 ;
+
+        //will return a value in index of the array of start/ending points
+        Random random = new Random();
+
+        for (int i = 0; i < numberOfCarsToSimulate; i++) {
+            for (int j = 0; j < startEndPoints.size()-1 ; j++) {
+
+                int randStart = index;
+                int randEnd = random.nextInt(max - min + 1) + min;
+
+                if(randStart != randEnd){
+
+                    startPositionsIndexes.add(startEndPoints.get(randStart).index);
+                    endPositionsIndexes.add(startEndPoints.get(randEnd).index);
+
+                }
+                else if(i != 0){
+                    i--;
+                }
+                int rand = getPoissonRandom(lambda);
+                int temp = 60000 / (rand);
+
+                if(temp < 5000){
+                    temp = 5000;
+                }
+
+                interArrivals.add(temp);
+                System.out.println("TIME IS:  " + temp);
+            }
+
+
+        }
+
+
+
+        if(startPositionsIndexes.size() == endPositionsIndexes.size()){
+            //launch timer to start cars each 2 seconds....
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(interArrivals.get(interArrivals.size()-1)), ev -> {
+
+                System.out.println("Creating a new car with start at " + startPositionsIndexes.get(startPositionsIndexes.size()-1) + " and end at : " +
+                        endPositionsIndexes.get(startPositionsIndexes.size()-1));
+                this.animationParts.addCarToAnimation(startPositionsIndexes.get(startPositionsIndexes.size()-1), endPositionsIndexes.get(startPositionsIndexes.size()-1)
+                        , PathfindingMode);
+                int lastCar = this.animationParts.carElements.size() - 1;
+                this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+                startPositionsIndexes.remove(startPositionsIndexes.size()-1);
+                animationParts.simulate();
+                interArrivals.remove(interArrivals.size()-1);
+
+
+            }));
+
+            timeline.setCycleCount(numberOfCarsToSimulate);
+            timeline.play();
+
+        }
+
+    }
+
     public void launchCarsSim(){
 
         ArrayList<Node> startEndPoints = new ArrayList<>();
@@ -277,12 +360,6 @@ public class simulationWindowController {
             System.out.println("TIME IS:  " + temp);
 
         }
-
-
-
-
-
-
 
 
 
