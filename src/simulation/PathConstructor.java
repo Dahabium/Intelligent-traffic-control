@@ -10,7 +10,7 @@ public class PathConstructor {
     ArrayList<Integer> IntPath;
     simulationPath simPath;
     int dir;
-    int offset = 13;
+    int offset = 13, changeLaneOffset = 20;
     int xm = -18, xp = -4, ym = -12, yp = +3;
     Car car;
 
@@ -193,7 +193,7 @@ public class PathConstructor {
                         }
                     }
                 }
-                else if (i == IntPath.size() - 1) {
+                else if (i == IntPath.size() - 1){
 
                     int curX = graph.getNodeByIndex(IntPath.get(i - 1)).x * SIM_SIZE;
                     int curY = graph.getNodeByIndex(IntPath.get(i - 1)).y * SIM_SIZE;
