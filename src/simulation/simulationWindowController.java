@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -83,26 +84,20 @@ public class simulationWindowController {
         //refresh the value of cars on each road after specified time
         roadStatusUpdater(1000);
 
+        //update the speed array
+        carSpeedUpdater(500);
+
         //mode 1 - Greedy, mode 2 - TLC
         this.mainController = new MainController(this.animationParts, 10000, 2);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
-        if(this.mainController.mode == 2 ){
+        if (this.mainController.mode == 2) {
             updateCycleSander();
 
         }
 
         simulationScrollpane.setContent(simulationElements);
-
-
-//        this.infoPanelScene = new Scene();
-
-
-//        Scene scene =  new Scene(root, 800,800);
-//
-//        stage.setScene(scene);
-//        stage.show();
 
 
         handleMouseClickOnCars();
@@ -113,14 +108,14 @@ public class simulationWindowController {
 
         this.simulationElements.setOnMouseClicked(event -> {
 
-            System.out.println("Clicked on position " + event.getSceneX() + "   " +  event.getSceneY());
+            System.out.println("Clicked on position " + event.getSceneX() + "   " + event.getSceneY());
             for (int i = 0; i < animationParts.carElements.size(); i++) {
 
                 if (event.getTarget() == animationParts.carElements.get(i).getAnimatedCar()) {
                     String infoPanel;
                     infoPanel = "Car number: " + i + " Direction: " + animationParts.carElements.get(i).car.getCurentDirection()
-                    +"   Velocity: " + animationParts.carElements.get(i).car.getVel() + "   Local road: " + animationParts.carElements.get(i).car.getLocRoad();
-                    JOptionPane.showMessageDialog(null, infoPanel );
+                            + "   Velocity: " + animationParts.carElements.get(i).car.getVel() + "   Local road: " + animationParts.carElements.get(i).car.getLocRoad();
+                    JOptionPane.showMessageDialog(null, infoPanel);
                 }
 
             }
@@ -134,15 +129,23 @@ public class simulationWindowController {
 
 //        System.out.println("Currently running on lane " + this.animationParts.carElements.get(0).car.getLocEdge());
 
-        this.animationParts.carElements.get(0).changeLane(1,this.animationParts.carElements.get(0).getBackendCar().getCurentDirection());
+//        this.animationParts.carElements.get(0).changeLane(1, this.animationParts.carElements.get(0).getBackendCar().getCurentDirection());
+
+        ArrayList<Double> avgQueueAtIntersection = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+
+            avgQueueAtIntersection.add(calculateAverageINT(this.animationParts.model.map.intersectionFSM.get(0).getAllFSMRoads().get(i).numberOfCarsStandingInQueue));
+
+        }
+
     }
 
-    public void updateCycleSander(){
+    public void updateCycleSander() {
 
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((int)(mainController.getTLCcontroller().getGTime()*2)+4000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((int) (mainController.getTLCcontroller().getGTime() * 2) + 4000), ev -> {
 
-            System.out.println("Cycle Runned in simWinControl");
             mainController.getTLCcontroller().updateCycle();
 
         }));
@@ -150,6 +153,47 @@ public class simulationWindowController {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
+    }
+
+    private double calculateAverage(ArrayList<Double> speeds) {
+        Double sum = 0.0;
+        if (!speeds.isEmpty()) {
+            for (int i = 0; i < speeds.size(); i++) {
+                sum += speeds.get(i);
+
+            }
+
+            return sum / speeds.size();
+        }
+        return sum;
+    }
+    private double calculateAverageLong(ArrayList<Long> speeds) {
+
+        Long sum = 0L;
+
+        if (!speeds.isEmpty()) {
+            for (int i = 0; i < speeds.size(); i++) {
+                sum += speeds.get(i);
+
+            }
+
+            return sum / speeds.size();
+        }
+        return sum;
+    }
+
+    private double calculateAverageINT(ArrayList<Integer> speeds) {
+        Double sum = 0.0;
+
+        if (!speeds.isEmpty()) {
+            for (int i = 0; i < speeds.size(); i++) {
+                sum += speeds.get(i);
+
+            }
+
+            return sum / speeds.size();
+        }
+        return sum;
     }
 
 
@@ -165,7 +209,7 @@ public class simulationWindowController {
             //Cross-intersection...
             if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 4) {
 
-                if(!animationParts.intersectionNodes.contains(animationParts.getRoads().get(i).end)){
+                if (!animationParts.intersectionNodes.contains(animationParts.getRoads().get(i).end)) {
                     animationParts.intersectionNodes.add(animationParts.getRoads().get(i).end);
                 }
 
@@ -173,51 +217,44 @@ public class simulationWindowController {
 
                     animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE - 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 70,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                }
-
-                else if (animationParts.getRoads().get(i).getDirection() == 4) {
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                } else if (animationParts.getRoads().get(i).getDirection() == 4) {
                     animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 130, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 50,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                }
-                else if  (animationParts.getRoads().get(i).getDirection() == 8) {
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                } else if (animationParts.getRoads().get(i).getDirection() == 8) {
 
                     animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                }
-                else if (animationParts.getRoads().get(i).getDirection() == 2) {
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                } else if (animationParts.getRoads().get(i).getDirection() == 2) {
                     animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
 
                 }
             }
 
             //T-Section
-            if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 3){
+            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 3) {
 
                 if (animationParts.getRoads().get(i).getDirection() == 6) {
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x *simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
+                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                }
-                else if (animationParts.getRoads().get(i).getDirection() == 4){
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x *simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                } else if (animationParts.getRoads().get(i).getDirection() == 4) {
+                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                }
-                else if  (animationParts.getRoads().get(i).getDirection() == 8) {
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                } else if (animationParts.getRoads().get(i).getDirection() == 8) {
 
                     animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                }
-                else if (animationParts.getRoads().get(i).getDirection() == 2) {
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                } else if (animationParts.getRoads().get(i).getDirection() == 2) {
                     animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add( animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
 
                 }
 
@@ -252,15 +289,14 @@ public class simulationWindowController {
     }
 
 
-    @FXML
-    public void launchCarsSim(){
+    public void launchCarsSim1(int index) {
 
         ArrayList<Node> startEndPoints = new ArrayList<>();
 
         for (int i = 0; i < animationParts.model.map.roads.size(); i++) {
 
-            if(animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).start).size() <= 1 &&
-                    animationParts.model.map.getOutgoingRoads(animationParts.getRoads().get(i).start).size() <= 1 ){
+            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).start).size() <= 1 &&
+                    animationParts.model.map.getOutgoingRoads(animationParts.getRoads().get(i).start).size() <= 1) {
 
                 startEndPoints.add(animationParts.getRoads().get(i).start);
 
@@ -269,14 +305,95 @@ public class simulationWindowController {
 
         //determine the range for the random selector
         int min = 0;
-        int max = startEndPoints.size()-1;
+        int max = startEndPoints.size() - 1;
 
         int numberOfCarsToSimulate = Integer.valueOf(numberCarsForSim.getText());
 
         ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
         ArrayList<Integer> interArrivals = new ArrayList<>();
-        double lambda = 11 ;
+        double lambda = 13;
+
+        //will return a value in index of the array of start/ending points
+        Random random = new Random();
+
+        for (int i = 0; i < numberOfCarsToSimulate; i++) {
+            for (int j = 0; j < startEndPoints.size() - 1; j++) {
+
+                int randStart = index;
+                int randEnd = random.nextInt(max - min + 1) + min;
+
+                if (randStart != randEnd) {
+
+                    startPositionsIndexes.add(startEndPoints.get(randStart).index);
+                    endPositionsIndexes.add(startEndPoints.get(randEnd).index);
+
+                } else if (i != 0) {
+                    i--;
+                }
+                int rand = getPoissonRandom(lambda);
+                int temp = 60000 / (rand);
+
+                if (temp < 5000) {
+                    temp = 5000;
+                }
+
+                interArrivals.add(temp);
+                System.out.println("TIME IS:  " + temp);
+            }
+
+
+        }
+
+
+        if (startPositionsIndexes.size() == endPositionsIndexes.size()) {
+            //launch timer to start cars each 2 seconds....
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(interArrivals.get(interArrivals.size() - 1)), ev -> {
+
+                System.out.println("Creating a new car with start at " + startPositionsIndexes.get(startPositionsIndexes.size() - 1) + " and end at : " +
+                        endPositionsIndexes.get(startPositionsIndexes.size() - 1));
+                this.animationParts.addCarToAnimation(startPositionsIndexes.get(startPositionsIndexes.size() - 1), endPositionsIndexes.get(startPositionsIndexes.size() - 1)
+                        , PathfindingMode);
+                int lastCar = this.animationParts.carElements.size() - 1;
+                this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
+                startPositionsIndexes.remove(startPositionsIndexes.size() - 1);
+                animationParts.simulate();
+                interArrivals.remove(interArrivals.size() - 1);
+
+
+            }));
+
+            timeline.setCycleCount(numberOfCarsToSimulate);
+            timeline.play();
+
+        }
+
+    }
+
+    public void launchCarsSim() {
+
+        ArrayList<Node> startEndPoints = new ArrayList<>();
+
+        for (int i = 0; i < animationParts.model.map.roads.size(); i++) {
+
+            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).start).size() <= 1 &&
+                    animationParts.model.map.getOutgoingRoads(animationParts.getRoads().get(i).start).size() <= 1) {
+
+                startEndPoints.add(animationParts.getRoads().get(i).start);
+
+            }
+        }
+
+        //determine the range for the random selector
+        int min = 0;
+        int max = startEndPoints.size() - 1;
+
+        int numberOfCarsToSimulate = Integer.valueOf(numberCarsForSim.getText());
+
+        ArrayList<Integer> startPositionsIndexes = new ArrayList<>();
+        ArrayList<Integer> endPositionsIndexes = new ArrayList<>();
+        ArrayList<Integer> interArrivals = new ArrayList<>();
+        double lambda = 11;
 
         //will return a value in index of the array of start/ending points
         Random random = new Random();
@@ -286,19 +403,18 @@ public class simulationWindowController {
             int randStart = random.nextInt(max - min + 1) + min;
             int randEnd = random.nextInt(max - min + 1) + min;
 
-            if(randStart != randEnd){
+            if (randStart != randEnd) {
 
                 startPositionsIndexes.add(startEndPoints.get(randStart).index);
                 endPositionsIndexes.add(startEndPoints.get(randEnd).index);
 
-            }
-            else if(i != 0){
+            } else if (i != 0) {
                 i--;
             }
             int rand = getPoissonRandom(lambda);
             int temp = 60000 / (rand);
 
-            if(temp < 5000){
+            if (temp < 5000) {
                 temp = 5000;
             }
 
@@ -307,19 +423,19 @@ public class simulationWindowController {
 
         }
 
-        if(startPositionsIndexes.size() == endPositionsIndexes.size()){
+        if (startPositionsIndexes.size() == endPositionsIndexes.size()) {
             //launch timer to start cars each 2 seconds....
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(interArrivals.get(interArrivals.size()-1)), ev -> {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(interArrivals.get(interArrivals.size() - 1)), ev -> {
 
-                System.out.println("Creating a new car with start at " + startPositionsIndexes.get(startPositionsIndexes.size()-1) + " and end at : " +
-                        endPositionsIndexes.get(startPositionsIndexes.size()-1));
-                this.animationParts.addCarToAnimation(startPositionsIndexes.get(startPositionsIndexes.size()-1), endPositionsIndexes.get(startPositionsIndexes.size()-1)
+                System.out.println("Creating a new car with start at " + startPositionsIndexes.get(startPositionsIndexes.size() - 1) + " and end at : " +
+                        endPositionsIndexes.get(startPositionsIndexes.size() - 1));
+                this.animationParts.addCarToAnimation(startPositionsIndexes.get(startPositionsIndexes.size() - 1), endPositionsIndexes.get(startPositionsIndexes.size() - 1)
                         , PathfindingMode);
                 int lastCar = this.animationParts.carElements.size() - 1;
                 this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
-                startPositionsIndexes.remove(startPositionsIndexes.size()-1);
+                startPositionsIndexes.remove(startPositionsIndexes.size() - 1);
                 animationParts.simulate();
-                interArrivals.remove(interArrivals.size()-1);
+                interArrivals.remove(interArrivals.size() - 1);
 
 
             }));
@@ -337,9 +453,49 @@ public class simulationWindowController {
         animationParts.simulate();
     }
 
+
+    ArrayList<Double> roadsAverages = new ArrayList<>();
+    ArrayList<Double> intersectionAverage = new ArrayList<>();
+
     @FXML
     public void stopSimulation() {
+        double temp1 = 0;
+        double temp2 = 0;
+        double temp3 = 0;
+        double temp4 = 0;
+
         animationParts.stopSimulate();
+
+        System.out.println("========================SIMULATION RESULTS=====================");
+
+        for (int i = 0; i < carData.size(); i++) {
+            System.out.println(carData.get(i));
+        }
+
+        System.out.println("=============================Avrages===========================");
+        System.out.println("Average total travel time for all cars : " + calculateAverage(totalTimeArray));
+        System.out.println("Average time at intersection : " + calculateAverage(timeAtIntersection));
+        System.out.println("Average travel speed for all cars : " + calculateAverage(averageSpeedsArray));
+        System.out.println("Average waiting time to total travel time ratio : " + calculateAverage(proportionOfTimeAtIntersectionOverTravelTime));
+
+
+        for (int i = 0; i < this.animationParts.model.map.intersectionFSM.size(); i++) {
+
+            for (int j = 0; j <  4; j++) {
+
+                roadsAverages.add( calculateAverageINT(this.animationParts.model.map.intersectionFSM.get(i).getAllFSMRoads().get(j).numberOfCarsStandingInQueue));
+
+            }
+
+            intersectionAverage.add(calculateAverage(roadsAverages));
+            roadsAverages = new ArrayList<>();
+
+        }
+
+            System.out.println("Average queue size for intersection " + calculateAverage(intersectionAverage));
+
+
+
     }
 
     @FXML
@@ -370,12 +526,26 @@ public class simulationWindowController {
     }
 
 
-    public void roadStatusUpdater(int period){
+    public void roadStatusUpdater(int period) {
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(period), ev -> {
 
             deleteCarAtDestination();
             roadWeightUpdate();
+
+            //TODO For all intersections....
+            //given a node index, where the intersection is dislocated, update the variable in each road which stores
+//            the amount of cars at the end of those roads(intersections)
+            updateQueueAtIntersection(1);
+
+            for (int i = 0; i < this.animationParts.model.map.intersectionFSM.size(); i++) {
+                for (int j = 0; j < 4; j++) {
+
+                    this.animationParts.model.map.intersectionFSM.get(i).getAllFSMRoads().get(j).numberOfCarsStandingInQueue.add(
+                            this.animationParts.model.map.intersectionFSM.get(i).getAllFSMRoads().get(j).carsAtEndOfRoad);
+
+                }
+            }
 
         }));
 
@@ -384,16 +554,90 @@ public class simulationWindowController {
 
     }
 
+    public void updateQueueAtIntersection(int intersectionIndex) {
+
+        for (int i = 0; i < animationParts.model.map.roads.size(); i++) {
+
+            int temp = 0;
+
+            for (int j = 0; j < animationParts.carElements.size(); j++) {
+
+                if (this.animationParts.model.map.roads.get(i).end.index == intersectionIndex &&
+                        animationParts.carElements.get(j).car.getVel() < 0.2
+                        && animationParts.model.map.roads.get(i) == animationParts.carElements.get(j).car.getLocRoad()) {
+
+                    temp++;
+
+                }
+            }
+
+            animationParts.model.map.roads.get(i).updateCarsAtEndOfRoad(temp);
+        }
+    }
+
+    public void carSpeedUpdater(int period) {
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(period), ev -> {
+
+            for (int i = 0; i < animationParts.carElements.size(); i++) {
+
+                animationParts.carElements.get(i).car.speedsArray.add(animationParts.carElements.get(i).car.getVel());
+            }
+
+        }));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+    }
+
+
+    ArrayList<String> carData = new ArrayList<>();
+
+    int carIter = 0;
+
+    ArrayList<Double> totalTimeArray = new ArrayList<>();
+    ArrayList<Double> timeAtIntersection = new ArrayList<>();
+    ArrayList<Double> averageSpeedsArray = new ArrayList<>();
+
+    ArrayList<Double> proportionOfTimeAtIntersectionOverTravelTime = new ArrayList<>();
+
+
     private void deleteCarAtDestination() {
 
         for (int i = 0; i < animationParts.carElements.size(); i++) {
-            if(animationParts.carElements.get(i).car.destinationReached){
+
+            if (animationParts.carElements.get(i).car.destinationReached) {
+
+                carIter++;
 
                 this.simulationElements.getChildren().remove(animationParts.carElements.get(i).getAnimatedCar());
                 this.animationParts.collisionDetection.cars.remove(animationParts.carElements.get(i).getBackendCar());
 
-                System.out.println("Removing a car that took " + animationParts.carElements.get(i).car.getElapsedTimeTotal() +"  seconds to reach destination");
-//                System.out.println("This car was waiting at intersection for " + animationParts.carElements.get(i).car.timeAtIntersection + " seconds...");
+
+                double elapsed  = animationParts.carElements.get(i).car.getElapsedTimeTotal() / 1000 ;
+                carData.add("Car number " + carIter + " :  Seconds to reach the goal: " + animationParts.carElements.get(i).car.getElapsedTimeTotal() / 1000 );
+                totalTimeArray.add(elapsed);
+
+                double intersectTime = animationParts.carElements.get(i).car.totalTimeAtIntersections / 1000;
+                carData.add("Total time spent at an intersection : " + animationParts.carElements.get(i).car.totalTimeAtIntersections / 1000);
+                timeAtIntersection.add(intersectTime);
+
+                carData.add("Average speed of that car is : " + calculateAverage(animationParts.carElements.get(i).car.speedsArray));
+                averageSpeedsArray.add(calculateAverage(animationParts.carElements.get(i).car.speedsArray));
+
+                double proportion = intersectTime / elapsed ;
+
+                carData.add("Proportion of waiting time to intersection to total travel time is " + proportion * 100  );
+                carData.add("------------------------------------------------------------");
+
+
+                proportionOfTimeAtIntersectionOverTravelTime.add(proportion * 100);
+
+                //System.out.println("Removing a car that took " + animationParts.carElements.get(i).car.getElapsedTimeTotal() + "  seconds to reach destination");
+//                System.out.println("It took time at intersection " + animationParts.carElements.get(i).car.totalTimeAtIntersections);
+//                System.out.println("Average speed of that car is " + calculateAverage(animationParts.carElements.get(i).car.speedsArray));
+
                 animationParts.carElements.remove(i);
 
             }
@@ -401,7 +645,7 @@ public class simulationWindowController {
     }
 
 
-    public void roadWeightUpdate(){
+    public void roadWeightUpdate() {
         this.animationParts.getRoadWeights(30);
     }
 

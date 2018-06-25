@@ -21,6 +21,7 @@ public class Car {
 	private int exponent;
 
 	public long startTime, stopTime;
+
 	public long timeAtIntersectionStart, timeAtIntersectionEnd;
 	public long totalTimeAtIntersections;
 
@@ -45,6 +46,7 @@ public class Car {
 	private int height = 25;
 	private ArrayList<Integer> path;
 	public int StartingLane;
+	public ArrayList<Double> speedsArray;
 
 	//TODO fix the startroadend thing (why do we need it?)
     public Car(Node start, Node end, int StartingLane, Map map){
@@ -66,6 +68,7 @@ public class Car {
         this.end = end;
         this.map = map;
 		this.totalTimeAtIntersections = 0;
+		this.speedsArray = new ArrayList<>();
 
 		this.StartingLane = StartingLane;
 //        this.locRoad = graph.getEdge(start, startRoadend).getRoad();

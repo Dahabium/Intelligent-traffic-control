@@ -98,7 +98,7 @@ public class carAnimation {
                 if (lastUpdateTime.get() > 0) {
 
 
-                    System.out.println("I am currently driving on lane number " + car.getLocEdge().getLaneIndex() + "  XPOS "+ car.getLocX()+ "  YPOS "+ car.getLocY());
+//                    System.out.println("I am currently driving on lane number " + car.getLocEdge().getLaneIndex() + "  XPOS "+ car.getLocX()+ "  YPOS "+ car.getLocY());
 
                     int xCoord = simPath.path.get(pathIterator).get(0);
                     int yCoord = simPath.path.get(pathIterator).get(1);
@@ -171,6 +171,7 @@ public class carAnimation {
 
                             int newDir = simPath.directions.get(pathIterator - 1);
 
+
 //                            car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)),
 //                                    graph.getNodeByIndex(IntPath.get(pathIterator))),0);
 //
@@ -220,8 +221,9 @@ public class carAnimation {
 
                             stop();
                             car.stopTime = System.currentTimeMillis();
-                            System.out.println("Time taken for car to reach destination " + car.getElapsedTimeTotal());
-                            System.out.println("delete car! ");
+//                            System.out.println("Time taken for car to reach destination " + car.getElapsedTimeTotal());
+//                            System.out.println("Total time waiting at intersection " + car.totalTimeAtIntersections/60);
+//                            System.out.println("delete car! ");
                             car.destinationReached = true;
                         }
 
@@ -239,6 +241,10 @@ public class carAnimation {
                         if (carFrontVelocity < 0.1) {
                             carFrontVelocity = 0;
                         }
+                        if(car.timeAtIntersectionStart == 0 && car.getVel() < 0.2){
+                            System.out.println("time start at intersection");
+                            car.timeAtIntersectionStart = System.currentTimeMillis();
+                        }
 
                     } else {
                         //else check the distance in the front node (...)
@@ -246,7 +252,8 @@ public class carAnimation {
 
                             if (car.getLocRoad().existsTrafficLight() == false) {
                                 //continue going full speed
-                            } else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
+                            }
+                            else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
 
                                 if (car.getCurentDirection() == 4 && simPath.directions.get(pathIterator) == 2) {
                                     dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15);
@@ -262,16 +269,36 @@ public class carAnimation {
 
                                 }
 
-                                if (car.getVel() < 1 && car.getVel() >= 0 && car.timeAtIntersectionStart == 0) {
+                                if (car.getVel() < 1 && car.getVel() >= 0 ) {
+
                                     car.setVel(car.getVel() - 0.1);
+//
+
+                                }
+
+                                if(car.timeAtIntersectionStart == 0 && car.getVel() < 0.2 &&
+                                        (pathIterator != simPath.path.size() - 1 )){
+
+                                    System.out.println("Time start at intersection");
                                     car.timeAtIntersectionStart = System.currentTimeMillis();
                                 }
 
-                            } else if (car.getLocRoad().getTrafficLight().getCurrentstate() == 3 && car.timeAtIntersectionEnd != 0) {
-                                car.timeAtIntersectionEnd = System.currentTimeMillis();
-                                car.addTimeToIntersection();
+                            }
+                            else if (car.getLocRoad().getTrafficLight().getCurrentstate() == 3 ) {
 
-                                System.out.println("Car stood at intersection " + car.totalTimeAtIntersections);
+                                if(car.timeAtIntersectionStart != 0 ){
+
+                                    car.timeAtIntersectionEnd = System.currentTimeMillis();
+
+                                    car.totalTimeAtIntersections += car.timeAtIntersectionEnd - car.timeAtIntersectionStart;
+
+                                    car.timeAtIntersectionStart = 0;
+                                    car.timeAtIntersectionEnd = 0;
+
+                                }
+
+
+//                                System.out.println("Car stood at intersection " + car.totalTimeAtIntersections);
                             }
                         }
 
@@ -304,6 +331,8 @@ public class carAnimation {
                             if (dist < 0.1 && car.destinationReached == false) {
                                 car.stopTime = System.currentTimeMillis();
                                 car.destinationReached = true;
+
+
                             }
                         }
                     }
