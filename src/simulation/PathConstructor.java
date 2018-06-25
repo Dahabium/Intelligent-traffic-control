@@ -244,7 +244,11 @@ public class PathConstructor {
 
         simPath.setLanes();
 
-        prePosition();
+        if(car.getLocRoad().lanes.size() >1)
+        {
+            prePosition();
+        }
+
 
         return simPath;
     }

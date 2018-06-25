@@ -43,6 +43,9 @@ public class carAnimation {
 
 //        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))), car.StartingLane);
 
+        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
+
+
         carsizeWidth = 25;
         carsizeHight = 13;
 
@@ -296,7 +299,7 @@ public class carAnimation {
 
                         //stop the car properly before the goal
                         if (pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70) {
-                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+//                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
 
                             if (dist < 0.1 && car.destinationReached == false) {
                                 car.stopTime = System.currentTimeMillis();

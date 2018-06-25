@@ -6,12 +6,12 @@ import javafx.scene.shape.Circle;
 /**
  * Created by 123 on 13.06.2018.
  */
-public class SpecialCircle {
+public class SpecialCircle{
 
     public final int RED = 1;
     public final int YELLOW = 2;
     public final int GREEN = 3;
-
+    double proportion = 0.7;
     public int color;
     public Circle circle;
     public int PosX, PosY;
@@ -19,7 +19,7 @@ public class SpecialCircle {
     public SpecialCircle(int color, int PosX, int PosY){
         this.color = color;
 
-        this.circle = new Circle(12);
+        this.circle = new Circle((int)(proportion*12));
 
         this.PosX = PosX;
         this.PosY = PosY;
