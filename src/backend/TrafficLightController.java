@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import simulation.Graph;
 import simulation.Node;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class TrafficLightController {
     public Node intersection;
     private int cycleCounter;
     private int rangeCounter;
+    private int determineCycle;
+    private double bestGTime;
 
     public TrafficLightController(Map map, Model model, Node node, int rangeFactor, double greenTime) {
         this.map = map;
@@ -35,11 +38,12 @@ public class TrafficLightController {
         gTime = 10000;
         bestQueueDiff = new ArrayList<>();
         rangeCounter = -5;
+        this.determineCycle = 0;
 
     }
 
     public void updateCycle() {
-        System.out.println("Updatecycle Method exec");
+        System.out.println("Update cycle Method exec");
         gTime = g;
         //random
         double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
@@ -65,6 +69,15 @@ public class TrafficLightController {
 //        this.model.map.intersectionFSM.get(1).setHorizontalRed((int)g, false);
 
         System.out.println("DELAY START ");
+
+//        Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(1000), ev -> {
+//
+//            System.out.println("Currently cars on the intersection " + caLculateQueue(model.graph.getNodeByIndex(1)));
+//
+//        }));
+
+//        timeline2.setCycleCount(Animation.INDEFINITE);
+//        timeline2.play();
 
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis((int) gTime * 2 + 4000), ev -> {
@@ -109,6 +122,7 @@ public class TrafficLightController {
         //calculate the queues on each road at an intersection
         for (int i = 0; i < map.roads.size(); i++) {
             if (map.roads.get(i).end == intersection) {
+
                 System.out.println("QUEUE SIZE " + map.roads.get(i).carsAtEndOfRoad);
                 q.add(map.roads.get(i).carsAtEndOfRoad);
                 // j++;
@@ -119,20 +133,27 @@ public class TrafficLightController {
 
     public void optimumChooser(ArrayList<Integer> contestant) {
 
+        determineCycle++;
         double chooser = 0;
         System.out.println("Contestant " );
+        if(determineCycle < 6) {
+            if (bestQueueDiff.size() != 0 && bestQueueDiff.size() != 1) {
+                for (int i = 0; i < contestant.size() - 1; i++) {
+                    chooser = chooser + (contestant.get(i + 1) - bestQueueDiff.get(i + 1));
+                }
 
-        if(bestQueueDiff.size()!= 0 && bestQueueDiff.size() !=1 ){
-            for (int i = 0; i < contestant.size()-1; i++) {
-                chooser = chooser + (contestant.get(i+1) - bestQueueDiff.get(i+1));
-            }
+                if (chooser > 0) {
+                    bestQueueDiff = contestant;
+                    bestQ = contestant.get(0);
+                    bestGTime = gTime;
 
-            if (chooser > 0) {
-                bestQueueDiff = contestant;
-                bestQ = contestant.get(0);
-
+                }
             }
         }
+        else{
+            gTime = bestGTime;
+        }
+      
 
     }
 

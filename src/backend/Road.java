@@ -27,6 +27,7 @@ public class Road {
 	private int direction;
 	private boolean blocked;
 
+	public ArrayList<Integer> numberOfCarsStandingInQueue;
 
 	private boolean existsTrafficLight = false;
 
@@ -44,6 +45,7 @@ public class Road {
 		int deltaY = (int)start.Ypos - (int) end.Ypos;
 
 		this.distance = (int) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+		this.numberOfCarsStandingInQueue = new ArrayList<>();
 
 	}
 

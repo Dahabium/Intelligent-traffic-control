@@ -528,10 +528,13 @@ public class intersectionFSM {
     }
 
     public void updateTrafficLights() {
+
         this.horizontal1.getTrafficLight().setCurrentstate(this.intersectionState.currentStateWest);
         this.horizontal2.getTrafficLight().setCurrentstate(this.intersectionState.currentStateEast);
         this.vertical1.getTrafficLight().setCurrentstate(this.intersectionState.currentStateNorth);
         this.vertical2.getTrafficLight().setCurrentstate(this.intersectionState.currentStateSouth);
+
+
     }
 
 //    public void runFSMforLeftTurn(int place, int time) {
