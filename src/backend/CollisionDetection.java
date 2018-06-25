@@ -30,7 +30,7 @@ public class CollisionDetection {
 
         for (int i = 0; i < cars.size(); i++) {
 
-            if (car.getLocEdge() == cars.get(i).getLocEdge() &&(car.getCurentDirection() == 6 || car.getCurentDirection() == 4) &&
+            if ((car.getCurentDirection() == 6 || car.getCurentDirection() == 4) &&
 
                     car.getLocX() <= cars.get(i).getLocX() + 25 &&
                     car.getLocX() + 25 >= cars.get(i).getLocX() &&
@@ -67,24 +67,24 @@ public class CollisionDetection {
 
         for (int i = 0; i < cars.size(); i++) {
 
-            if (cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 6 &&
+            if (cars.get(i) != car && cars.get(i).getLocEdge() == car.getLocEdge() && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 6 &&
                     car.getLocX() + 60 >= cars.get(i).getLocX() && car.getLocX() + 25 <= cars.get(i).getLocX() &&
                     car.getLocY() + 10 >= cars.get(i).getLocY() && car.getLocY() - 10 <= cars.get(i).getLocY()
                     && cars.get(i).getCurentDirection() != 6) {
 
                 return true;
 
-            } else if (cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 4 &&
+            } else if (cars.get(i) != car && cars.get(i).getLocEdge() == car.getLocEdge() && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 4 &&
                     car.getLocX() - 60 <= cars.get(i).getLocX() && car.getLocX() - 25 >= cars.get(i).getLocX() &&
                     car.getLocY() + 10 >= cars.get(i).getLocY() && car.getLocY() - 10 <= cars.get(i).getLocY()
                     && cars.get(i).getCurentDirection() != 4) {
                 return true;
-            } else if (cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 8 &&
+            } else if (cars.get(i) != car && cars.get(i).getLocEdge() == car.getLocEdge() && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 8 &&
                     car.getLocY() - 60 <= cars.get(i).getLocY() && car.getLocY() - 25 >= cars.get(i).getLocY() &&
                     car.getLocX() + 10 >= cars.get(i).getLocX() && car.getLocX() - 10 <= cars.get(i).getLocX() &&
                     cars.get(i).getCurentDirection() != 8) {
                 return true;
-            } else if (cars.get(i) != car && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 2 &&
+            } else if (cars.get(i) != car && cars.get(i).getLocEdge() == car.getLocEdge() && returnCarInFront(car) == null && car.getLocRoad().getDirection() == 2 &&
                     car.getLocY() + 60 >= cars.get(i).getLocY() && car.getLocY() + 25 <= cars.get(i).getLocY() &&
                     car.getLocX() + 10 >= cars.get(i).getLocX() && car.getLocX() - 10 <= cars.get(i).getLocX() &&
                     cars.get(i).getCurentDirection() != 2) {
@@ -107,7 +107,7 @@ public class CollisionDetection {
 
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i) != currentCar) {
-                if (currentCar.getLocEdge().start == cars.get(i).getLocEdge().start && currentCar.getLocEdge().end == cars.get(i).getLocEdge().end
+                if (currentCar.getLocEdge() == cars.get(i).getLocEdge()
                         && currentCar.getPercentageOnCurrentRoad() < cars.get(i).getPercentageOnCurrentRoad()) {
 
                     double tempDistDiff = cars.get(i).getPercentageOnCurrentRoad() - currentCar.getPercentageOnCurrentRoad();
