@@ -144,7 +144,7 @@ public class Pathfinding {
             path.add(0, current.getIndex());
         }
 
-        path.add(0,start.getIndex());
+        path.add(0, start.getIndex());
 
         return path;
     }

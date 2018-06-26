@@ -59,7 +59,7 @@ public class simulationWindowController {
     public void initialize() {
         PathfindingMode = 1;
 
-        XMLLoader graphLoader = new XMLLoader("graph2");
+        XMLLoader graphLoader = new XMLLoader("graph6");
         graph = graphLoader.getGraph();
 
         javafx.scene.image.Image img = new Image("background.JPG", 800, 800, false, false);

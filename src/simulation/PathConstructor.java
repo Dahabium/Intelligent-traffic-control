@@ -323,7 +323,7 @@ public class PathConstructor {
 
 
         setLanes();
-
+        
     }
 
 
@@ -348,7 +348,7 @@ public class PathConstructor {
                             simPath.startY = simPath.startY + offset;
                             car.StartingLane = 1;
                         }
-                        simPath.addtoPathAt(simPath.getX(i), simPath.getY(i) + offset, dir, i);
+                        simPath.addtoPathAt(simPath.getX(i)+offset*2, simPath.getY(i) + offset, dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1), simPath.getY(i + 1) + offset, newdir, i + 1);
                     }
                 }
@@ -359,7 +359,7 @@ public class PathConstructor {
                             simPath.startY = simPath.getY(i) - offset;
                             car.StartingLane = 1;
                         }
-                        simPath.addtoPathAt(simPath.getX(i), simPath.getY(i) - offset, dir, i);
+                        simPath.addtoPathAt(simPath.getX(i)-offset*2, simPath.getY(i) - offset, dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1), simPath.getY(i + 1) - offset, newdir, i + 1);
                     }
                 }
@@ -370,7 +370,7 @@ public class PathConstructor {
                             simPath.startY = simPath.getY(i);
                             car.StartingLane = 1;
                         }
-                        simPath.addtoPathAt(simPath.getX(i) + offset, simPath.getY(i), dir, i);
+                        simPath.addtoPathAt(simPath.getX(i) + offset, simPath.getY(i)-offset*2, dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1) + offset, simPath.getY(i + 1), newdir, i + 1);
 
                     }
@@ -382,7 +382,7 @@ public class PathConstructor {
                             simPath.startY = simPath.getY(i);
                             car.StartingLane = 1;
                         }
-                        simPath.addtoPathAt(simPath.getX(i) - offset, simPath.getY(i), dir, i);
+                        simPath.addtoPathAt(simPath.getX(i) - offset, simPath.getY(i)+offset*2, dir, i);
                         simPath.addtoPathAt(simPath.getX(i + 1) - offset, simPath.getY(i + 1), newdir, i + 1);
                     }
                 }

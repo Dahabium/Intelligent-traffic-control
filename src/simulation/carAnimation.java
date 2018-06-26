@@ -41,8 +41,10 @@ public class carAnimation {
 
         //TODO use roads instead of edges
 
-        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 //        car.setLocEdge(graph.getEdge(graph.getNodeByIndex(IntPath.get(pathIterator - 1)), graph.getNodeByIndex(IntPath.get(pathIterator))), car.StartingLane);
+
+        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
+
 
         carsizeWidth = 25;
         carsizeHight = 13;
@@ -53,6 +55,8 @@ public class carAnimation {
 
         this.pathConstructor = new PathConstructor(IntPath, graph, board.SIM_SIZE, car);
         simPath = pathConstructor.constructPath();
+
+        car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
         car.setLocX(simPath.startX + carsizeWidth / 2);
         car.setLocY(simPath.startY + carsizeHight / 2);
@@ -81,7 +85,7 @@ public class carAnimation {
             //dont displace car
         }
         else if(car.StartingLane == 1){
-            changeLane(1,car.getCurentDirection());
+            //changeLane(1,car.getCurentDirection());
         }
 
         animationTimer = new AnimationTimer() {
@@ -153,6 +157,10 @@ public class carAnimation {
 
                         if (pathIterator < simPath.path.size() - 1) {
 
+
+                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), simPath.laneIndices.get(pathIterator-1));
+
+
                             imgView.setTranslateX(Math.round(xCoord));
                             imgView.setTranslateY(Math.round(yCoord));
 
@@ -169,7 +177,7 @@ public class carAnimation {
 //
 //                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
-                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
+                            car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), simPath.laneIndices.get(pathIterator-1));
 
 
                             if (oldDir == 6) {
@@ -322,7 +330,7 @@ public class carAnimation {
 
                         //stop the car properly before the goal
                         if (pathIterator == simPath.path.size() - 1 && car.getPercentageOnCurrentRoad() > 70) {
-                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
+//                            dist = Math.sqrt(Math.pow((imgView.getTranslateX() - simPath.getX(pathIterator)), 2) + (Math.pow(imgView.getTranslateY() - simPath.getY(pathIterator), 2)));
 
                             if (dist < 0.1 && car.destinationReached == false) {
                                 car.stopTime = System.currentTimeMillis();
@@ -422,7 +430,7 @@ public class carAnimation {
 
         imgView.setTranslateY(curY + diffY);
         imgView.setTranslateX(curX + diffX);
-        simPath.addtoPath((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
+        simPath.addtoPathAt((int) (nextX + diffX), (int) (nextY + diffY), dire, index);
         if (index <= IntPath.size()) {
             int counter = 1;
             while (index + counter < IntPath.size() && simPath.directions.get(index + counter) == simPath.directions.get(index + counter - 1)) {
@@ -430,7 +438,7 @@ public class carAnimation {
                 int pathX = simPath.getX(index + counter);
                 int pathY = simPath.getY(index + counter);
                 simPath.remove(index + counter);
-                simPath.addtoPath((int) (pathX + diffX), (int) (pathY + diffY), dire, index + counter);
+                simPath.addtoPathAt((int) (pathX + diffX), (int) (pathY + diffY), dire, index + counter);
                 counter++;
             }
 

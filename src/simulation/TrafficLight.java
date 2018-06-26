@@ -10,6 +10,7 @@ public class TrafficLight {
     public final int RED = 1;
     public final int YELLOW = 2;
     public final int GREEN = 3;
+    double proportion = 0.7;
 
     SpecialCircle red,yellow,green;
 
@@ -30,17 +31,18 @@ public class TrafficLight {
 
         trafficlight = new Group();
 
-        trafficlight.setLayoutX(XPos);
-        trafficlight.setLayoutY(YPos);
+        //trafficlight.setLayoutX(XPos);
+        //trafficlight.setLayoutY(YPos);
+        trafficlight.relocate(XPos, YPos);
 
-        Rectangle rectangle = new Rectangle(30,90, Color.DARKGRAY);
+        Rectangle rectangle = new Rectangle((int)(30*proportion),(int)(90*proportion), Color.DARKGRAY);
         rectangle.setFill(Color.DARKGRAY);
         rectangle.setStroke(Color.BLACK);
 
 
-        this.red = new SpecialCircle(RED, 15,17);
-        this.yellow = new SpecialCircle(YELLOW,15,43);
-        this.green = new SpecialCircle(GREEN,15,69);
+        this.red = new SpecialCircle(RED, (int)(15*proportion),(int)(17*proportion));
+        this.yellow = new SpecialCircle(YELLOW,(int)(proportion*15),(int)(43*proportion));
+        this.green = new SpecialCircle(GREEN,(int)(proportion*15),(int)(proportion*69));
 
         trafficlight.getChildren().add(rectangle);
 
