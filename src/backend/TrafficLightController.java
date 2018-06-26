@@ -146,14 +146,16 @@ public class TrafficLightController {
                     bestQueueDiff = contestant;
                     bestQ = contestant.get(0);
                     bestGTime = gTime;
+                    System.out.println("GTIME FOR TLC CONTROLLER: " + gTime);
 
                 }
             }
         }
         else{
             gTime = bestGTime;
+            System.out.println("GTIME FOR TLC CONTROLLER: " + gTime);
         }
-      
+
 
     }
 

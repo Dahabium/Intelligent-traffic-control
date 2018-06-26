@@ -77,7 +77,22 @@ public class AnimationParts {
 
         for (int i = 0; i < this.carElements.size(); i++) {
             this.carElements.get(i).animationTimer.start();
-            this.carElements.get(i).car.startTime = System.currentTimeMillis();
+
+            if(this.carElements.get(i).car.startTime == 0){
+
+                this.carElements.get(i).car.startTime = System.currentTimeMillis();
+            }
+        }
+
+    }
+    public void simulateSingleCar(Car car){
+
+        for (int i = 0; i < this.carElements.size(); i++) {
+            if(carElements.get(i).car == car){
+                this.carElements.get(i).animationTimer.start();
+                this.carElements.get(i).car.startTime = System.currentTimeMillis();
+            }
+
         }
 
     }
