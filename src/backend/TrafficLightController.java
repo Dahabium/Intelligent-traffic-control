@@ -54,8 +54,10 @@ public class TrafficLightController {
         rangeCounter++;
 
         // update green time
-        gTime = gTime + gDiff;
-        System.out.println("G + G this " + gTime);
+        if(determineCycle < 11) {
+            gTime = gTime + gDiff;
+            System.out.println("G + G this " + gTime);
+        }
 
         //calculate the queue before the cycle
         ArrayList<Integer> qBefore = caLculateQueue(intersection);
@@ -66,8 +68,8 @@ public class TrafficLightController {
 
 //        this.model.map.intersectionFSM.get(0).runFSM_Horizontal_Red();
 
-//        this.model.map.intersectionFSM.get(1).setHorizontalRed((int)g, false);
-
+        this.model.map.intersectionFSM.get(intersection.index).setHorizontalRed((int)g, false);
+//
         System.out.println("DELAY START ");
 
 //        Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(1000), ev -> {
@@ -136,7 +138,7 @@ public class TrafficLightController {
         determineCycle++;
         double chooser = 0;
         System.out.println("Contestant " );
-        if(determineCycle < 6) {
+        if(determineCycle < 11) {
             if (bestQueueDiff.size() != 0 && bestQueueDiff.size() != 1) {
                 for (int i = 0; i < contestant.size() - 1; i++) {
                     chooser = chooser + (contestant.get(i + 1) - bestQueueDiff.get(i + 1));
