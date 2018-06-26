@@ -202,6 +202,8 @@ public class simulationWindowController {
 
     public void createTrafficLights() {
 
+
+
         //cases: T- Section, Cross-Intersection
         for (int i = 0; i < animationParts.getRoads().size(); i++) {
 
