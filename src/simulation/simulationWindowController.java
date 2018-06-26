@@ -59,7 +59,7 @@ public class simulationWindowController {
     public void initialize() {
         PathfindingMode = 1;
 
-        XMLLoader graphLoader = new XMLLoader("graph2");
+        XMLLoader graphLoader = new XMLLoader("graph1");
         graph = graphLoader.getGraph();
 
         javafx.scene.image.Image img = new Image("background.JPG", 800, 800, false, false);
@@ -88,7 +88,7 @@ public class simulationWindowController {
         carSpeedUpdater(500);
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 1);
+        this.mainController = new MainController(this.animationParts, 10000, 2);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
