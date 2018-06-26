@@ -359,7 +359,8 @@ public class simulationWindowController {
                 int lastCar = this.animationParts.carElements.size() - 1;
                 this.simulationElements.getChildren().add(this.animationParts.carElements.get(lastCar).getAnimatedCar());
                 startPositionsIndexes.remove(startPositionsIndexes.size() - 1);
-                animationParts.simulate();
+                animationParts.simulateSingleCar(this.animationParts.carElements.get(lastCar).car);
+
                 interArrivals.remove(interArrivals.size() - 1);
 
 
@@ -630,7 +631,7 @@ public class simulationWindowController {
 
                 double proportion = intersectTime / elapsed ;
 
-                carData.add("Proportion of waiting time to intersection to total travel time is " + proportion * 100  );
+                carData.add("Proportion of waiting time to intersection to total travel time is " + proportion * 100  +  "  % " );
                 carData.add("------------------------------------------------------------");
 
 

@@ -241,10 +241,13 @@ public class carAnimation {
                         if (carFrontVelocity < 0.1) {
                             carFrontVelocity = 0;
                         }
-                        if(car.timeAtIntersectionStart == 0 && car.getVel() < 0.2){
+
+                        if(car.timeAtIntersectionStart == 0 && car.getVel() < 0.2 &&
+                                (pathIterator != simPath.path.size() - 1 )){
                             System.out.println("time start at intersection");
                             car.timeAtIntersectionStart = System.currentTimeMillis();
                         }
+
 
                     } else {
                         //else check the distance in the front node (...)
@@ -275,6 +278,7 @@ public class carAnimation {
 //
 
                                 }
+
 
                                 if(car.timeAtIntersectionStart == 0 && car.getVel() < 0.2 &&
                                         (pathIterator != simPath.path.size() - 1 )){
@@ -315,7 +319,7 @@ public class carAnimation {
 
                         //rough draft of side collision detection.... its carried by the collisionDetection class without IDM.
                         //just by increasing the margins of normal collisiondetection.
-                        if (collisionDetection.frontCarCollisionDetection(car)) {
+                        if (collisionDetection.frontCarCollisionDetection(car) ) {
 
                             if (car.getVel() > 0) {
 
@@ -343,7 +347,7 @@ public class carAnimation {
                     car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
 
                     //try to detect a collision here
-                    if (collisionDetection.collisionDetection(car)) {
+                    if (collisionDetection.collisionDetection(car) && car.getPercentageOnCurrentRoad() > 5 && car.getPercentageOnCurrentRoad() < 95 ) {
 
                         stopCarAnimation();
 
