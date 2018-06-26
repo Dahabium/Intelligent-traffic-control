@@ -59,7 +59,7 @@ public class simulationWindowController {
     public void initialize() {
         PathfindingMode = 1;
 
-        XMLLoader graphLoader = new XMLLoader("graph6");
+        XMLLoader graphLoader = new XMLLoader("graph2");
         graph = graphLoader.getGraph();
 
         javafx.scene.image.Image img = new Image("background.JPG", 800, 800, false, false);
@@ -88,7 +88,7 @@ public class simulationWindowController {
         carSpeedUpdater(500);
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 2);
+        this.mainController = new MainController(this.animationParts, 10000, 1);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -159,7 +159,10 @@ public class simulationWindowController {
         Double sum = 0.0;
         if (!speeds.isEmpty()) {
             for (int i = 0; i < speeds.size(); i++) {
-                sum += speeds.get(i);
+                if(speeds.get(i).toString() != "NaN" ){
+                    sum += speeds.get(i);
+                }
+
 
             }
 
@@ -539,7 +542,11 @@ public class simulationWindowController {
             //TODO For all intersections....
             //given a node index, where the intersection is dislocated, update the variable in each road which stores
 //            the amount of cars at the end of those roads(intersections)
-            updateQueueAtIntersection(1);
+            for (int i = 0; i < this.animationParts.model.map.intersectionFSM.size(); i++) {
+
+                updateQueueAtIntersection(this.animationParts.model.map.intersectionFSM.get(i).intersection.index);
+            }
+
 
             for (int i = 0; i < this.animationParts.model.map.intersectionFSM.size(); i++) {
                 for (int j = 0; j < 4; j++) {
