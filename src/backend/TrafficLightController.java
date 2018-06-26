@@ -67,9 +67,9 @@ public class TrafficLightController {
         System.out.println("Update cycle Method exec");
         gTime = g;
         //random
-//        double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
+        double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
 //         fixed
-        double gDiff = fixedRange.get(determineCycle);
+//        double gDiff = fixedRange.get(determineCycle);
         System.out.println("G before " + g);
        // double gDiff = rangeCounter*1000;
         System.out.println("G Diff " + gDiff);
