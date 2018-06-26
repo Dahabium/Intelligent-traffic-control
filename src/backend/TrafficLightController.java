@@ -22,6 +22,7 @@ public class TrafficLightController {
     private Model model;
     private int bestQ;
     private ArrayList<Integer> bestQueueDiff;
+    private ArrayList<Integer> fixedRange;
     public Node intersection;
     private int cycleCounter;
     private int rangeCounter;
@@ -37,6 +38,22 @@ public class TrafficLightController {
         g = greenTime;
         gTime = 10000;
         bestQueueDiff = new ArrayList<>();
+        fixedRange = new ArrayList<>();
+        fixedRange.add(-5000);
+        fixedRange.add(-4000);
+        fixedRange.add(-3000);
+        fixedRange.add(-2000);
+        fixedRange.add(-1000);
+        fixedRange.add(1000);
+        fixedRange.add(2000);
+        fixedRange.add(3000);
+        fixedRange.add(4000);
+        fixedRange.add(5000);
+        bestQueueDiff.add(-1);
+        bestQueueDiff.add(-1);
+        bestQueueDiff.add(-1);
+        bestQueueDiff.add(-1);
+        bestQueueDiff.add(-1);
         rangeCounter = -5;
         this.determineCycle = 0;
 
@@ -46,8 +63,9 @@ public class TrafficLightController {
         System.out.println("Update cycle Method exec");
         gTime = g;
         //random
-        double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
+       // double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
         // fixed
+        double gDiff = fixedRange.get(determineCycle);
         System.out.println("G before " + g);
        // double gDiff = rangeCounter*1000;
         System.out.println("G Diff " + gDiff);
@@ -68,7 +86,7 @@ public class TrafficLightController {
 
 //        this.model.map.intersectionFSM.get(0).runFSM_Horizontal_Red();
 
-        this.model.map.intersectionFSM.get(intersection.index).setHorizontalRed((int)g, false);
+        this.model.map.intersectionFSM.get(0).setHorizontalRed((int)g, false);
 //
         System.out.println("DELAY START ");
 
@@ -140,8 +158,9 @@ public class TrafficLightController {
         System.out.println("Contestant " );
         if(determineCycle < 11) {
             if (bestQueueDiff.size() != 0 && bestQueueDiff.size() != 1) {
-                for (int i = 0; i < contestant.size() - 1; i++) {
+                for (int i = 0; i < contestant.size()-1; i++) {
                     chooser = chooser + (contestant.get(i + 1) - bestQueueDiff.get(i + 1));
+                    System.out.println("IN THE FOR LOOP NOW!!!!!!!!!!!!");
                 }
 
                 if (chooser > 0) {
