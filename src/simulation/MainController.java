@@ -46,10 +46,17 @@ public class MainController {
 
         if (mode == 2) {
 
-            for (int i = 0; i < animationParts.intersectionNodes.size(); i++) {
-                this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model, this.animationParts.intersectionNodes.get(i), 5000, 10000);
+            for (int i = 0; i < animationParts.model.map.intersectionFSM.size(); i++) {
+                this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model, this.animationParts.intersectionNodes.get(i), this.animationParts.model.map.intersectionFSM.get(i).intersection.index,  5000, 10000);
             }
 
+//            this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model, this.animationParts.intersectionNodes.get(i), 5000, 10000);
+//
+//  for (int i = 0; i < animationParts.model.map.intersectionFSM.size(); i++) {
+//                this.trafficLightController = new TrafficLightController(this.animationParts.model.map, this.animationParts.model, this.animationParts.intersectionNodes.get(i), 5000, 10000);
+//
+//
+//            }
         }
 
         updateLeftBooleans();

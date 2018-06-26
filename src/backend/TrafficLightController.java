@@ -29,8 +29,12 @@ public class TrafficLightController {
     private int determineCycle;
     private double bestGTime;
 
-    public TrafficLightController(Map map, Model model, Node node, int rangeFactor, double greenTime) {
+    private int intersectionFSMIndex;
+
+    public TrafficLightController(Map map, Model model, Node node, int intersectionFSMIndex, int rangeFactor, double greenTime) {
         this.map = map;
+        this.intersectionFSMIndex = intersectionFSMIndex;
+
         this.model = model;
         this.rangeFactor = rangeFactor;
         this.intersection = node;
@@ -63,8 +67,8 @@ public class TrafficLightController {
         System.out.println("Update cycle Method exec");
         gTime = g;
         //random
-       // double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
-        // fixed
+//        double gDiff =(int) ((rangeFactor * 2) *( Math.random())) - rangeFactor;
+//         fixed
         double gDiff = fixedRange.get(determineCycle);
         System.out.println("G before " + g);
        // double gDiff = rangeCounter*1000;
@@ -86,7 +90,8 @@ public class TrafficLightController {
 
 //        this.model.map.intersectionFSM.get(0).runFSM_Horizontal_Red();
 
-        this.model.map.intersectionFSM.get(0).setHorizontalRed((int)g, false);
+        this.model.map.intersectionFSM.get(intersectionFSMIndex).setHorizontalRed((int)g, false);
+
 //
         System.out.println("DELAY START ");
 
