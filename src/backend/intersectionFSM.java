@@ -705,58 +705,48 @@ public class intersectionFSM {
 //    }
 //
 //    //TODO limit maximum green time , min green time, max red time, min red time
-//    public void moreGreenHorizontal(int increment) {
-//
-//        int oldGreenTimeHorizontal = this.horizontal1.trafficLight.greenTime;
-//        int oldRedTimeVertical = this.vertical1.trafficLight.redTime;
-//
-//        this.horizontal1.getTrafficLight().setGreenTime(oldGreenTimeHorizontal + increment);
-//        this.horizontal2.getTrafficLight().setGreenTime(oldGreenTimeHorizontal + increment);
-//
-//
-//        this.vertical1.getTrafficLight().setRedTime(oldRedTimeVertical + increment);
-//        this.vertical2.getTrafficLight().setRedTime(oldRedTimeVertical + increment);
-//    }
-//
-//    public void moreGreenVertical(int increment) {
-//
-//        int oldGreenTimeVertical = this.vertical1.trafficLight.greenTime;
-//        int oldGreenTimeHorizontal = this.horizontal1.trafficLight.greenTime;
-//        int oldRedTimeHorizontal = this.horizontal1.trafficLight.redTime;
-//        int oldRedVertical = this.vertical1.trafficLight.redTime;
-//
-//        this.vertical1.getTrafficLight().setGreenTime(oldGreenTimeVertical + increment);
-//        this.vertical2.getTrafficLight().setGreenTime(oldGreenTimeVertical + increment);
-//
-//        this.horizontal1.getTrafficLight().setRedTime(oldRedTimeHorizontal + increment);
-//        this.horizontal2.getTrafficLight().setRedTime(oldRedTimeHorizontal + increment);
-//
-//    }
-//
-//    public void lessGreenHorizontal(int decrement) {
-//
-//        int oldGreenTimeHorizontal = this.horizontal1.trafficLight.greenTime;
-//        int oldRedTimeVertical = this.vertical1.trafficLight.redTime;
-//
-//        this.horizontal1.getTrafficLight().setGreenTime(oldGreenTimeHorizontal - decrement);
-//        this.horizontal2.getTrafficLight().setGreenTime(oldGreenTimeHorizontal - decrement);
-//
-//
-//        this.vertical1.getTrafficLight().setRedTime(oldRedTimeVertical - decrement);
-//        this.vertical2.getTrafficLight().setRedTime(oldRedTimeVertical - decrement);
-//    }
-//
-//    public void lessGreenVertical(int decrement) {
-//
-//        int oldGreenTimeVertical = this.vertical1.trafficLight.greenTime;
-//        int oldRedTimeHorizontal = this.horizontal1.trafficLight.redTime;
-//
-//        this.vertical1.getTrafficLight().setGreenTime(oldGreenTimeVertical - decrement);
-//        this.vertical2.getTrafficLight().setGreenTime(oldGreenTimeVertical - decrement);
-//
-//        this.horizontal1.getTrafficLight().setRedTime(oldRedTimeHorizontal - decrement);
-//        this.horizontal2.getTrafficLight().setRedTime(oldRedTimeHorizontal - decrement);
-//    }
+    public void moreGreenHorizontal(int increment) {
+
+        int oldGreenTimeHorizontal = this.GREEN_HORIZONTAL_TIME;
+        int oldRedTimeVertical = this.RED_VERTICAL_TIME;
+
+        this. GREEN_HORIZONTAL_TIME = oldGreenTimeHorizontal + increment;
+
+        this.RED_VERTICAL_TIME = oldRedTimeVertical + increment;
+    }
+
+    public void moreGreenVertical(int increment) {
+
+        int oldGreenTimeHorizontal = this.GREEN_HORIZONTAL_TIME;
+        int oldRedTimeVertical = this.RED_VERTICAL_TIME;
+        int oldRedTimeHorizontal = this.RED_HORIZONTAL_TIME;
+        int oldRedVertical = this.RED_VERTICAL_TIME;
+
+        this.GREEN_VERTICAL_TIME = oldGreenTimeHorizontal + increment;
+        this.RED_HORIZONTAL_TIME = oldRedTimeHorizontal + increment;
+
+    }
+
+    public void lessGreenHorizontal(int decrement) {
+
+        int oldGreenTimeHorizontal = this.GREEN_HORIZONTAL_TIME;
+        int oldRedTimeVertical = this.RED_VERTICAL_TIME;
+
+        this.GREEN_HORIZONTAL_TIME = oldGreenTimeHorizontal - decrement;
+
+        this.RED_VERTICAL_TIME = oldRedTimeVertical - decrement;
+
+    }
+
+    public void lessGreenVertical(int decrement) {
+
+        int oldGreenTimeVertical = this.GREEN_VERTICAL_TIME;
+        int oldRedTimeHorizontal = this.RED_HORIZONTAL_TIME;
+
+        this.GREEN_VERTICAL_TIME = oldGreenTimeVertical - decrement;
+        this.RED_HORIZONTAL_TIME = oldRedTimeHorizontal - decrement;
+
+    }
 
     public void moreGreenLessRedHorizontal(int increment) {
 

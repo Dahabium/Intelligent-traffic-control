@@ -56,9 +56,8 @@ public class GreedyController {
 
             //TODO TEST DIFFERENT COMBOS
 //            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenVertical(difference*1000);
-//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).lessGreenHorizontal(difference*1000);
-
-            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenLessRedVertical(difference * 1000);
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).lessGreenHorizontal(difference*1000);
+//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenLessRedVertical(difference * 1000);
 
 
             fullcycleTime = fullcycleTime + difference * 1000;
@@ -75,8 +74,8 @@ public class GreedyController {
 
             //TODO TEST DIFFERENT COMBOS
 //           parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenHorizontal(difference*1000);
-//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).lessGreenVertical(difference*1000);
-            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenLessRedHorizontal(difference * 1000);
+            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).lessGreenVertical(difference*1000);
+//            parentController.getAnimationParts().model.map.getCorrespondingFSM(this.intersection).moreGreenLessRedHorizontal(difference * 1000);
 
 
             fullcycleTime = fullcycleTime + difference * 1000;
