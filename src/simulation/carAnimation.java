@@ -45,7 +45,6 @@ public class carAnimation {
 
         car.setLocRoad(model.map.getRoadByEdge(graph.getEdge((graph.getNodeByIndex(IntPath.get(pathIterator - 1))), graph.getNodeByIndex(IntPath.get(pathIterator)))), car.StartingLane);
 
-
         carsizeWidth = 25;
         carsizeHight = 13;
 
@@ -96,7 +95,6 @@ public class carAnimation {
 
                 // insert in the if statement to make the care move only on green : && car.getLocRoad().getTrafficLight().getCurrentstate() == 3
                 if (lastUpdateTime.get() > 0) {
-
 
 //                    System.out.println("I am currently driving on lane number " + car.getLocEdge().getLaneIndex() + "  XPOS "+ car.getLocX()+ "  YPOS "+ car.getLocY());
 
@@ -259,7 +257,7 @@ public class carAnimation {
                             else if (car.getLocRoad().getTrafficLight().getCurrentstate() != 3) {
 
                                 if (car.getCurentDirection() == 4 && simPath.directions.get(pathIterator) == 2) {
-                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15);
+                                    dist = Math.sqrt(Math.pow((car.getLocX() - simPath.getX(pathIterator)), 2) + (Math.pow(car.getLocY() - simPath.getY(pathIterator), 2))) - 40 - (car.getLocRoad().lanes.size() * 15) - 10;
                                     carFrontVelocity = 0;
 
                                 }
