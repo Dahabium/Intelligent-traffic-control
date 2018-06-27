@@ -1,5 +1,8 @@
 package simulation;
 
+import backend.Intersection;
+import backend.Map;
+import backend.Road;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +23,7 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -59,7 +63,7 @@ public class simulationWindowController {
     public void initialize() {
         PathfindingMode = 1;
 
-        XMLLoader graphLoader = new XMLLoader("graph1");
+        XMLLoader graphLoader = new XMLLoader("graph4");
         graph = graphLoader.getGraph();
 
         javafx.scene.image.Image img = new Image("background.JPG", 800, 800, false, false);
@@ -79,7 +83,7 @@ public class simulationWindowController {
         animationParts = new AnimationParts(this.graph, this.simulationBoard);
 
         //create and connect traffic lights (add to gui + backend)
-        createTrafficLights();
+        createTrafficLights(animationParts.model.map);
 
         //refresh the value of cars on each road after specified time
         roadStatusUpdater(1000);
@@ -88,7 +92,7 @@ public class simulationWindowController {
         carSpeedUpdater(500);
 
         //mode 1 - Greedy, mode 2 - TLC
-        this.mainController = new MainController(this.animationParts, 10000, 2);
+        this.mainController = new MainController(this.animationParts, 10000, 1);
 
         this.animationParts.model.map.runAllConnectedFSMS();
 
@@ -203,72 +207,121 @@ public class simulationWindowController {
     //This class creates the traffic lights and adds them to gui,
     // then we connect the traffic lights FSM cycles via connectFSM() method called in animationParts class
 
-    public void createTrafficLights() {
+//    public void createTrafficLights() {
+//
+//        Group TLGroup = new Group();
+//
+//
+//
+//
+//        //cases: T- Section, Cross-Intersection
+//        for (int i = 0; i < animationParts.getRoads().size(); i++) {
+//
+//            //check if more than one road is directed towards an intersection => create traffic lights at the end
+//            //Cross-intersection...
+//            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 4) {
+//
+//                if (!animationParts.intersectionNodes.contains(animationParts.getRoads().get(i).end)) {
+//                    animationParts.intersectionNodes.add(animationParts.getRoads().get(i).end);
+//                }
+//
+//                if (animationParts.getRoads().get(i).getDirection() == 6) {
+//
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE - 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 70,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//                } else if (animationParts.getRoads().get(i).getDirection() == 4) {
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 130, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 50,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//                } else if (animationParts.getRoads().get(i).getDirection() == 8) {
+//
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 90, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//                } else if (animationParts.getRoads().get(i).getDirection() == 2) {
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//
+//                }
+//            }
+//
+//            //T-Section
+//            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 3) {
+//
+//                if (animationParts.getRoads().get(i).getDirection() == 6) {
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//                } else if (animationParts.getRoads().get(i).getDirection() == 4) {
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//                } else if (animationParts.getRoads().get(i).getDirection() == 8) {
+//
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//                } else if (animationParts.getRoads().get(i).getDirection() == 2) {
+//                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
+//                            5000, 3000, 1500, 1);
+//                    TLGroup.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
+//
+//                }
+//
+//
+//            }
+//        }
+//
+//        this.simulationElements.getChildren().add(TLGroup);
+//
+//        this.animationParts.model.connectFSM();
+//
+//
+//    }
 
 
-
-        //cases: T- Section, Cross-Intersection
-        for (int i = 0; i < animationParts.getRoads().size(); i++) {
-
-            //check if more than one road is directed towards an intersection => create traffic lights at the end
-            //Cross-intersection...
-            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 4) {
-
-                if (!animationParts.intersectionNodes.contains(animationParts.getRoads().get(i).end)) {
-                    animationParts.intersectionNodes.add(animationParts.getRoads().get(i).end);
-                }
-
-                if (animationParts.getRoads().get(i).getDirection() == 6) {
-
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE - 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 70,
+    public void createTrafficLights(Map map)
+    {
+        Group TLGroup = new Group();
+        for(Node n : graph.nodes)
+        {
+            ArrayList<Road> rds = map.getIncomingRoads(n);
+            if(rds.size() ==  4)
+            {
+                for(Road r : rds)
+                {
+                    if(r.getDirection() == 6)
+                    {
+                        r.addTrafficLight(n.x * simulationBoard.SIM_SIZE - 20, n.y * simulationBoard.SIM_SIZE+90,
                             5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                } else if (animationParts.getRoads().get(i).getDirection() == 4) {
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 130, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 50,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                } else if (animationParts.getRoads().get(i).getDirection() == 8) {
-
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                } else if (animationParts.getRoads().get(i).getDirection() == 2) {
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-
-                }
-            }
-
-            //T-Section
-            if (animationParts.model.map.getIncomingRoads(animationParts.getRoads().get(i).end).size() == 3) {
-
-                if (animationParts.getRoads().get(i).getDirection() == 6) {
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                } else if (animationParts.getRoads().get(i).getDirection() == 4) {
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                } else if (animationParts.getRoads().get(i).getDirection() == 8) {
-
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE + 70, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE + 130,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-                } else if (animationParts.getRoads().get(i).getDirection() == 2) {
-                    animationParts.getRoads().get(i).addTrafficLight(graph.edges.get(i).end.x * simulationBoard.SIM_SIZE, graph.edges.get(i).end.y * simulationBoard.SIM_SIZE - 130,
-                            5000, 3000, 1500, 1);
-                    this.simulationElements.getChildren().add(animationParts.getRoads().get(i).getTrafficLight().getTrafficLightGui());
-
+                            TLGroup.getChildren().add(r.getTrafficLight().getTrafficLightGui());
+                    }
+                    if(r.getDirection() == 4)
+                    {
+                        r.addTrafficLight(n.x * simulationBoard.SIM_SIZE + 100, n.y * simulationBoard.SIM_SIZE-40,
+                                5000, 3000, 1500, 1);
+                        TLGroup.getChildren().add(r.getTrafficLight().getTrafficLightGui());
+                    }
+                    if(r.getDirection() == 2)
+                    {
+                        r.addTrafficLight(n.x * simulationBoard.SIM_SIZE-10, n.y * simulationBoard.SIM_SIZE-50,
+                                5000, 3000, 1500, 1);
+                        TLGroup.getChildren().add(r.getTrafficLight().getTrafficLightGui());
+                    }
+                    if(r.getDirection() == 8)
+                    {
+                        r.addTrafficLight(n.x * simulationBoard.SIM_SIZE + 90, n.y * simulationBoard.SIM_SIZE+90,
+                                5000, 3000, 1500, 1);
+                        TLGroup.getChildren().add(r.getTrafficLight().getTrafficLightGui());
+                    }
                 }
 
             }
         }
-
+        this.simulationElements.getChildren().add(TLGroup);
         this.animationParts.model.connectFSM();
-
-
     }
 
 

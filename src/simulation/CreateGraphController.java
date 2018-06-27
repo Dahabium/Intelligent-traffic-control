@@ -73,7 +73,7 @@ public class CreateGraphController {
             if (control == 1 && mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
                 System.out.println("Scene XY are: " + mouseEvent.getSceneX() + ", " + mouseEvent.getSceneY());
-                double[] gridXY = board.getGridXY(mouseEvent.getSceneX(), mouseEvent.getSceneY(), CELL_SIZE);
+                double[] gridXY = board.getGridXY(mouseEvent.getSceneX(), mouseEvent.getSceneY(), CELL_SIZE, scrollPane);
                 //TODO FIX THIS!
 
 //                double gridX = gridXY[0];

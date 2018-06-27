@@ -347,7 +347,7 @@ public class carAnimation {
                     car.setVel((car.getVel() + (model.acceleration(car, dist, carFrontVelocity) * 0.016)));
 
                     //try to detect a collision here
-                    if (collisionDetection.collisionDetection(car) && car.getPercentageOnCurrentRoad() > 5 && car.getPercentageOnCurrentRoad() < 95 ) {
+                    if (collisionDetection.collisionDetection(car) && car.getPercentageOnCurrentRoad() > 10 && car.getPercentageOnCurrentRoad() < 90 ) {
 
                         stopCarAnimation();
 

@@ -2,6 +2,7 @@ package simulation;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ import static java.lang.Math.abs;
 
 public class Board extends GridPane {
 
-    int SIM_SIZE = 100;
+    int SIM_SIZE = 101;
     int xSize;
     int ySize;
     Graph graph;
@@ -865,8 +866,11 @@ public class Board extends GridPane {
     }
 
 
-    public double[] getGridXY(double x, double y, int CELL_SIZE) {
+    public double[] getGridXY(double x, double y, int CELL_SIZE, ScrollPane scrollPane) {
 
+        System.out.println("ScrollPane H V / max " + scrollPane.getHvalue() + " " + scrollPane.getVvalue() + " " + scrollPane.getHmax() + " " + scrollPane.getVmax());
+        x += scrollPane.getHvalue()/scrollPane.getHmax() *8*(CELL_SIZE+1);
+        y += scrollPane.getVvalue()/scrollPane.getVmax() *8*(CELL_SIZE+1);
         double[] closest = new double[4];
         double minimum = 9999999;
 
